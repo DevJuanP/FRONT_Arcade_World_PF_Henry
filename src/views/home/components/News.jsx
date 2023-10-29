@@ -15,7 +15,7 @@ function News({name,image,price}) {
 News.propTypes= {
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired
+  price: PropTypes.string.isRequired
 }
 
 export default News

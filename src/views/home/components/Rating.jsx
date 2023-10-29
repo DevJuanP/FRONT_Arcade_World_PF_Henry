@@ -15,7 +15,7 @@ function Rating({name,image,price}) {
 Rating.propTypes= {
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired
+  price: PropTypes.string.isRequired
 }
 
 export default Rating

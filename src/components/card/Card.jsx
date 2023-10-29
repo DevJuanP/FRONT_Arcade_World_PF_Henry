@@ -6,22 +6,22 @@ function Card({game}) {
 
 
   return (
-      <Link to={`/detail/${game.id}`}>
     <div className={style.card}>
+      <Link to={`/detail/${game.id}`}>
       <div className={style.imgH}>
         <h2 className={style.name}>Name: {game.name}</h2>
         <img src={game.image} alt={game.name} />
       </div>
+      </Link>
 
         <div className={style.hCont}>
           <h3>Price: ${game.price}</h3>
           <div className={style.platforms}>
-           <h4>Genres: {game.genres}</h4>
-           <p>Platforms: {game.platforms}</p>
+           <h4>Genres: {game.genres.join(',')}</h4>
+           <p>Platforms: {game.platforms.join(', ')}</p>
           </div>
         </div>
     </div>
-      </Link>
   )
 }
 Card.propTypes= {

@@ -15,7 +15,7 @@ function MoreDownload({name,image,price}) {
 MoreDownload.propTypes= {
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired
+  price: PropTypes.string.isRequired
 }
 
 export default MoreDownload

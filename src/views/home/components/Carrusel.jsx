@@ -2,7 +2,6 @@ import Slider from 'react-slick';
 import PropTypes from "prop-types";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import PropTypes from "prop-types";
 
 function Carrusel({imagenes}){
   const settings = {
