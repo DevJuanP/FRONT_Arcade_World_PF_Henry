@@ -56,7 +56,8 @@ const Details = () =>{
                 <textarea id='message' name='message'></textarea>
                 <button type="submit" className={style.btn}>Submit</button>
             </form>
-            </div> 
+            </div>
+            <br /> 
     </div>
       );
     };
