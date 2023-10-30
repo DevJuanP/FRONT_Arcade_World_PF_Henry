@@ -9,47 +9,57 @@ import style from './details.module.css'
 const Details = () =>{
     const { id } = useParams();
     const dispatch = useDispatch();
-    const gameId = useSelector((state)=> state.gameId);
-    
-    useEffect(()=>{
+    let gameId = useSelector((state)=> state.gameId);
+
+        useEffect(()=>{
         dispatch(gameById(id))
     },[id, dispatch])
 
-    return(
-    
+    return (
+    <div>
+        <div className={style.contentDetail}>
+          <div className={style.contentBtn}>
+            <Link to='/store'>
+              <button>Return to Store</button>
+            </Link>
+          </div>
+          <div className={style.detail}>
 
-    <div className={style.contentBtn}>
-          <Link to='/home'>
-           <button>Return to Home</button>
-          </Link>
-        
-        <div >
-        {gameId.map((gm)=> (
-            <div key={gm.id}>
-                <div>
-                 <img src={gm.image} alt={gm.name} />
-                 <h2 className={style.name}>Name: {gm.name}</h2>
+            {Object.keys(gameId).length > 0 && (
+                <div className={style.contentMap}>
+                  <img src={gameId['image']} alt={gameId['name']} />
+
+                  <div className={style.dataMap}>
+                    <h1 className={style.name}>Name: {gameId['name']}</h1>
+                    <h3>Price: ${gameId['price']}</h3>
+                    <h3>Genres: {gameId['genres'].join(', ')}</h3>
+                    <h3>Platforms: {gameId['platforms'].join(', ')}</h3>
+                    <div className={style.description}>
+                      <h4>About the game:</h4><p>{gameId['description']}</p>
+                    </div>
+                    <h5>Released: {gameId['released']}</h5>
+                  </div>
+
                 </div>
-              <div>
-                <h3>Price: ${gm.price}</h3>
-                <h4>Genres: {gm.genres}</h4>
-                <h4>Platforms: {gm.platforms}</h4>
-                <p>About the game: {gm.description}</p>
-                <h4>Released: {gm.released}</h4>
-              </div>   
-
-            </div>
-        ))
-
-        }
-         </div>
-         <div className={style.buttons}>
-           <button>Add</button>
-           <button>Buy</button>
-         </div>
+            )}
+          </div>
+    
+          <div className={style.buttons}>
+            <button>Add 🎮</button>
+            <button>Buy 🛒</button>
+          </div>
+        </div>
+            <div className={style.commets}>
+                <h4>Comments:</h4>
+            <form className={style.message}>
+             <label >Message:</label>
+                <textarea id='message' name='message'></textarea>
+                <button type="submit" className={style.btn}>Submit</button>
+            </form>
+            </div> 
     </div>
-         
-    )
-}
-export default Details;
+      );
+    };
+    
+    export default Details;
 

@@ -1,76 +1,149 @@
-.container {
-    margin-top: 25px;
-    display: flex;
-    background-color: rgb(209, 207, 207);
-}
 
-.photo{
-    flex: 1;
-    width: 265px;
-    height: 350px;
-}
-
-.title{
-    font-size: 32px;
-}
-
-.container .info {
-    flex: 2;
-}
-
-.container .score {
-    text-align: center;
-}
-
-.container .attributes {
+.contentDetail {
     display: flex;
     flex-direction: column;
-    font-size: 12px;
-    text-align: left;
-}
-
-.attributes{
-    margin-left: 15px;
-    margin-bottom: 20px;
-}
-
-.info{
-    padding: 15px 15px;
-    text-align: left;
-}
-
-.info span{
-    font-weight: 700;
-}
-
-.data{
-    padding: 15px 12px 15px 0;
-}
-
-.buttons{
-    display: flex;
-    justify-content: flex-end;
-}
-
-.buttons button:not(:last-child) {
-    margin-right: 10px;
-}
-
-.commets{
-    text-align: left;
-}
-
-.message{
-    padding: 15px 0;
-    background-color: rgb(209, 207, 207);
-    text-align: center;
-}
-
-.message textarea{
-    width: 300px;
-    height: 100px;
-}
-
-.btn{
     align-items: center;
-}
+    justify-content: center;
+    margin: 2rem;
+    
+   }
+   .detail {
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    gap: 3rem;
+    align-items: center;
+    inline-size: 80rem;
+    block-size: 30rem;
+     
+   }
+   .contentMap {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    box-shadow: inset 0 0 10px #e78044;
+    margin-block-start: -2rem;
+        
+   }
+   .contentMap img {
+    inline-size: 30rem;
+    block-size: 25rem;
+    padding: 0.5rem;
+    vertical-align: middle;
+    border-radius: 0.35rem;
+    transition: all 0.5s;
+    
+   }
+   .contentMap img:hover {
+    transform: rotateY(180deg);
+    }
+  
+   .dataMap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+     
+   }
+   .dataMap h1 {
+    color: rgb(190, 231, 195);
+    filter: brightness(1.2) contrast(1.1);
+   }
+   .dataMap h3 {
+    color: rgb(233, 178, 105);
+  }
+   .description {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    inline-size: 90vh;
+    margin-block-start: 1.5rem;
+    margin-block-end: 0.5rem;
+    }
+    .description h4 {
+     color: rgb(84, 248, 98);
+    }
+    .description p {
+      color: rgb(73, 221, 196);
+     
+     }
+    .dataMap h5 {
+        color: rgb(240, 151, 69);
+        margin-inline-start: -28.5rem;
+    }
+   .contentBtn  {
+    display: flex;
+    justify-content: end;
+    inline-size: 80rem;
+    margin-block-start: -2rem;
+    }
+   
+   .contentBtn button {
+    font-size: 15px;
+    color:rgb(61, 40, 12);
+    background-color: rgb(214, 180, 135);
+    font-weight: bold;
+    border-radius: 0.5rem;
+    inline-size: 6rem;
+    block-size: 2.5rem;
+    }
+  .contentBtn button:hover {
+    transform: scale(1.1);
+    background-color: rgb(219, 109, 36);
+    color: white;
+    cursor: pointer;
+  }
+  .buttons {
+    display: flex;
+    justify-content: end;
+    inline-size: 70rem;
+    gap: 4rem;
+  }
+  .buttons button {
+    font-size: 18px;
+    color:rgb(61, 40, 12);
+    background-color: rgb(214, 180, 135);
+    font-weight: bold;
+    border-radius: 0.5rem;
+    inline-size: 6rem;
+    block-size: 2rem;
+    margin-block-start: -1rem;
+  }
+  .commets {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    inline-size: 90vw;
+    block-size: 20vh;
+    padding-inline-start: 1.5rem;
+    margin-block-start: -1rem;
+    margin-inline-start: 1.5rem;
+    gap: 1rem;
+    color: rgb(193, 101, 230);
+    border: 1px dashed rgb(212, 117, 7);
+  }
+  .message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    inline-size: 25vw;
+    block-size: 20vh;
+    gap: 0.8rem;
+    color: rgb(187, 235, 54);
+   
+  }
+  .message button {
+    font-size: 15px;
+    color:rgb(61, 40, 12);
+    background-color: rgb(214, 180, 135);
+    font-weight: bold;
+    border-radius: 0.5rem;
+    inline-size: 5.5rem;
+    block-size: 2rem;
+    
+  }
+  .message textarea {
+    width: 300px; 
+    height: 150px;
+    resize: none;
+  }
