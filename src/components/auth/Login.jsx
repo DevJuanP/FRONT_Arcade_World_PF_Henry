@@ -3,9 +3,11 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { postLogin, setAuthenticated, setUserData } from "../../redux/actions";
 import Swal from "sweetalert2";
+import { useAuth0 } from "@auth0/auth0-react";
 import "./auth.css";
 
 const Login = () => {
+  const { loginWithRedirect } = useAuth0();
   //para uso del form
   const {
     register,
@@ -64,7 +66,7 @@ const Login = () => {
           <p className="LoginTitle">Sign in to Arcade World</p>
         </div>
         <div>
-          <button className="btnAuth0">
+          <button className="btnAuth0" onClick={() => loginWithRedirect()}>
             <img
               className="googleIcon"
               src="https://img.icons8.com/color/48/google-logo.png"

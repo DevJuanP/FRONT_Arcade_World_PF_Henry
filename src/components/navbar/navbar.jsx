@@ -4,6 +4,7 @@ import Search from '../search/Search';
 import style from './Navbar.module.css'
 import logo from './logo1Sinfondo.png'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LogoutButton from '../auth/Logout';
 
 function Navbar() {
   const location = useLocation();
@@ -22,6 +23,7 @@ function Navbar() {
         <NavLink className={style.homeForm} to= '/store'>Store</NavLink>
         <NavLink className={style.homeForm} to= '/library'>Library</NavLink>
         <NavLink className={style.homeForm} to= '/about'>About</NavLink>
+        <LogoutButton />
       </div>
       <div>
       {location.pathname !== '/auth' && (
