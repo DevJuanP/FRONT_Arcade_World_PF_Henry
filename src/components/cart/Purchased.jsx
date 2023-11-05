@@ -7,7 +7,7 @@ export default function Purchased() {
 
   const UserId = useSelector( s => s.userData)
   // let userLocalLogin = JSON.parse(localStorage.getItem("login"));
-  // let UserId = userLocalLogin.user.Email;
+  // let UserEmail = userLocalLogin.user.Email;
   // console.log(UserId);
   const shoppingCart = useSelector ( s => s.shoppingCart)
  

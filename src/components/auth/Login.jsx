@@ -52,11 +52,11 @@ const Login = () => {
            dispatch(setUserData(response.data));
            //Migración al profile
            navigate("/user/profile");
-       }
-     });  
-     reset(); 
-    }
-   )
+           }
+        });  
+        reset(); 
+      }
+      )
   const handleGoogleLogin = async () => {
     try {
       await loginWithGoogle();

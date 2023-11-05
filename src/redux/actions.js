@@ -241,10 +241,10 @@ export const addToCart = (item) => {
       });
      };
 };
-export const deleteItem = (cart) => {
+export const deleteItem = (payload) => {
   return {
     type: DELETE_ITEM,
-    payload: cart
+    payload: payload
   };
 }
 
