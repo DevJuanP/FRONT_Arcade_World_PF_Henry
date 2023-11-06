@@ -1,32 +1,21 @@
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import CardContent from "@mui/material/CardContent";
 import Fab from "@mui/material/Fab";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useState } from "react";
 import { deleteItem } from "../../redux/actions.js"
+import PropTypes from "prop-types";
 
-const BotonsCart = () => {
- 
-  const shoppingCart = useSelector((state) => state.shoppingCart);
-    
+const BotonsCart = ({element}) => {
+ const gameId = element.id;
+      
   const dispatch = useDispatch();
         
-    
-     let [index, setIndex] =useState(
-      shoppingCart?.map((item) => item
-    )
-     );
-    
-     const handleRemoveCart = (id) => {
-      const filtrado = index.filter((el) => el.id !== id);
-      dispatch(deleteItem(filtrado));
-      localStorage.setItem("cart", JSON.stringify(filtrado));
-      setIndex(filtrado);
+    const handleRemoveCart = ()=> {
+    dispatch(deleteItem(gameId)); 
     };
-  
-
-  return (
+        
+   return (
     <div>
         <CardContent
           sx={{
@@ -42,14 +31,17 @@ const BotonsCart = () => {
             size="medium"
             color="default"
             aria-label="add"
-            onClick={()=>handleRemoveCart}
+            onClick={handleRemoveCart}
           >
-            <DeleteIcon />
+             <DeleteIcon/>
           </Fab>
          </CardContent>
-      
+     
     </div>
   );
 }
+BotonsCart.propTypes = {
+  element: PropTypes.object.isRequired,
+};
 
 export default BotonsCart;

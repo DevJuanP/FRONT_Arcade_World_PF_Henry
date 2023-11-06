@@ -32,8 +32,7 @@ const Details = () => {
   const shoppingCart = useSelector((state) => state.shoppingCart);
   let userLocalDetail = localStorage.getItem("login");
   userLocalDetail = userLocalDetail ? JSON.parse(userLocalDetail) : null;
-  console.log(userLocalDetail);
-
+  
   const handleButton = () => {
     if (userLocalDetail === null || userLocalDetail === "") {
       Swal.fire({

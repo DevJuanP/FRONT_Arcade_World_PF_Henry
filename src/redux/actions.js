@@ -217,7 +217,7 @@ export const deleteItemCart = (UserId) => {
 }
 
 export const addPurchades = (payload) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     try {
       dispatch({
         type: ADD_NEWS_PURCHASED,
@@ -241,10 +241,17 @@ export const addToCart = (item) => {
       });
      };
 };
-export const deleteItem = (payload) => {
-  return {
-    type: DELETE_ITEM,
-    payload: payload
+export const deleteItem = (id) => {
+  return  (dispatch) => {
+    try {
+      dispatch({
+        type: DELETE_ITEM,
+        payload: id
+      });
+    } catch (error) {
+      console.log(error.message)
+      
+    }
   };
 }
 
