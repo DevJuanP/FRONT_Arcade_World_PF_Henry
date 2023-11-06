@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Purchased() {
 
-  const UserId = useSelector( s => s.userData.user.id)
+  const UserId = useSelector( s => s.userData);
   const shoppingCart = useSelector ( s => s.shoppingCart);
   const navigate = useNavigate();
   let userLocalPay = localStorage.getItem("login");

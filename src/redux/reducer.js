@@ -22,7 +22,8 @@ const initialState = {
   userData: null,
   favorites: [],
   reviews:[],
-  shoppingCart: []
+  shoppingCart: [],
+  cartItemCount: 0
   }  
  
  const rootReducer = (state=initialState, action)=> {
@@ -146,7 +147,8 @@ const initialState = {
       
       return {
         ...state,
-        shoppingCart:[]
+        shoppingCart:[],
+        cartItemCount: 0,
       };
 
     case ADD_NEWS_PURCHASED:
@@ -162,14 +164,16 @@ const initialState = {
          
        return {
         ...state,
-        shoppingCart: [...state.shoppingCart, action.payload]
+        shoppingCart: [...state.shoppingCart, action.payload],
+        cartItemCount: state.cartItemCount +1,
       }
                 
     case DELETE_ITEM:
       updatedCart = state.shoppingCart.filter(item => item.id !== action.payload);
        return{
         ...state,
-        shoppingCart: updatedCart
+        shoppingCart: updatedCart,
+        cartItemCount: state.cartItemCount -1,
       }
     default:
       return {...state}  
