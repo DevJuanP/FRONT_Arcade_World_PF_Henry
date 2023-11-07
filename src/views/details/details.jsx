@@ -121,17 +121,16 @@ const Details = () => {
               />
               <Stack sx={{ textAlign: "left", marginLeft: "8px" }}>
                 {/* <Typography variant="overline">
+
                   Score:{gameDetails?.score}
                 </Typography> */}
                 {/* <Typography variant="overline">
                   Graphics: {gameDetails.graphics}
-
                 </Typography>
                 <Typography variant="overline">
                   Gameplay: {gameDetails?.gameplay}
                 </Typography>
                 <Typography variant="overline">
-
                   Quality price: {gameDetails.qualityPrice}
                 </Typography> */}
               </Stack>

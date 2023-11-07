@@ -20,7 +20,6 @@ function Grafico() {
   const starqualityprice=gameDetails?.quality_price?.stars
   const scorequalityprice=gameDetails?.quality_price?.score
 
-
     useEffect(() => {
       const ctx = document.getElementById('GRAPHICS').getContext('2d');
 
@@ -169,6 +168,7 @@ function Grafico() {
       justifyContent: 'center',
       flexDirection:'column'
     }
+
       return (  <div>
         <Box display='flex' sx={estilos} gap={12}>
           <Box sx={estilosG}>
