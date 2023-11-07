@@ -10,7 +10,8 @@ import { addToCart } from '../../redux/actions.js';
  const Pay = ()=> {
   const shoppingCart = useSelector((state) => state.shoppingCart);
     const gameDetails = useSelector((state) => state.gameId);
-    const isAuthenticated = useSelector((state) => state.isAuthenticated);
+    let userLocalBuy = localStorage.getItem("login");
+  userLocalBuy = userLocalBuy ? JSON.parse(userLocalBuy) : null;
    
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ import { addToCart } from '../../redux/actions.js';
   };
 
   const handleClick = () => {
-  if (isAuthenticated) {
+  if (userLocalBuy === null || userLocalBuy === "") {
     Swal.fire({
       toast: true,
       icon: "info",

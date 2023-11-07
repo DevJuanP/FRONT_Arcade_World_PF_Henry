@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Box } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
+import { useSelector } from 'react-redux';
 
 function Navbar() {
   let userLocal = localStorage.getItem("login");
@@ -20,6 +21,7 @@ function Navbar() {
   const appbar = {
     flexwrap: "wrap",
   };
+  const cartItemCount = useSelector(state => state.cartItemCount);
   return (
     <AppBar position="" sx={{ background: "#263238" }} style={appbar}>
       <Container maxWidth="xl">
@@ -71,9 +73,17 @@ function Navbar() {
           >
             {location.pathname !== "/auth" && (
               <>
+                <div style={{ position: 'relative' }}>
                 <Link to="/cart">
                   <ShoppingCartIcon sx={{ color: "#f1f1f1" }} />
+                  {cartItemCount > 0 && (
+                      <div style={{ position: 'absolute', top: -12, right: 20, background: 'red', 
+                      borderRadius: '50%', padding: '8px', color: 'white',width:'8px', height:'8px', margin:'2px', display: 'flex', alignItems: 'center',fontSize:'14px' }}>
+                     {cartItemCount}
+                   </div>
+                   )}
                 </Link>
+                </div>
                 {userLog && (
                   <Link to="/user/profile">
                     <Avatar alt="Remy Sharp" src={userLocal?.user?.image} />
