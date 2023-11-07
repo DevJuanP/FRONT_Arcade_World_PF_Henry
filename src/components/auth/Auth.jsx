@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Login from './Login'
 import Create from './Create'
-import { Stack } from '@mui/material'
+import { Button, Stack, Typography } from '@mui/material'
 
 export default function AuthLogin() {
   const [signUp, setSignUp] = useState(false)
@@ -12,23 +12,23 @@ export default function AuthLogin() {
     setSignIn((elemento) => !elemento)
   }
   return (
-    <Stack style={{display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column', height:'100vh'}}>
+    <Stack style={{display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column', height:'132vh'}}>
       {
         signIn === true ? (<Login/>) : (<Create handleSign={handleSign}/>)
       }
       {
         signIn === true ? 
         ( 
-          <div>
-            <button className='btnPassW'>Forget Password</button>
-              <p>No account? <button onClick={handleSign} className='btnCreate'>Create one</button></p>
-          </div>
+          <Stack>
+            <Button color='primary' variant='text'>Forget Password</Button>
+              <Typography variant='body1'>No account? <Button color='primary' variant='text' onClick={handleSign}>Create one</Button></Typography>
+          </Stack>
         )
         :
        ( 
-        <div>
-          <p>Already have account? <button onClick={handleSign}  className='btnCreate'>Sign in</button></p>
-        </div>
+        <Stack>
+          <Typography variant='body1'>Already have account? <Button color='primary' variant='text' onClick={handleSign}  className='btnCreate'>Sign in</Button></Typography>
+        </Stack>
       )
       }
       

@@ -67,7 +67,7 @@ const CartCard = ({ element }) => {
               alignItems: "center",
              }}
           >
-            <BotonsCart />
+            <BotonsCart shop={element.id}/>
           </CardContent>
         </Card>
       </section>

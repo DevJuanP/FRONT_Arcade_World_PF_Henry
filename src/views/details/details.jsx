@@ -58,7 +58,7 @@ const Details = () => {
 
   const gameDetails = useSelector((state) => state.gameId);
   const { id } = useParams();
-  
+
   useEffect(() => {
     dispatch(gameById(id));
   }, [dispatch, id]);
@@ -125,11 +125,13 @@ const Details = () => {
                 </Typography> */}
                 {/* <Typography variant="overline">
                   Graphics: {gameDetails.graphics}
+
                 </Typography>
                 <Typography variant="overline">
-                  Gameplay: {gameDetails.gameplay}
+                  Gameplay: {gameDetails?.gameplay}
                 </Typography>
                 <Typography variant="overline">
+
                   Quality price: {gameDetails.qualityPrice}
                 </Typography> */}
               </Stack>

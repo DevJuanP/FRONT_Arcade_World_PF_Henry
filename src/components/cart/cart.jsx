@@ -1,25 +1,19 @@
-
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { Button, Box, CardContent, Typography } from "@mui/material";
-import CartCard from './cartCard'
-import Purchased from './Purchased'
-import { NavLink } from 'react-router-dom';
-import { deleteItemCart } from '../../redux/actions.js';
-
+import CartCard from "./cartCard";
+import Purchased from "./Purchased";
+import { NavLink } from "react-router-dom";
+import { deleteItemCart } from "../../redux/actions.js";
 
 function Cart() {
   const dispatch = useDispatch();
   const shoppingCart = useSelector((state) => state.shoppingCart);
-  const gamesIds = !shoppingCart.length? [] : shoppingCart.map( vg => vg.id)
-  const UserId = useSelector( state => state.userData );
-  localStorage.setItem("cart", JSON.stringify(gamesIds));
- 
- 
- const priceTotal = shoppingCart.reduce((a, b) => a + b.price, 0)
- 
+  const gamesIds = !shoppingCart.length ? [] : shoppingCart.map((vg) => vg.id);
+  const UserId = useSelector((state) => state.userData);
+  const priceTotal = shoppingCart.reduce((a, b) => a + b.price, 0);
 
-  const showAlert = ()=> {
+  const showAlert = () => {
     Swal.fire({
       title: "Are you sure?",
       text: "Are you sure you want to delete the items from your cart!",
@@ -34,20 +28,21 @@ function Cart() {
         Swal("Cancelled", "Your cart is safe.", "info");
       }
     });
-  }
+  };
   const handleClearClick = () => {
     dispatch(deleteItemCart(UserId));
   };
-         
+
   return (
     <Box
       sx={{
+        height: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "flex-start",
         gap: "100px",
       }}
-       >
+    >
       <Box
         sx={{
           paddingTop: "30px",
@@ -58,14 +53,12 @@ function Cart() {
           alignItems: "center",
           gap: "30px",
         }}
-        >
-        {shoppingCart.length? (
-          shoppingCart.map((vg, i) => (
-            <CartCard key={i} element={vg} />
-          ))
+      >
+        {shoppingCart.length ? (
+          shoppingCart.map((vg, i) => <CartCard key={i} element={vg} />)
         ) : (
-          <div >
-             <Box
+          <div>
+            <Box
               sx={{
                 backgroundColor: "#eddcb9",
                 height: "300px",
@@ -115,15 +108,11 @@ function Cart() {
                   Add something to your Shopping Cart !
                 </Typography>
               </CardContent>
-              <NavLink to='/store'>
-                <Button
-                  variant="contained"
-                  color="success"
-                >
-                    Discover Products
+              <NavLink to="/store">
+                <Button variant="contained" color="success">
+                  Discover Products
                 </Button>
               </NavLink>
-              
             </Box>
           </div>
         )}
@@ -206,8 +195,7 @@ function Cart() {
               Total:
             </Typography>
             <Typography
-             
-             variant="body1"
+              variant="body1"
               component="div"
               sx={{
                 fontSize: 30,

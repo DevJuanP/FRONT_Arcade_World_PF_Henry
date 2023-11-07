@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { postLogin, setAuthenticated, setUserData } from "../../redux/actions";
 import Swal from "sweetalert2";
-import "./auth.css";
 import { useAuth } from "../../context/AuthContext";
 import { Button, Card, Stack, Typography, TextField } from "@mui/material";
 
@@ -21,13 +20,22 @@ const Login = () => {
   //para uso de redux
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  const handleGoogleLogin = async () => {
+    try {
+      await loginWithGoogle();
+      navigate("/user/profile");
+    } catch (error) {
+      setError(error.message);
+    }
+  };
   const onSubmit = handleSubmit((data) => {
     dispatch(postLogin(data)).then((response) => {
       if (response.data.login === false) {
         Swal.fire({
           position: "top-center",
           icon: "error",
-          title: "Sorry",
+          title: "Sorry you don't have account",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -61,18 +69,10 @@ const Login = () => {
     });
     reset();
   });
-  const handleGoogleLogin = async () => {
-    try {
-      await loginWithGoogle();
-      navigate("/user/profile");
-    } catch (error) {
-      setError(error.message);
-    }
-  };
   return (
     <Card sx={{ height: "400px", width: "400px" }}>
       <Stack
-        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+        sx={{ display: "flex", alignItems: "center", justifyContent: "center"}}
       >
         <Stack
           sx={{
@@ -91,6 +91,9 @@ const Login = () => {
               onClick={handleGoogleLogin}
             >
               <img
+                width="20px"
+                height="20px"
+                style={{ padding: "0.5rem" }}
                 className="googleIcon"
                 src="https://img.icons8.com/color/48/google-logo.png"
                 alt="google-logo"
@@ -99,7 +102,7 @@ const Login = () => {
             </Button>
           </Stack>
           <Typography variant="overline">or</Typography>
-          <div>
+          <Stack sx={{display:'flex', flexDirection:'column'}}>
             <TextField
               sx={{ width: "320px", marginBottom: "30px" }}
               variant="outlined"
@@ -117,16 +120,34 @@ const Login = () => {
               })}
             />
             {errors.nick_email?.type === "required" && (
-              <Typography marginTop='-25px' variant="overline" className="error">Name is required</Typography>
+              <Typography
+                marginTop="-25px"
+                variant="overline"
+                color='red'
+              >
+                Name is required
+              </Typography>
             )}
             {errors.nick_email?.type === "maxLength" && (
-              <Typography marginTop='-25px' variant="overline" className="error">Name is To logn</Typography>
+              <Typography
+                marginTop="-25px"
+                variant="overline"
+                color='red'
+              >
+                Name is To logn
+              </Typography>
             )}
             {errors.nick_email?.type === "minLength" && (
-              <Typography marginTop='-25px' variant="overline" className="error">Name is to short</Typography>
+              <Typography
+                marginTop="-25px"
+                variant="overline"
+                color='red'
+              >
+                Name is to short
+              </Typography>
             )}
-          </div>
-          <div>
+          </Stack>
+          <Stack sx={{display:'flex', flexDirection:'column'}}>
             <TextField
               sx={{ width: "320px", marginBottom: "30px" }}
               variant="outlined"
@@ -140,21 +161,26 @@ const Login = () => {
                   message: "Password is required",
                 },
                 minLength: {
-                  value: 8,
+                  value: 6,
                   message: "Password must be at least 8 characters",
                 },
               })}
             />
             {errors.password && (
-              <Typography marginTop='-25px' variant='overline' className="error">{errors.password.message}</Typography>
+              <Typography
+                marginTop="-25px"
+                variant="overline"
+                color='red'
+              >
+                {errors.password.message}
+              </Typography>
             )}
-          </div>
+          </Stack>
 
           <Button
             variant="contained"
             sx={{ backgroundColor: "#000", width: "320px" }}
             onClick={onSubmit}
-            className="btnLogin"
             disabled={!isDirty || !isValid}
           >
             Log in

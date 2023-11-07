@@ -1,46 +1,41 @@
-
 import { useDispatch, useSelector } from "react-redux";
 import CardContent from "@mui/material/CardContent";
 import Fab from "@mui/material/Fab";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteItem } from "../../redux/actions.js"
+import { deleteItem } from "../../redux/actions.js";
 
-const BotonsCart = () => {
- 
-  const shoppingCart = useSelector((state) => state.shoppingCart);
-    
+const BotonsCart = ({shop}) => {
   const dispatch = useDispatch();
-        
-     const handleRemoveCart = (id) => {
-    const filtrado = shoppingCart.filter((el) => el.id !== id);
-    dispatch(deleteItem(filtrado));
-    localStorage.setItem("cart", JSON.stringify(filtrado));
-     };
+  // const shoppingCart = useSelector((state) => state.shoppingCart);
+  // console.log(shop);
+  const handleRemoveCart = () => {
+    dispatch(deleteItem(shop));
+    // localStorage.setItem("cart", JSON.stringify(shop));
+  };
 
   return (
     <div>
-        <CardContent
-          sx={{
-            height: 35,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "20px",
-          }}
+      <CardContent
+        sx={{
+          height: 35,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "20px",
+        }}
+      >
+        <Fab
+          style={{ backgroundColor: "#A5CAA8" }}
+          size="medium"
+          color="default"
+          aria-label="add"
+          onClick={handleRemoveCart}
         >
-          <Fab
-            style={{ backgroundColor: "#A5CAA8" }}
-            size="medium"
-            color="default"
-            aria-label="add"
-            onClick={handleRemoveCart}
-          >
-            <DeleteIcon />
-          </Fab>
-         </CardContent>
-      
+          <DeleteIcon />
+        </Fab>
+      </CardContent>
     </div>
   );
-}
+};
 
 export default BotonsCart;
