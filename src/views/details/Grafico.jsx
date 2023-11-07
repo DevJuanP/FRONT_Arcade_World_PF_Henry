@@ -13,10 +13,13 @@ function Grafico() {
     dispatch(gameById(id));
   }, [dispatch, id]);
   console.log(gameDetails)
+    const starGraphics=gameDetails?.graphics?.stars
+    const scoreGraphics=gameDetails?.graphics?.score
+  const starGameplay=gameDetails?.gameplay?.stars
+  const scoregameplay=gameDetails?.gameplay.score
+  const starqualityprice=gameDetails?.quality_price.stars
+  const scorequalityprice=gameDetails?.quality_price.score
 
-  const Stargraphics= gameDetails?.graphics
-  const Stargameplay= gameDetails?.gameplay
-  const Starquality_price= gameDetails?.quality_price
     useEffect(() => {
       const ctx = document.getElementById('GRAPHICS').getContext('2d');
 
@@ -26,7 +29,7 @@ function Grafico() {
           labels: ['5','4','3','2','1'],
           datasets: [{
             label: 'Stars',
-            data: Stargraphics,
+            data: starGraphics,
             backgroundColor: '#4CAF50', 
             borderWidth: 1, 
             borderRadius: 20,
@@ -69,7 +72,7 @@ function Grafico() {
           labels: ['5','4','3','2','1'],
           datasets: [{
             label: 'Stars',
-            data: Stargameplay,
+            data:starGameplay,
             backgroundColor: '#4CAF50',
             borderWidth: 1, 
             borderRadius: 20,
@@ -112,7 +115,7 @@ function Grafico() {
           labels: ['5','4','3','2','1'],
           datasets: [{
             label: 'Stars',
-            data: Starquality_price,
+            data: starqualityprice,
             backgroundColor: '#4CAF50', 
             borderWidth: 1, 
             borderRadius: 20,
@@ -165,28 +168,25 @@ function Grafico() {
       justifyContent: 'center',
       flexDirection:'column'
     }
-    const grafico=Stargraphics.reduce((a,b)=>(a+b,0)/5).toFixed(1)
-    const gameplay=Stargameplay.reduce((a,b)=>(a+b,0)/5).toFixed(1)
-    const calidaPresio=Starquality_price.reduce((a,b)=>(a+b,0)/5).toFixed(1)
       return (  <div>
         <Box display='flex' sx={estilos} gap={12}>
           <Box sx={estilosG}>
             <div style={estiloss}>
-              <h2 style={{margin:'0'}}>{grafico}</h2>
+              <h2 style={{margin:'0'}}>{scoreGraphics}</h2>
               <p>Graphics</p>
             </div>
             <canvas id="GRAPHICS" ></canvas>
           </Box>
           <Box sx={estilosG}>
             <div style={estiloss}>
-              <h2 style={{margin:'0'}}>{gameplay}</h2>
+              <h2 style={{margin:'0'}}>{scoregameplay}</h2>
               <p>Game play</p>
             </div>
             <canvas id="GAMEPLAY" ></canvas>
           </Box>
           <Box sx={estilosG}>
             <div style={estiloss}>
-              <h2 style={{margin:'0'}}>{calidaPresio}</h2>
+              <h2 style={{margin:'0'}}>{scorequalityprice}</h2>
               <p>Quality Price</p>
             </div>
             <canvas id="QUALITYPRICE" ></canvas>

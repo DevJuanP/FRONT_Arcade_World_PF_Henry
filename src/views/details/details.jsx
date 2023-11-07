@@ -32,7 +32,6 @@ const Details = () => {
   const shoppingCart = useSelector((state) => state.shoppingCart);
   let userLocalDetail = localStorage.getItem("login");
   userLocalDetail = userLocalDetail ? JSON.parse(userLocalDetail) : null;
-  console.log(userLocalDetail);
 
   const handleButton = () => {
     if (userLocalDetail === null || userLocalDetail === "") {
@@ -121,10 +120,10 @@ const Details = () => {
                 title="prueba"
               />
               <Stack sx={{ textAlign: "left", marginLeft: "8px" }}>
-                <Typography variant="overline">
+                {/* <Typography variant="overline">
                   Score:{gameDetails?.score}
-                </Typography>
-                <Typography variant="overline">
+                </Typography> */}
+                {/* <Typography variant="overline">
                   Graphics: {gameDetails.graphics}
                 </Typography>
                 <Typography variant="overline">
@@ -132,7 +131,7 @@ const Details = () => {
                 </Typography>
                 <Typography variant="overline">
                   Quality price: {gameDetails.qualityPrice}
-                </Typography>
+                </Typography> */}
               </Stack>
             </Card>         
           </Stack>
