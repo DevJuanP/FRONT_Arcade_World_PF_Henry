@@ -24,7 +24,7 @@ const Create = ({ handleSign }) => {
     data.image = image;
     dispatch(postRegister(data)).then((response) => {
       Swal.fire({
-        position: "top-center",
+        position: "center",
         icon: "success",
         title: "Welcome to arcade World",
         showConfirmButton: false,

@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useEffect, useState } from "react";
-import { Card, CardContent, Typography, Button, Box, Stack } from "@mui/material";
+import { CardContent, Typography, Button, Box, Stack } from "@mui/material";
 
 
 const Summary = () => {
