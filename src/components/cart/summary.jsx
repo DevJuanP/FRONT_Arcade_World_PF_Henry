@@ -1,70 +1,78 @@
+import { NavLink } from 'react-router-dom';
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  Button,
-  Grid,
-} from "@mui/material";
-// import RatingAndReview from "../RatingAndReview/RatingAndReview";
-import { deleteItemCart } from '../../redux/actions.js';
+import { Card, CardContent, Typography, Button, Box, Stack } from "@mui/material";
 
 
 const Summary = () => {
-  const dispatch = useDispatch();
-  const allGames = useSelector((state) => state.allGames);
-  const [selectedGames, setSelectedGames] = useState([]);
-  
-  useEffect(() => {
-    const gameIds = JSON.parse(localStorage.getItem("gameIds"));
-    const filteredGames = allGames?.filter((gm) =>
-      gameIds?.includes(gm.id)
-    );
-    setSelectedGames(filteredGames)
+  const games = JSON.parse(localStorage.getItem("allGames"));
+  const [products, setProducts] = useState([]);
 
-    return () => {
-      localStorage.removeItem("gameIds")
-    }
-  }, [allGames]);
+useEffect(() => {
+    const videogameIds = JSON.parse(localStorage.getItem("gameIds"));
+    const filteredGames = games.filter((gm) =>
+    videogameIds?.includes(gm.id));
 
-    
-  const handlerDelete = (id) => {
-    const filtrado = selectedGames.filter((el) => el.id !== id);
-     dispatch(deleteItemCart(filtrado));
-     localStorage.setItem("cart", JSON.stringify(filtrado));
-     setSelectedGames(filtrado);
-    
-  }
+    setProducts(filteredGames);
 
-  return (
-    <div>
-      <h3>Pago completado con éxito</h3>
-      <h4>Productos comprados:</h4>
-      <Grid container spacing={2}>
-        {selectedGames.map((gm) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={gm.id}>
-            <Card sx={{ maxWidth: 300, marginBottom: 2 }}>
-              < CardMedia
-                component="img"
-                height="200"
-                image={gm.image}
-                alt={gm.name}
-              />
-              <CardContent>
-                <Typography variant="h6" component="div">
-                  {gm.name}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>     
-      <Button variant="contained"  onClick={handlerDelete}>
-         Discover Products
-      </Button>
+    return () => {localStorage.removeItem("videogameIds")};
+    }, []);
        
+  return (
+    <div style={{ display: "flex",
+    flexDirection: "column", alignItems:'center' }}>
+      <h2 >Pago completado con éxito</h2>
+      <h3>Productos comprados:</h3>
+      <Box
+              sx={{
+                backgroundColor: "#fff",
+                height: "40vh",
+                width: "60vw",
+                borderRadius: "6px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems:'left',
+                marginTop:'18px',
+                gap: "10px",
+                boxShadow: "1px 1px 3px 1px black",
+                paddingLeft:"35px",
+                top: "0",
+              }}
+            >
+        {products.map((game) => (
+          <Stack sx={{display:'flex', alignItems:'center', alignContent:'center'}} key={game.id}>
+             <CardContent 
+               sx={{
+                width: "400px",
+                display: "flex",
+                alignItems: "left",
+                flexDirection: "column",
+                gap: "40px",
+              }}>
+                <Typography variant="h6" component="div">
+                   {game.name}: $ {game.price}
+                </Typography>
+             </CardContent>
+             </Stack>
+        ))}
+        <Stack style={{ display: "flex", alignItems:'center'}}>
+          <Typography variant="h6" component="div" >
+            Total: ${products.reduce((total, game) => total + game.price, 0)}
+          </Typography>
+        </Stack>
+      </Box> 
+      <Stack sx={{display:'flex', alignContent:'center', alignItems:'center'}}>
+        <div style={{ display: "flex",
+    flexDirection: "column", marginTop:'25px', marginBottom:'17px' }}>
+
+          <NavLink to='/store'>
+            <Button variant="contained" >
+              Discover Products
+            </Button>
+          </NavLink>
+        </div>
+      </Stack> 
+    
     </div>
   );
 };

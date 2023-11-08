@@ -12,9 +12,9 @@ function Cart() {
   const dispatch = useDispatch();
   const shoppingCart = useSelector((state) => state.shoppingCart);
   const gamesIds = !shoppingCart.length ? [] : shoppingCart.map((vg) => vg.id);
-  const UserId = useSelector((state) => state.userData);
+  // const UserId = useSelector((state) => state.userData.user.id);
   const priceTotal = shoppingCart.reduce((a, b) => a + b.price, 0);
-
+  
   const showAlert = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -32,7 +32,8 @@ function Cart() {
     });
   };
   const handleClearClick = () => {
-    dispatch(deleteItemCart(UserId));
+   
+    dispatch(deleteItemCart(gamesIds));
   };
 
   return (
