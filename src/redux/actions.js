@@ -32,6 +32,7 @@ export const getGames = ()=>{
   return async function(dispatch) {
   try {
    const dataGm = (await axios.get('http://localhost:3001/videogame')).data;
+   localStorage.setItem("allGames", JSON.stringify(dataGm));
    return dispatch({
       type: GET_GAMES, 
       payload: dataGm
