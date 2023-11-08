@@ -38,6 +38,8 @@ function Navbar() {
             navigate("/auth");
         }
       });
+    } else {
+      navigate("/cart");
     }}
   return (
     <AppBar position="" sx={{ background: "#263238" }} style={appbar}>
