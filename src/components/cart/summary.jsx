@@ -1,20 +1,38 @@
 import { NavLink } from 'react-router-dom';
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { CardContent, Typography, Button, Box, Stack } from "@mui/material";
+import { purchaseSuccess } from '../../redux/actions.js';
 
 
 const Summary = () => {
+  const UserId = useSelector( s => s.userData?.user?.id);
   const games = JSON.parse(localStorage.getItem("allGames"));
   const [products, setProducts] = useState([]);
-
-useEffect(() => {
-    const videogameIds = JSON.parse(localStorage.getItem("gameIds"));
-    const filteredGames = games.filter((gm) =>
-    videogameIds?.includes(gm.id));
-
-    setProducts(filteredGames);
-
-    return () => {localStorage.removeItem("videogameIds")};
+  const dispatch = useDispatch();
+  const priceTotal = products.reduce((total, game) => total + game.price, 0).toFixed(2);
+    
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const videogameIds = JSON.parse(localStorage.getItem("gameIds"));
+        const filteredGames = games.filter((gm) =>
+        videogameIds?.includes(gm.id));
+        const payload = {
+          UserId,
+          GamesIds: videogameIds, 
+          amount: priceTotal,
+        }
+        setProducts(filteredGames);
+        dispatch(purchaseSuccess(payload));
+    
+        return () => {localStorage.removeItem("gameIds"); localStorage.removeItem("login")};
+        
+      } catch (error) {
+        console.error('Error durante la compra:', error);
+      }
+  }
+  fetchData(); 
     }, []);
        
   return (
@@ -50,14 +68,14 @@ useEffect(() => {
                 gap: "40px",
               }}>
                 <Typography variant="h6" component="div">
-                   {game.name}: $ {game.price}
+                   {game.name}: $ {game.price.toFixed(2)}
                 </Typography>
              </CardContent>
              </Stack>
         ))}
         <Stack style={{ display: "flex", alignItems:'center'}}>
           <Typography variant="h6" component="div" >
-            Total: ${products.reduce((total, game) => total + game.price, 0)}
+            Total: ${priceTotal}
           </Typography>
         </Stack>
       </Box> 

@@ -12,8 +12,7 @@ function Cart() {
   const dispatch = useDispatch();
   const shoppingCart = useSelector((state) => state.shoppingCart);
   const gamesIds = !shoppingCart.length ? [] : shoppingCart.map((vg) => vg.id);
-  // const UserId = useSelector((state) => state.userData.user.id);
-  const priceTotal = shoppingCart.reduce((a, b) => a + b.price, 0);
+  const priceTotal = shoppingCart.reduce((a, b) => a + b.price, 0).toFixed(2);
   
   const showAlert = () => {
     Swal.fire({
@@ -208,7 +207,7 @@ function Cart() {
                 alignItems: "center",
               }}
             >
-              $ {priceTotal.toFixed(2)}
+              $ {priceTotal}
             </Typography>
           </Box>
         </CardContent>

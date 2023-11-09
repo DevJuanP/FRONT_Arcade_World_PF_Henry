@@ -6,14 +6,15 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 
 export default function Purchased() {
 
-  const UserId = useSelector( s => s.userData.user.id);
-  const shoppingCart = useSelector ( s => s.shoppingCart);
+  const UserId = useSelector( s => s.userData?.user?.id);
+  console.log(UserId);
+    const shoppingCart = useSelector ( s => s.shoppingCart);
  
   const handleOnclickcarrito = async () => {
     try {
       const videogameIds = shoppingCart.map((game) => game.id);
   
-      const response = await axios.post('http://localhost:3001/cart/purchased', {UserId , GamesIds: videogameIds})
+      const response = await axios.post('http://localhost:3001/cart/purchased', {UserId, GamesIds: videogameIds})
       const url = response.data.session_url
       window.location.href = url;
       localStorage.setItem("gameIds", JSON.stringify(videogameIds));

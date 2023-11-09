@@ -21,12 +21,11 @@ export const ADD_COMMENT = 'ADD_COMMENT';
 export const LOGOUT = 'LOGOUT';
 export const DELETE_ITEM_CART = 'DELETE_ITEM_CART';
 export const ADD_NEWS_PURCHASED = 'ADD_NEWS_PURCHASED';
-export const ADD_TO_CART = 'ADD_TO_CART'
-export const DELETE_ITEM = 'DELETE_ITEM'
-export const GET_USER='GET_USER'
-export const SET_SELECTED_PRICE = 'SET_SELECTED_PRICE'
-
-
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const DELETE_ITEM = 'DELETE_ITEM';
+export const GET_USER='GET_USER';
+export const SET_SELECTED_PRICE = 'SET_SELECTED_PRICE';
+export const PURCHASE_SUCCESS = 'PURCHASE_SUCCESS';
 
 export const getGames = ()=>{ 
   return async function(dispatch) {
@@ -224,10 +223,10 @@ export const logout = () => async dispatch => {
     console.error('Error al cerrar la sesión:', error);
   }
 };
-export const deleteItemCart = (UserId) => {
+export const deleteItemCart = (gamesIds) => {
   return {
     type: DELETE_ITEM_CART,
-    payload: UserId,
+    payload: gamesIds,
   };
 }
 
@@ -270,6 +269,20 @@ export function GetUser(){
       type:GET_USER,
       payload:data
     })
+   } catch (error) {
+    console.log(error.message)
+   }
+  }
+}
+export function purchaseSuccess(payload){
+  return async function(dispatch){
+   try {
+    const response = await axios.post('http://localhost:3001/cart/success', payload);
+        return dispatch({
+        type:PURCHASE_SUCCESS,
+        payload:response.data
+      });
+    
    } catch (error) {
     console.log(error.message)
    }
