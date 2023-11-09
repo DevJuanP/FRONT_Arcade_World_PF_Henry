@@ -18,11 +18,16 @@ export const useAuth = () => {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  const loginWithGoogle = () => {
+  const loginWithGoogle = async () => {
     const googleProvider = new GoogleAuthProvider();
-    return signInWithPopup(auth, googleProvider);
+    const result = await signInWithPopup(auth, googleProvider);
+
+    const user = result.user;
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken
+    console.log(token);
   };
- 
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
