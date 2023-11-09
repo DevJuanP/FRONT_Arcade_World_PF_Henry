@@ -18,34 +18,39 @@ export const useAuth = () => {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  const loginWithGoogle = () => {
+  const loginWithGoogle = async () => {
     const googleProvider = new GoogleAuthProvider();
-    return signInWithPopup(auth, googleProvider);
+    const result = await signInWithPopup(auth, googleProvider);
+
+    const user = result.user;
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken
+    console.log(token);
   };
- 
-  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    if (currentUser) {
-      // Actualizar el estado solo si el usuario cambia
-      setUser({
-        login: true,
-        user: {
-          image: currentUser.photoURL,
-          email: currentUser.email,
-          name: currentUser.displayName.split(' ')[0],
-          lastname: currentUser.displayName.split(' ')[1],
-          nickname: currentUser.displayName,
-          uid: currentUser.uid,
-        },
-      });
-    } else {
-      // Usuario no autenticado
-      setUser(null);
-      localStorage.removeItem("login");
-    }
-    // console.log(user);
-    localStorage.setItem('login', JSON.stringify(user)) 
-  });
+  
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        // Actualizar el estado solo si el usuario cambia
+        setUser({
+          // token: currentUser.accessToken,
+          login: true,
+          user: {
+            image: currentUser.photoURL,
+            email: currentUser.email,
+            name: currentUser.displayName.split(' ')[0],
+            lastname: currentUser.displayName.split(' ')[1],
+            nickname: currentUser.displayName,
+            uid: currentUser.uid,
+          },
+        });
+      } else {
+        // Usuario no autenticado
+        setUser(null);
+        localStorage.removeItem("login");
+      }
+      localStorage.setItem("login", JSON.stringify(user));
+    });
     return () => {
       unsubscribe();
     };

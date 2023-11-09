@@ -78,7 +78,7 @@ function Rating({ id, name, image, price }) {
                 "&:hover": {
                   backgroundColor: "rgba(53, 177, 139, 0.9)",
                 },
-                marginTop: name.length < 20 ? "32px" : "",
+                marginTop: name.length > 20 ? '-15px' : '15px',
               }}
               fullWidth
               variant="contained"

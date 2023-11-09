@@ -71,7 +71,7 @@ function MoreDownload({ id, name, image, price }) {
               '&:hover': {
                 backgroundColor: 'rgba(255, 36, 47, 0.7)',
               },          
-                marginTop: name.length < 20 ? "32px" : "" }}
+              marginTop: name.length > 20 ? '-15px' : '15px'}}
               fullWidth
               variant="contained"
               endIcon={<InfoOutlinedIcon />}
