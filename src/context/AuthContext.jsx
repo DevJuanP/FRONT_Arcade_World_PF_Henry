@@ -18,34 +18,49 @@ export const useAuth = () => {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  const loginWithGoogle = () => {
-    const googleProvider = new GoogleAuthProvider();
-    return signInWithPopup(auth, googleProvider);
-  };
- 
-  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    if (currentUser) {
-      // Actualizar el estado solo si el usuario cambia
-      setUser({
-        login: true,
-        user: {
-          image: currentUser.photoURL,
-          email: currentUser.email,
-          name: currentUser.displayName.split(' ')[0],
-          lastname: currentUser.displayName.split(' ')[1],
-          nickname: currentUser.displayName,
-          uid: currentUser.uid,
-        },
-      });
-    } else {
-      // Usuario no autenticado
-      setUser(null);
-      localStorage.removeItem("login");
-    }
-    // console.log(user);
-    localStorage.setItem('login', JSON.stringify(user)) 
-  });
+    const loginWithGoogle = async () => {
+      const googleProvider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, googleProvider);
+
+      const user = result.user;
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken
+      const headers = new Headers();
+      headers.append('Authorization', `Bearer ${token}`);
+      const response = await fetch('http://localhost:3001/user/firebase', { headers });
+      try{
+        const data = await response.json();
+        console.log('User data:', data)
+        setUser(data);
+      }
+      catch (err){
+        console.error(err);
+      };
+    };
+  
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        // Actualizar el estado solo si el usuario cambia
+        setUser({
+          // token: currentUser.accessToken,
+          login: true,
+          user: {
+            image: currentUser.photoURL,
+            email: currentUser.email,
+            name: currentUser.displayName.split(' ')[0],
+            lastname: currentUser.displayName.split(' ')[1],
+            nickname: currentUser.displayName,
+            uid: currentUser.uid,
+          },
+        });
+      } else {
+        // Usuario no autenticado
+        setUser(null);
+        localStorage.removeItem("login");
+      }
+      localStorage.setItem("login", JSON.stringify(user));
+    });
     return () => {
       unsubscribe();
     };

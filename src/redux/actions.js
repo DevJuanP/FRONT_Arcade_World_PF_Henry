@@ -203,10 +203,26 @@ export function postLogin(payload){
     return data
   }
 }
+// export function setUserData(userData) {
+//   return {
+//     type: SET_USER_DATA,
+//     payload: userData,
+//   };
+// }
 export function setUserData(userData) {
-  return {
-    type: SET_USER_DATA,
-    payload: userData,
+  return (dispatch, getState) => {
+    // Actualiza userData
+    dispatch({
+      type: SET_USER_DATA,
+      payload: userData,
+    });
+
+    // Si userData tiene favoritos, los agrega al estado global
+    if (userData && userData.user && userData.user.favorites) {
+      userData.user.favorites.forEach(game => {
+        dispatch(addToFavorites(game));
+      });
+    }
   };
 }
 export function setAuthenticated(isAuthenticated) {
