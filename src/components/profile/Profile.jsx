@@ -194,7 +194,7 @@ const Profile = () => {
         </Grid>
         <Grid item xs={6}>
           <Grid container>
-            <Typography variant="h2">Your Games</Typography>
+            <Typography textAlign='center' variant="h2">Your Games</Typography>
             <Grid item>
               <Stack
                 display="flex"

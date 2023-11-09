@@ -25,6 +25,7 @@ export const ADD_TO_CART = 'ADD_TO_CART'
 export const DELETE_ITEM = 'DELETE_ITEM'
 export const GET_USER='GET_USER'
 export const SET_SELECTED_PRICE = 'SET_SELECTED_PRICE'
+export const GET_COUNTRY = 'GET_COUNTRY'
 
 
 
@@ -99,6 +100,20 @@ export const gameGenres = ()=> {
       console.log(error.message)
     }
   }
+};
+export const getCountry = ()=>{ 
+  return async function(dispatch) {
+  try {
+   const country = (await axios.get('https://restcountries.com/v3.1/all')).data;
+   return dispatch({
+      type: GET_COUNTRY, 
+      payload: country
+    });
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 };
 export const setSelectedGenre = (genre) => {
   return {
