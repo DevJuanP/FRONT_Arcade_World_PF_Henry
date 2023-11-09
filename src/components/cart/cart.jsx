@@ -53,6 +53,7 @@ function Cart() {
         sx={{
           paddingTop: "30px",
           paddingBottom: "30px",
+          marginLeft:'20px',
           display: "grid",
           gridTemplateColumns: shoppingCart.length < 2 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
           alignItems: "center",
@@ -124,7 +125,7 @@ function Cart() {
       <Box
         sx={{
           marginTop: "12px",
-          marginRight:'20px',
+          marginRight:'30px',
           backgroundColor: "#fff",
           height: "150px",
           width: "360px",
@@ -132,7 +133,10 @@ function Cart() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-around",
-          padding: "50px",
+          paddingTop:'50px',
+          paddingLeft:'20px',
+          paddingBottom:'50px',
+          paddingRight:'20px',
           gap: "20px",
           boxShadow: "1px 1px 3px 1px black",
           position: "sticky",

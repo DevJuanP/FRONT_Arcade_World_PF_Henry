@@ -12,7 +12,7 @@ export default function AuthLogin() {
     setSignIn((elemento) => !elemento)
   }
   return (
-    <Stack style={{display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column', height:'132vh'}}>
+    <Stack style={{display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column', minHeight:'142vh'}}>
       {
         signIn === true ? (<Login/>) : (<Create handleSign={handleSign}/>)
       }

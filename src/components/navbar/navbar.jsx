@@ -13,6 +13,7 @@ import { Box } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import IconButton from '@mui/material/IconButton';
 
 function Navbar() {
   let userLocal = localStorage.getItem("login");
@@ -93,7 +94,7 @@ function Navbar() {
             {location.pathname !== "/auth" && (
               <>
                 <div style={{ position: 'relative' }}>
-                 <ShoppingCartIcon sx={{ color: "#f1f1f1" }} onClick={handleOnclickCart} />
+                 <IconButton  onClick={handleOnclickCart}><ShoppingCartIcon sx={{ color: "#f1f1f1" }}/></IconButton>
                   {cartItemCount > 0 && (
                       <div style={{ position: 'absolute', top: -12, right: 20, background: '#c0c0c0', 
                       borderRadius: '50%', padding: '8px', color: 'black',width:'6px', height:'6px', margin:'2px', display: 'flex', alignItems: 'center',fontSize:'13.5px' }}>
@@ -103,7 +104,7 @@ function Navbar() {
                  </div>
                 {userLog && (
                   <Link to="/user/profile">
-                    <Avatar alt="Remy Sharp" src={userLocal?.user?.image} />
+                    <Avatar alt="Remy Sharp" src={userLocal?.user?.photo} />
                   </Link>
                 )}
                 {location.pathname !== "/user/profile" && !userLocal?.login && (
