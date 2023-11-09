@@ -25,21 +25,20 @@ const Summary = () => {
         }
         setProducts(filteredGames);
         dispatch(purchaseSuccess(payload));
-    
-        return () => {localStorage.removeItem("gameIds"); localStorage.removeItem("login")};
-        
+            
       } catch (error) {
-        console.error('Error durante la compra:', error);
-      }
-  }
-  fetchData(); 
+        console.error(error);
+        }
+        return () => {localStorage.removeItem("gameIds")};
+    }
+    fetchData(); 
     }, []);
        
   return (
     <div style={{ display: "flex",
     flexDirection: "column", alignItems:'center' }}>
-      <h2 >Pago completado con éxito</h2>
-      <h3>Productos comprados:</h3>
+      <h2 >Payment successfully completed</h2>
+      <h3>Products purchased:</h3>
       <Box
               sx={{
                 backgroundColor: "#fff",
@@ -68,7 +67,7 @@ const Summary = () => {
                 gap: "40px",
               }}>
                 <Typography variant="h6" component="div">
-                   {game.name}: $ {game.price.toFixed(2)}
+                   {game.name}: ${game.price.toFixed(2)}
                 </Typography>
              </CardContent>
              </Stack>
@@ -85,7 +84,7 @@ const Summary = () => {
 
           <NavLink to='/store'>
             <Button variant="contained" >
-              Discover Products
+            Continue shopping
             </Button>
           </NavLink>
         </div>
