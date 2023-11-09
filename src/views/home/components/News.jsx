@@ -36,8 +36,8 @@ function News({ id, name, image, price }) {
   const cardStyle = {
     cursor: "pointer",
     flexwrap: "wrap",
-    width: "15em",
-    maxheight: "16em", // Establece una altura fija para las tarjetas
+    width: "250px",
+    maxheight: "256px", // Establece una altura fija para las tarjetas
     overflow: "hidden",
     backgroundColor: "#fff",
     color: "black",
@@ -66,7 +66,7 @@ function News({ id, name, image, price }) {
             {price}
           </Typography> */}
           <Link to={`/detail/${id}`}>
-            <Button sx={{marginTop: name.length < 20 ? '32px' : ''}} fullWidth variant="contained" endIcon={<InfoOutlinedIcon />}>
+            <Button sx={{marginTop: name.length > 20 ? '-15px' : '15px'}} fullWidth variant="contained" endIcon={<InfoOutlinedIcon />}>
               Detail
             </Button>
           </Link>

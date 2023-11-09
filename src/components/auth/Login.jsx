@@ -162,7 +162,7 @@ const Login = () => {
                 },
                 minLength: {
                   value: 6,
-                  message: "Password must be at least 8 characters",
+                  message: "Password must be at least 6 characters",
                 },
               })}
             />
