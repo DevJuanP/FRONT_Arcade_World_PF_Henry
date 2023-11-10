@@ -43,6 +43,7 @@ const Profile = () => {
   let userLocal = localStorage.getItem("login");
   userLocal = userLocal ? JSON.parse(userLocal) : null;
   let nPurchased = userLocal?.user?.purchased;
+  console.log(userLocal)
 
   useEffect(() => {
     if ((userLocal && !userLocal.login) || userLocal === null) {

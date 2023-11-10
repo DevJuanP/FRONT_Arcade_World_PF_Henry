@@ -9,7 +9,9 @@ import { Link } from "react-router-dom";
 import BotonsCart from "./botonsCart.jsx";
 import PropTypes from "prop-types";
 
+
 const CartCard = ({ element }) => {
+
   return (
     <Grid container spacing={3}>
       <Grid items xs>

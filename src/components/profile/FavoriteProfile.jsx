@@ -17,6 +17,7 @@ import IconButton from "@mui/material/IconButton";
 import { useDispatch } from "react-redux";
 
 const FavoriteProfile = ({favorites}) => {
+  console.log(favorites)
   return (
             <Grid container columnSpacing={3} rowSpacing={3}>
               {favorites?.map((favorite) => (
