@@ -4,7 +4,7 @@ import { GET_GAMES, GET_GAME_NAME, GET_GAME_ID,
          FILTER_GAMES, RESET_GENRE_FILTER, RESET_PLATFORM_FILTER,
          SORT_GAMES_ASC, SORT_GAMES_DESC, FILTER_GAMES_BY_PRICE, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES,
          ADD_COMMENT, DELETE_ITEM_CART, ADD_NEWS_PURCHASED, ADD_TO_CART, DELETE_ITEM,
-         LOGOUT, GET_USER, SET_SELECTED_PRICE,TOP_FIVE } from './actions.js';
+         LOGOUT, GET_USER, SET_SELECTED_PRICE, PURCHASE_SUCCESS,TOP_FIVE } from './actions.js';
                         
 const initialState = {
   games:[],
@@ -13,6 +13,8 @@ const initialState = {
   gameFilter: [],
   platforms:[],
   genres:[],
+  countries:[],
+  selectedCountry:"",
   selectedGenre: "",
   selectedPlatform: "",
   sortDirection: 'asc',
@@ -25,7 +27,9 @@ const initialState = {
   shoppingCart: [],
   user:[],
   UserTop:[],
-  selectedPrice: ""
+  selectedPrice: "",
+  cartItemCount: 0,
+  purchasedVideogames: []
   }  
  
  const rootReducer = (state=initialState, action)=> {
@@ -58,6 +62,16 @@ const initialState = {
       ...state,
       genres: action.payload
         };
+    case GET_GAME_NAME:
+      return {
+      ...state,
+      countries: action.payload
+      };
+    case SET_SELECTED_GENRE:
+      return {
+      ...state,
+      selectedCountry: action.payload,
+      };
     case SET_SELECTED_GENRE:
       return {
       ...state,
@@ -159,7 +173,8 @@ const initialState = {
       
       return {
         ...state,
-        shoppingCart:[]
+        shoppingCart:[],
+        cartItemCount: 0,
       };
     case ADD_NEWS_PURCHASED:
       return{
@@ -173,20 +188,27 @@ const initialState = {
          
        return {
         ...state,
-        shoppingCart: [...state.shoppingCart, action.payload]
+        shoppingCart: [...state.shoppingCart, action.payload],
+        cartItemCount: state.cartItemCount +1,
       }
                 
     case DELETE_ITEM:
       filtrado = state.shoppingCart.filter((el) => el.id !== action.payload);
       return{
         ...state,
-        shoppingCart: filtrado
+        shoppingCart: filtrado,
+        cartItemCount: state.cartItemCount -1,
       }
       case GET_USER:
         return{
           ...state,
           user:action.payload,
           UserTop:action.payload
+        } 
+      case PURCHASE_SUCCESS:
+        return{
+          ...state,
+          purchasedVideogames:[...state.purchasedVideogames, action.payload]
         } 
         case TOP_FIVE:
           const userCopy=[...state.UserTop]

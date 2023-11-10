@@ -33,7 +33,7 @@ const Login = () => {
     dispatch(postLogin(data)).then((response) => {
       if (response.data.login === false) {
         Swal.fire({
-          position: "top-center",
+          position: "center",
           icon: "error",
           title: "Sorry you don't have account",
           showConfirmButton: false,
@@ -162,7 +162,7 @@ const Login = () => {
                 },
                 minLength: {
                   value: 6,
-                  message: "Password must be at least 8 characters",
+                  message: "Password must be at least 6 characters",
                 },
               })}
             />

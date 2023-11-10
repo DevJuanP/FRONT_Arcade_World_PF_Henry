@@ -12,9 +12,8 @@ function Cart() {
   const dispatch = useDispatch();
   const shoppingCart = useSelector((state) => state.shoppingCart);
   const gamesIds = !shoppingCart.length ? [] : shoppingCart.map((vg) => vg.id);
-  const UserId = useSelector((state) => state.userData);
-  const priceTotal = shoppingCart.reduce((a, b) => a + b.price, 0);
-
+  const priceTotal = shoppingCart.reduce((a, b) => a + b.price, 0).toFixed(2);
+  
   const showAlert = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -32,7 +31,8 @@ function Cart() {
     });
   };
   const handleClearClick = () => {
-    dispatch(deleteItemCart(UserId));
+   
+    dispatch(deleteItemCart(gamesIds));
   };
 
   return (
@@ -52,6 +52,7 @@ function Cart() {
         sx={{
           paddingTop: "30px",
           paddingBottom: "30px",
+          marginLeft:'20px',
           display: "grid",
           gridTemplateColumns: shoppingCart.length < 2 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
           alignItems: "center",
@@ -123,7 +124,7 @@ function Cart() {
       <Box
         sx={{
           marginTop: "12px",
-          marginRight:'20px',
+          marginRight:'30px',
           backgroundColor: "#fff",
           height: "150px",
           width: "360px",
@@ -131,7 +132,10 @@ function Cart() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-around",
-          padding: "50px",
+          paddingTop:'50px',
+          paddingLeft:'20px',
+          paddingBottom:'50px',
+          paddingRight:'20px',
           gap: "20px",
           boxShadow: "1px 1px 3px 1px black",
           position: "sticky",
@@ -207,7 +211,7 @@ function Cart() {
                 alignItems: "center",
               }}
             >
-              $ {priceTotal.toFixed(2)}
+              $ {priceTotal}
             </Typography>
           </Box>
         </CardContent>

@@ -1,34 +1,38 @@
 import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { Stack, Grid, Avatar, Box } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Stack, Grid, Avatar, Box, CardContent } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CreateIcon from "@mui/icons-material/Create";
 import { styled } from "@mui/material/styles";
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
-import { useDispatch } from 'react-redux';
-import { deleteItem, removeFromFavorites, deleteItemCart } from '../../redux/actions'
+import { useDispatch } from "react-redux";
+import {
+  deleteItem,
+  removeFromFavorites,
+  deleteItemCart,
+} from "../../redux/actions";
+import GamesProfile from "./GamesProfile";
+import FavoriteProfile from "./FavoriteProfile";
 
 const Profile = () => {
+  const [rederFav, setRenderFav] = useState(false);
+  const [renderBuy, setRenderBuy] = useState(true);
+
+  const handleChangeRender = () => {
+    setRenderFav((elemento) => !elemento);
+    setRenderBuy((elemento) => !elemento);
+  };
   const dispatch = useDispatch();
 
   const removeFav = (id) => {
     dispatch(removeFromFavorites(id));
-  }
+  };
   const removeItemCart = (id) => {
     dispatch(deleteItem(id));
-  }
+  };
   //llamada a favoritos
   const favorites = useSelector((state) => state.favorites);
   const shoppingCart = useSelector((state) => state.shoppingCart);
@@ -38,7 +42,8 @@ const Profile = () => {
   //parte del login
   let userLocal = localStorage.getItem("login");
   userLocal = userLocal ? JSON.parse(userLocal) : null;
-  console.log(userLocal);
+  let nPurchased = userLocal?.user?.purchased;
+  console.log(userLocal)
 
   useEffect(() => {
     if ((userLocal && !userLocal.login) || userLocal === null) {
@@ -52,7 +57,7 @@ const Profile = () => {
       console.log(userLocal);
       // localStorage.setItem('login', JSON.stringify(userLocal));
       localStorage.removeItem("login");
-      dispatch(deleteItemCart(shoppingCart))
+      dispatch(deleteItemCart(shoppingCart));
       navigate("/");
       userLocal = "";
     }
@@ -88,12 +93,21 @@ const Profile = () => {
     width: 1,
   });
   return (
-    <Box sx={{ flexGrow: 1, minHeight: "100vh" }}>
+    <Box sx={{ minHeight: "100vh" }}>
       <Grid container spacing={3}>
-        <Grid item xs >
+        <Grid item xs={12} md={6} lg={3}>
           <Card sx={{ width: "100%" }}>
             <Stack direction="column" alignItems="center">
-              <Stack marginLeft="299px" marginTop="5px" marginBottom="-20px">
+              <Stack marginRight="290px" marginBottom="-20px">
+                <Button
+                  size="large"
+                  sx={{ color: "#000" }}
+                  onClick={handleLogout}
+                >
+                  <LogoutIcon />
+                </Button>
+              </Stack>
+              <Stack marginLeft="299px" marginTop="-15px" marginBottom="-20px">
                 <Button
                   sx={{ backgroundColor: "transparent", color: "#000" }}
                   component="label"
@@ -106,7 +120,7 @@ const Profile = () => {
               </Stack>
               <Avatar
                 sx={{ width: 300, height: 300, marginTop: "4px" }}
-                src={userLocal?.user?.image}
+                src={userLocal?.user?.photo}
                 alt="Profile image"
               />
               <Typography variant="h5" component="div">
@@ -123,125 +137,40 @@ const Profile = () => {
               </Typography>
             </Stack>
           </Card>
-          <Stack marginTop="20px">
-            <Card>
-              <Accordion sx={{marginBottom: 'auto'}}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography variant="h5" component="div">
-                    <Link to='/cart'>
-                    <ShoppingCartIcon sx={{color:'#000'}}/>
-                    <Typography color='#000' variant="h5">Your Cart</Typography> 
-                    </Link>
-                  </Typography>
-                </AccordionSummary>
-                {shoppingCart.map((shopping) => (
-                <Stack display='flex' alignItems='center' justifyContent='center' >
-                <AccordionDetails key={shopping.id}>
-                  <Stack display='flex' alignItems='end'>
-                    <IconButton onClick={() => removeItemCart(shopping.id)}><CloseIcon/></IconButton>
-                  </Stack>
-                  <Avatar
-                    sx={{ width: 150, height: 150 }}
-                    src={shopping.image}
-                    alt="Profile image"
-                    />
-                  <Typography sx={{textAlign:'center', wordWrap: 'break-word'}} >{shopping.name}</Typography>
-                  <Typography sx={{textAlign:'center'}} >${shopping.price}</Typography>
-                </AccordionDetails>
-                </Stack>
-              ))}
-              </Accordion>
-            </Card>
-          </Stack>
-          <Stack marginTop='20px'>
-          <Card>
-            <Accordion sx={{marginBottom: 'auto'}}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                >
-                <Typography variant="h5" component="div">
-                  <FavoriteIcon color="error" />
-                  Favorites
-                </Typography>
-              </AccordionSummary>
-              {favorites.map((favorite) => (
-                <Stack display='flex' alignItems='center' >
-                <AccordionDetails key={favorite.id}>
-                  <Stack display='flex' alignItems='end'>
-                    <IconButton onClick={() => removeFav(favorite.id)}><CloseIcon/></IconButton>
-                  </Stack>
-                  <Avatar
-                    sx={{ width: 150, height: 150 }}
-                    src={favorite.image}
-                    alt="Profile image"
-                    />
-                  <Typography sx={{textAlign:'center', wordWrap: 'break-word'}} >{favorite.name}</Typography>
-                </AccordionDetails>
-                </Stack>
-              ))}
-            </Accordion>
-          </Card>
-            <Button size="large" sx={{ color: "#000" }} onClick={handleLogout}>
-              <LogoutIcon />
-            </Button>
-              </Stack>
         </Grid>
-        <Grid item xs={6}>
-          <Grid container>
-            <Typography variant="h2">Your Games</Typography>
-            <Grid item>
-              <Stack
-                display="flex"
-                flexDirection="row"
-                justifyContent="space-evenly"
+        <Grid item xs={8} gridTemplateColumns='repeat(3, 1fr)' sx={{marginTop:'50px', marginLeft:'70px'}}>
+        <Grid container columnSpacing={3} rowSpacing={3}>
+        {renderBuy === true ? (
+            <Stack >
+              <Button
+              sx={{marginBottom:'20px'}}
+                color="primary"
+                variant="contained"
+                onClick={handleChangeRender}
               >
-                <Card sx={{ height: 500, width: 450 }}>
-                  <div>
-                    <CardMedia
-                      sx={{ height: 350 }}
-                      image="https://m.media-amazon.com/images/I/81KUccM8azL._AC_UF1000,1000_QL80_.jpg"
-                      title="Nombre del juego"
-                    />
-                    <Typography variant="h6">Super Smash Bros Brawl</Typography>
-                    <Typography variant="subtitle2">Plataforms:</Typography>
-                    <Typography variant="overline">
-                      Wii, Wii U, Nintendo Switch
-                    </Typography>
-                    <Typography variant="subtitle2">Genres:</Typography>
-                    <Typography variant="overline">
-                      Action, Adventure, Multiplayer
-                    </Typography>
-                  </div>
-                </Card>
-                <Card sx={{ height: 500, width: 450 }}>
-                  <div>
-                    <CardMedia
-                      sx={{ height: 350 }}
-                      image="https://m.media-amazon.com/images/I/81KUccM8azL._AC_UF1000,1000_QL80_.jpg"
-                      title="nombre del juego"
-                    />
-                    <Typography variant="h6">Super Smash Bros Brawl</Typography>
-                    <Typography variant="subtitle2">Plataforms:</Typography>
-                    <Typography variant="overline">
-                      Wii, Wii U, Nintendo Switch
-                    </Typography>
-                    <Typography variant="subtitle2">Genres:</Typography>
-                    <Typography variant="overline">
-                      Action, Adventure, Multiplayer
-                    </Typography>
-                  </div>
-                </Card>
-              </Stack>
-            </Grid>
-          </Grid>
+                Your games
+              </Button>
+            </Stack>
+          ) : (
+            <Stack>
+              <Button
+              sx={{marginBottom:'20px'}}
+                color="primary"
+                variant="contained"
+                onClick={handleChangeRender}
+              >
+                Your favorites
+              </Button>
+            </Stack>
+          )}
+          {renderBuy === true ? (
+            <FavoriteProfile favorites={favorites} />
+          ) : (
+            <GamesProfile nPurchased={nPurchased} />
+          )}
+         
         </Grid>
-        <Grid item xs></Grid>
+        </Grid>
       </Grid>
     </Box>
   );

@@ -9,8 +9,9 @@ import { addToCart } from '../../redux/actions.js';
 
  const Pay = ()=> {
   const shoppingCart = useSelector((state) => state.shoppingCart);
-    const gameDetails = useSelector((state) => state.gameId);
-    const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const gameDetails = useSelector((state) => state.gameId);
+  let userLocalBuy = localStorage.getItem("login");
+  userLocalBuy = userLocalBuy ? JSON.parse(userLocalBuy) : null;
    
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ import { addToCart } from '../../redux/actions.js';
       timer: 1200,
       timerProgressBar: true,
       showConfirmButton: false,
-      position: "top",
+      position: "center",
     });
   };
   const showAlert2 = () => {
@@ -35,18 +36,18 @@ import { addToCart } from '../../redux/actions.js';
       timer: 2000,
       timerProgressBar: true,
       showConfirmButton: false,
-      position: "top",
+      position: "center",
     });
   };
 
   const handleClick = () => {
-  if (isAuthenticated) {
+  if (userLocalBuy === null || userLocalBuy === "") {
     Swal.fire({
       toast: true,
       icon: "info",
       title: "You must be logged in to continue with the purchase",
       showConfirmButton: true,
-      position: "top-center",
+      position: "center",
       confirmButtonText: "Login",
     }).then((willRedirect) => {
       if (willRedirect) {

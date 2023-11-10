@@ -24,7 +24,7 @@ const Create = ({ handleSign }) => {
     data.image = image;
     dispatch(postRegister(data)).then((response) => {
       Swal.fire({
-        position: "top-center",
+        position: "center",
         icon: "success",
         title: "Welcome to arcade World",
         showConfirmButton: false,
@@ -44,7 +44,7 @@ const Create = ({ handleSign }) => {
     }
   };
   return (
-    <Card sx={{ height: "125vh", width: "400px" }}>
+    <Card sx={{ height: "135vh", width: "400px" }}>
       <Stack
         sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
       >
@@ -195,8 +195,8 @@ const Create = ({ handleSign }) => {
                 message: "Password is required",
               },
               minLength: {
-                value: 8,
-                message: "Password must be at least 8 characters",
+                value: 6,
+                message: "Password must be at least 6 characters",
               },
             })}
           />
@@ -219,8 +219,8 @@ const Create = ({ handleSign }) => {
                   message: "Confirm password is required",
                 },
                 minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
+                  value: 6,
+                  message: "Password must be at least 6 characters",
                 },
                 validate: (value) =>
                   value === watch("password") || "Passwords don't match",

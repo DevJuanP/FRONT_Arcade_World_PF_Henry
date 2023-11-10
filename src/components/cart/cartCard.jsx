@@ -3,15 +3,15 @@ import {
   Typography,
   Card,
   CardMedia,
-  Stack,
   Grid,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import style from "./cart.module.css";
 import BotonsCart from "./botonsCart.jsx";
 import PropTypes from "prop-types";
 
+
 const CartCard = ({ element }) => {
+
   return (
     <Grid container spacing={3}>
       <Grid items xs>
@@ -39,7 +39,7 @@ const CartCard = ({ element }) => {
             borderRadius: "6px",
           }}
         />
-        <Link className={style.link} to={`/detail/${element.id}`}>
+        <Link style={{color:'#000'}} to={`/detail/${element.id}`}>
           <CardContent
             sx={{
               height: 20,
