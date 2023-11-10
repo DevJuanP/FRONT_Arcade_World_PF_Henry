@@ -6,12 +6,12 @@ import { getAuth } from 'firebase/auth'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBVgcV6OFR9_TvwG9TLSLk4bGV1c5qhPfs",
-  authDomain: "arcade-world-pf.firebaseapp.com",
-  projectId: "arcade-world-pf",
-  storageBucket: "arcade-world-pf.appspot.com",
-  messagingSenderId: "48412907522",
-  appId: "1:48412907522:web:2478713f06d3eac163ef1b"
+  apiKey: "AIzaSyB5ZBQWFaCR-iphsrH8plv2gLcRsgIel7U",
+  authDomain: "arcadeworld-507c9.firebaseapp.com",
+  projectId: "arcadeworld-507c9",
+  storageBucket: "arcadeworld-507c9.appspot.com",
+  messagingSenderId: "985581103169",
+  appId: "1:985581103169:web:0a6760d19b4af8a2f7fec0"
 };
 
 // Initialize Firebase
