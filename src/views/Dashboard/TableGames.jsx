@@ -6,9 +6,9 @@ import { DataGridPro } from '@mui/x-data-grid-pro';
 
 function TableGames() {
  const games=useSelector((g)=>g.games)
-
+ console.log(games)
  const rows = games.map((G)=>{
-  console.log(G)
+  
     return{
         id:G.id,
         Name:G.name,

@@ -5,7 +5,7 @@ import { Box,Typography,Button} from '@mui/material';
 
 function TableUser() {
   const user=useSelector((U)=>U.user)
-
+  
   const rows = user.map((u)=>{
     return{
       id:u.id,

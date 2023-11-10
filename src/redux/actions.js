@@ -24,6 +24,7 @@ export const ADD_NEWS_PURCHASED = 'ADD_NEWS_PURCHASED';
 export const ADD_TO_CART = 'ADD_TO_CART'
 export const DELETE_ITEM = 'DELETE_ITEM'
 export const GET_USER='GET_USER'
+export const TOP_FIVE='TOP_FIVE'
 export const SET_SELECTED_PRICE = 'SET_SELECTED_PRICE'
 
 
