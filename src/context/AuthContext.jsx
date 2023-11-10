@@ -18,15 +18,25 @@ export const useAuth = () => {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  const loginWithGoogle = async () => {
-    const googleProvider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, googleProvider);
+    const loginWithGoogle = async () => {
+      const googleProvider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, googleProvider);
 
-    const user = result.user;
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken
-    console.log(token);
-  };
+      const user = result.user;
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken
+      const headers = new Headers();
+      headers.append('Authorization', `Bearer ${token}`);
+      const response = await fetch('http://localhost:3001/user/firebase', { headers });
+      try{
+        const data = await response.json();
+        console.log('User data:', data)
+        setUser(data);
+      }
+      catch (err){
+        console.error(err);
+      };
+    };
   
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {

@@ -6,7 +6,7 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 
 export default function Purchased() {
 
-  const UserId = useSelector( s => s.userData?.user?.id);
+  const UserId = useSelector( s => s.userData?.user.id);
   const shoppingCart = useSelector ( s => s.shoppingCart);
  
   const handleOnclickcarrito = async () => {

@@ -13,6 +13,8 @@ const initialState = {
   gameFilter: [],
   platforms:[],
   genres:[],
+  countries:[],
+  selectedCountry:"",
   selectedGenre: "",
   selectedPlatform: "",
   sortDirection: 'asc',
@@ -58,6 +60,16 @@ const initialState = {
       ...state,
       genres: action.payload
         };
+    case GET_GAME_NAME:
+      return {
+      ...state,
+      countries: action.payload
+      };
+    case SET_SELECTED_GENRE:
+      return {
+      ...state,
+      selectedCountry: action.payload,
+      };
     case SET_SELECTED_GENRE:
       return {
       ...state,
