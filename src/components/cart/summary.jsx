@@ -12,9 +12,6 @@ import {
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 
-
-
-
 const Summary = () => {
   const games = JSON.parse(localStorage.getItem("allGames"));
   const [products, setProducts] = useState([]);
@@ -127,5 +124,4 @@ const Summary = () => {
     </div>
   );
 };
-
 export default Summary;

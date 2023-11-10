@@ -33,7 +33,7 @@ const Login = () => {
     dispatch(postLogin(data)).then((response) => {
       if (response.data.login === false) {
         Swal.fire({
-          position: "top-center",
+          position: "center",
           icon: "error",
           title: "Sorry you don't have account",
           showConfirmButton: false,
