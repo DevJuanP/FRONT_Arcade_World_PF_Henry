@@ -27,8 +27,10 @@ export const GET_USER='GET_USER';
 export const SET_SELECTED_PRICE = 'SET_SELECTED_PRICE';
 export const PURCHASE_SUCCESS = 'PURCHASE_SUCCESS';
 export const GET_COUNTRY = 'GET_COUNTRY'
-
-const BD_URL = 'http://localhost:3001'
+const { VITE_IS_LOCAL } =import.meta.env
+const URL_DEPLOY = 'https://back-arcade-world-pf-henry.onrender.com';
+const urlLocal = 'http://localhost:3001';
+const BD_URL =  VITE_IS_LOCAL === 'true' ? urlLocal : URL_DEPLOY
 
 export const getGames = ()=>{ 
   return async function(dispatch) {
@@ -211,7 +213,7 @@ export function postLogin(payload){
 //   };
 // }
 export function setUserData(userData) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     // Actualiza userData
     dispatch({
       type: SET_USER_DATA,
@@ -247,7 +249,7 @@ export const addComments = (gameComment) => ({
 });
 export const logout = () => async dispatch => {
   try {
-    const response = await axios.put('/user/logout');
+    const response = await axios.put(`${BD_URL}/user/logout`);
     dispatch({
       type: LOGOUT
     });
