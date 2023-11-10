@@ -25,6 +25,7 @@ export const ADD_TO_CART = 'ADD_TO_CART'
 export const DELETE_ITEM = 'DELETE_ITEM'
 export const GET_USER='GET_USER'
 export const SET_SELECTED_PRICE = 'SET_SELECTED_PRICE'
+export const GET_COUNTRY = 'GET_COUNTRY'
 
 
 
@@ -99,6 +100,20 @@ export const gameGenres = ()=> {
       console.log(error.message)
     }
   }
+};
+export const getCountry = ()=>{ 
+  return async function(dispatch) {
+  try {
+   const country = (await axios.get('https://restcountries.com/v3.1/all')).data;
+   return dispatch({
+      type: GET_COUNTRY, 
+      payload: country
+    });
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 };
 export const setSelectedGenre = (genre) => {
   return {
@@ -188,10 +203,26 @@ export function postLogin(payload){
     return data
   }
 }
+// export function setUserData(userData) {
+//   return {
+//     type: SET_USER_DATA,
+//     payload: userData,
+//   };
+// }
 export function setUserData(userData) {
-  return {
-    type: SET_USER_DATA,
-    payload: userData,
+  return (dispatch, getState) => {
+    // Actualiza userData
+    dispatch({
+      type: SET_USER_DATA,
+      payload: userData,
+    });
+
+    // Si userData tiene favoritos, los agrega al estado global
+    if (userData && userData.user && userData.user.favorites) {
+      userData.user.favorites.forEach(game => {
+        dispatch(addToFavorites(game));
+      });
+    }
   };
 }
 export function setAuthenticated(isAuthenticated) {

@@ -2,10 +2,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 import {
   GoogleAuthProvider,
   signInWithPopup,
-  onAuthStateChanged
+  onAuthStateChanged,
   // sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase/config";
+import axios from "axios";
 
 const authContext = createContext();
 
@@ -16,46 +17,29 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [userF, setUserF] = useState("");
+  const googleProvider = new GoogleAuthProvider();
 
   const loginWithGoogle = async () => {
-    const googleProvider = new GoogleAuthProvider();
+    try {
     const result = await signInWithPopup(auth, googleProvider);
-
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    if(credential){
-      onAuthStateChanged(auth, user => console.log(user.accessToken))
-    }
-  };
-  
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        // Actualizar el estado solo si el usuario cambia
-        setUser({
-          // token: currentUser.accessToken,
-          login: true,
-          user: {
-            image: currentUser.photoURL,
-            email: currentUser.email,
-            name: currentUser.displayName.split(' ')[0],
-            lastname: currentUser.displayName.split(' ')[1],
-            nickname: currentUser.displayName,
-            uid: currentUser.uid,
-          },
-        });
-      } else {
-        // Usuario no autenticado
-        setUser(null);
-        localStorage.removeItem("login");
+    if (credential) {
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            const token = user.accessToken;
+              const response = await axios.post('http://localhost:3001/user/firebase', {
+                token: token
+              });
+              setUserF(response.data);
+            }
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
-      localStorage.setItem("login", JSON.stringify(user));
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
+  };
+  localStorage.setItem("login", JSON.stringify(userF));
   return (
     <authContext.Provider
       value={{

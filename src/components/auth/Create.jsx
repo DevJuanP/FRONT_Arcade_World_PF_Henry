@@ -51,7 +51,7 @@ const Create = ({ handleSign }) => {
         <Stack marginTop="20px" marginBottom="20px">
           <Typography variant="h5">Welcome to Arcade World</Typography>
         </Stack>
-        <Stack>
+        {/* <Stack>
           <Button
             variant="contained"
             sx={{ backgroundColor: "#fff", color: "#000", width: "320px" }}
@@ -66,8 +66,8 @@ const Create = ({ handleSign }) => {
             />
             Log In with Google
           </Button>
-        </Stack>
-        <Typography variant="overline">or</Typography>
+        </Stack> */}
+        {/* <Typography variant="overline">or</Typography> */}
         <Stack sx={{display:'flex', flexDirection:'column'}}>
         <TextField
           sx={{ width: "320px", marginBottom: "30px" }}
