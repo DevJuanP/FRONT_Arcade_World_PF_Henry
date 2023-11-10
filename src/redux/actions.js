@@ -27,10 +27,7 @@ export const GET_USER='GET_USER';
 export const SET_SELECTED_PRICE = 'SET_SELECTED_PRICE';
 export const PURCHASE_SUCCESS = 'PURCHASE_SUCCESS';
 
-const DB_URL_LOCAL = 'http://localhost:3001'
-const BD_URL_DEPLOY = 'https://viaduct.proxy.rlwy.net:37217/railway'
-const BD_URL =  DB_URL_LOCAL ? DB_URL_LOCAL : BD_URL_DEPLOY
-
+const BD_URL = 'http://localhost:3001'
 
 export const getGames = ()=>{ 
   return async function(dispatch) {
