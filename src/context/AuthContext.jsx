@@ -22,10 +22,10 @@ export function AuthProvider({ children }) {
     const googleProvider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, googleProvider);
 
-    const user = result.user;
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken
-    console.log(token);
+    if(credential){
+      onAuthStateChanged(auth, user => console.log(user.accessToken))
+    }
   };
   
   useEffect(() => {
