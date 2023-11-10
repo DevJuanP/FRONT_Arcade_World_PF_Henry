@@ -15,8 +15,8 @@ const Summary = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const videogameIds = JSON.parse(localStorage.getItem("gameIds"));
-        const filteredGames = games.filter((gm) =>
+        const videogameIds = await JSON.parse(localStorage.getItem("gameIds"));
+        const filteredGames = await games.filter((gm) =>
         videogameIds?.includes(gm.id));
         const payload = {
           UserId,
