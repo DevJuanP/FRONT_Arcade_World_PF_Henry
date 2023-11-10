@@ -4,6 +4,10 @@ import { useSelector } from "react-redux";
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+const { VITE_IS_LOCAL }= import.meta.env
+const URL_DEPLOY = 'https://back-arcade-world-pf-henry.onrender.com';
+const urlLocal = 'http://localhost:3001';
+const BD_URL =  VITE_IS_LOCAL === 'true' ? urlLocal : URL_DEPLOY
 
 
 export default function Purchased() {
@@ -32,7 +36,7 @@ export default function Purchased() {
     try {
       const videogameIds = shoppingCart.map((game) => game.id);
   
-      const response = await axios.post('http://localhost:3001/cart/purchased', {UserId: UserId, GamesIds: videogameIds})
+      const response = await axios.post(`${BD_URL}/cart/purchased`, {UserId: UserId, GamesIds: videogameIds})
       const url = response.data.session_url
       window.location.href = url;
       localStorage.setItem("gameIds", JSON.stringify(videogameIds));
