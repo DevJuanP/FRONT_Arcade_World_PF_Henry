@@ -1,27 +1,44 @@
 import { NavLink } from 'react-router-dom';
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { CardContent, Typography, Button, Box, Stack } from "@mui/material";
+import { purchaseSuccess } from '../../redux/actions.js';
 
 
 const Summary = () => {
+  const UserId = useSelector( s => s.userData?.user?.id);
   const games = JSON.parse(localStorage.getItem("allGames"));
   const [products, setProducts] = useState([]);
-
-useEffect(() => {
-    const videogameIds = JSON.parse(localStorage.getItem("gameIds"));
-    const filteredGames = games.filter((gm) =>
-    videogameIds?.includes(gm.id));
-
-    setProducts(filteredGames);
-
-    return () => {localStorage.removeItem("videogameIds")};
+  const dispatch = useDispatch();
+  const priceTotal = products.reduce((total, game) => total + game.price, 0).toFixed(2);
+    
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const videogameIds = await JSON.parse(localStorage.getItem("gameIds"));
+        const filteredGames = await games.filter((gm) =>
+        videogameIds?.includes(gm.id));
+        const payload = {
+          UserId,
+          GamesIds: videogameIds, 
+          amount: priceTotal,
+        }
+        setProducts(filteredGames);
+        dispatch(purchaseSuccess(payload));
+            
+      } catch (error) {
+        console.error(error);
+        }
+        return () => {localStorage.removeItem("gameIds")};
+    }
+    fetchData(); 
     }, []);
        
   return (
     <div style={{ display: "flex",
     flexDirection: "column", alignItems:'center' }}>
-      <h2 >Pago completado con éxito</h2>
-      <h3>Productos comprados:</h3>
+      <h2 >Payment successfully completed</h2>
+      <h3>Products purchased:</h3>
       <Box
               sx={{
                 backgroundColor: "#fff",
@@ -50,14 +67,14 @@ useEffect(() => {
                 gap: "40px",
               }}>
                 <Typography variant="h6" component="div">
-                   {game.name}: $ {game.price}
+                   {game.name}: ${game.price.toFixed(2)}
                 </Typography>
              </CardContent>
              </Stack>
         ))}
         <Stack style={{ display: "flex", alignItems:'center'}}>
           <Typography variant="h6" component="div" >
-            Total: ${products.reduce((total, game) => total + game.price, 0)}
+            Total: ${priceTotal}
           </Typography>
         </Stack>
       </Box> 
@@ -67,7 +84,7 @@ useEffect(() => {
 
           <NavLink to='/store'>
             <Button variant="contained" >
-              Discover Products
+            Continue shopping
             </Button>
           </NavLink>
         </div>

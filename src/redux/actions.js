@@ -21,18 +21,19 @@ export const ADD_COMMENT = 'ADD_COMMENT';
 export const LOGOUT = 'LOGOUT';
 export const DELETE_ITEM_CART = 'DELETE_ITEM_CART';
 export const ADD_NEWS_PURCHASED = 'ADD_NEWS_PURCHASED';
-export const ADD_TO_CART = 'ADD_TO_CART'
-export const DELETE_ITEM = 'DELETE_ITEM'
-export const GET_USER='GET_USER'
-export const SET_SELECTED_PRICE = 'SET_SELECTED_PRICE'
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const DELETE_ITEM = 'DELETE_ITEM';
+export const GET_USER='GET_USER';
+export const SET_SELECTED_PRICE = 'SET_SELECTED_PRICE';
+export const PURCHASE_SUCCESS = 'PURCHASE_SUCCESS';
 export const GET_COUNTRY = 'GET_COUNTRY'
 
-
+const BD_URL = 'http://localhost:3001'
 
 export const getGames = ()=>{ 
   return async function(dispatch) {
   try {
-   const dataGm = (await axios.get('http://localhost:3001/videogame')).data;
+   const dataGm = (await axios.get(`${BD_URL}/videogame`)).data;
    localStorage.setItem("allGames", JSON.stringify(dataGm));
    return dispatch({
       type: GET_GAMES, 
@@ -48,7 +49,7 @@ export const getGames = ()=>{
 export const gameByName = (name)=> {
 return async function(dispatch) {
   try {
-    const {data} = await axios.get(`http://localhost:3001/videogame/?name=${name}`);
+    const {data} = await axios.get(`${BD_URL}/videogame/?name=${name}`);
             
       return dispatch({
       type: GET_GAME_NAME, 
@@ -63,7 +64,7 @@ return async function(dispatch) {
 export const gameById = (id)=> {
 return async function(dispatch) {
   try {
-    const dataId = (await axios.get(`http://localhost:3001/videogame/${id}`)).data;
+    const dataId = (await axios.get(`${BD_URL}/videogame/${id}`)).data;
 
       return dispatch({
       type: GET_GAME_ID,
@@ -78,7 +79,7 @@ return async function(dispatch) {
 export const gamePlataforms = ()=> {
   return async function(dispatch) {
     try {
-      const dataPl = (await axios.get('http://localhost:3001/platform')).data;
+      const dataPl = (await axios.get(`${BD_URL}/platform` )).data;
       return dispatch({
         type: GET_PLATFORMS,
         payload: dataPl
@@ -91,7 +92,7 @@ export const gamePlataforms = ()=> {
 export const gameGenres = ()=> {
   return async function(dispatch) {
     try {
-      const dataGn = (await axios.get('http://localhost:3001/genre')).data;
+      const dataGn = (await axios.get(`${BD_URL}/genre`)).data;
       return dispatch({
         type: GET_GENRES,
         payload: dataGn
@@ -192,14 +193,14 @@ export const resetFilters = () => {
 export function postRegister(payload){
   return async function(){
     const data = await
-    axios.post("http://localhost:3001/user/register",payload)
+    axios.post(`${BD_URL}/user/register` ,payload)
     return data
   }
 }
 export function postLogin(payload){
   return async function(){
     const data = await
-    axios.post("http://localhost:3001/user/login",payload)
+    axios.post(`${BD_URL}/user/login`,payload)
     return data
   }
 }
@@ -255,10 +256,10 @@ export const logout = () => async dispatch => {
     console.error('Error al cerrar la sesión:', error);
   }
 };
-export const deleteItemCart = (UserId) => {
+export const deleteItemCart = (gamesIds) => {
   return {
     type: DELETE_ITEM_CART,
-    payload: UserId,
+    payload: gamesIds,
   };
 }
 
@@ -296,11 +297,25 @@ export const deleteItem = (id) => {
 export function GetUser(){
   return async function(dispatch){
    try {
-    const {data}= await axios.get('http://localhost:3001/user')
+    const {data}= await axios.get(`${BD_URL}/user`)
     return dispatch({
       type:GET_USER,
       payload:data
     })
+   } catch (error) {
+    console.log(error.message)
+   }
+  }
+}
+export function purchaseSuccess(payload){
+  return async function(dispatch){
+   try {
+    const response = await axios.post(`${BD_URL}/cart/success`, payload);
+        return dispatch({
+        type:PURCHASE_SUCCESS,
+        payload:response.data
+      });
+    
    } catch (error) {
     console.log(error.message)
    }

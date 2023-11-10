@@ -3,7 +3,6 @@ import {
   Typography,
   Card,
   CardMedia,
-  Stack,
   Grid,
 } from "@mui/material";
 import { Link } from "react-router-dom";
