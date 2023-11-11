@@ -27,6 +27,12 @@ export const GET_USER='GET_USER';
 export const SET_SELECTED_PRICE = 'SET_SELECTED_PRICE';
 export const PURCHASE_SUCCESS = 'PURCHASE_SUCCESS';
 export const GET_COUNTRY = 'GET_COUNTRY'
+export const TOP_FIVE='TOP_FIVE'
+export const GET_PURCHASE='GET_PURCHASE'
+export const USER_BY_ID='USER_BY_ID'
+export const PURCHASE_BY_ID='PURCHASE_BY_ID'
+
+
 const { VITE_IS_LOCAL } =import.meta.env
 const URL_DEPLOY = 'https://back-arcade-world-pf-henry.onrender.com';
 const urlLocal = 'http://localhost:3001';
@@ -323,5 +329,34 @@ export function purchaseSuccess(payload){
    }
   }
 }
-
-
+export function GetPuchase(){
+  return async function(dispatch){
+    try {
+      const {data}=await axios.get('http://localhost:3001/purchase')
+      return dispatch({
+        type:GET_PURCHASE,
+        payload:data
+      })
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+}
+export function UserById(id){
+  return async function(dispatch){
+   const {data} = await axios.get(`${BD_URL}/user/${id}`)
+   return dispatch({
+    type:USER_BY_ID,
+    payload:data
+   })
+  }
+}
+export function PurchaseById(id){
+  return async function(dispatch){
+    const {data}=await axios.get(`http://localhost:3001/purchase/${id}`) 
+    return dispatch({
+      type:PURCHASE_BY_ID,
+      payload:data
+    })
+  }
+}

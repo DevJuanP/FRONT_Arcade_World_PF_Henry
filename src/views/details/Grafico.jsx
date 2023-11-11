@@ -6,71 +6,12 @@ import { useDispatch,useSelector } from "react-redux";
 import { gameById } from "../../redux/actions";
 
 function Grafico() {
-  const dispatch=useDispatch()
+  const dispatch= useDispatch()
   const gameDetails = useSelector((state) => state?.gameId);
   const { id } = useParams();
   useEffect(() => {
     dispatch(gameById(id));
   }, [dispatch, id]);
-
-console.log("detail", gameDetails)
- const graficosGames=(arrs)=>{
-  let arr=arrs?.graphics;
-  let contador = [0, 0, 0, 0, 0];
-
-  for (let i = 0; i < arr?.length; i++) {
-    let numero = arr[i];
-    if (numero >= 1 && numero <= 5) {
-      contador[numero - 1]++;
-    }
-  }
-  const totalElementos = contador?.reduce((acc, valor) => acc + valor, 0);
-  const porcentajes = contador?.map(valor => parseFloat(((valor / totalElementos) * 5).toFixed(1)));
-
-  return porcentajes.reverse();
-}
-const GamesPlay=(arry)=>{
-  let arr=arry?.gameplay;
-  let contadorr = [0, 0, 0, 0, 0];
-
-  for (let i = 0; i < arr?.length; i++) {
-    let numero = arr[i];
-    if (numero >= 1 && numero <= 5) {
-      contadorr[numero - 1]++;
-    }
-  }
-  const totalElementos = contadorr?.reduce((acc, valor) => acc + valor, 0);
-  const porcentajes = contadorr?.map(valor => parseFloat(((valor / totalElementos) * 5).toFixed(1)));
-
-  return porcentajes.reverse();
-}
-const PrecioCalidad =(arrs)=>{
-  let arr=arrs?.quality_price;
-  let contador = [0, 0, 0, 0, 0];
-
-  for (let i = 0; i < arr?.length; i++) {
-    let numero = arr[i];
-    if (numero >= 1 && numero <= 5) {
-      contador[numero - 1]++;
-    }
-  }
-  const totalElementos = contador?.reduce((acc, valor) => acc + valor, 0);
-  const porcentajes = contador?.map(valor => parseFloat(((valor / totalElementos) * 5).toFixed(1)));
-
-  return porcentajes.reverse();
-}
-const porcentajesGraphics = graficosGames(gameDetails);
-const porcentajesGameplay = GamesPlay(gameDetails);
-const porcentajesQualityPrice = PrecioCalidad(gameDetails);
-function calcularPromedio(array) { 
-  const suma = array?.reduce((acc, valor) => acc + valor, 0);
-  const promedio = (suma / array.length)?.toFixed(1);
-  return parseFloat(promedio);
-}
-const porcentajeG =calcularPromedio(porcentajesGraphics)
-const porcentajeGame=calcularPromedio(porcentajesGameplay)
-const  porcentajeQP=calcularPromedio(porcentajesQualityPrice)
-
   console.log(gameDetails)
   const Stargraphics= gameDetails?.graphics?.stars
   const scoregraphics= gameDetails?.graphics?.score
