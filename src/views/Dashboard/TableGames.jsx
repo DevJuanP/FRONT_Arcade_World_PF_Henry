@@ -21,7 +21,7 @@ function TableGames() {
  })
  const styleTable={
   color:'black',
-  width:'98%',
+  width:'60%',
   backgroundColor: '#90a4ae',
   border: 'none',
 

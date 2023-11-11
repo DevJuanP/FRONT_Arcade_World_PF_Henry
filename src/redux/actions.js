@@ -30,6 +30,7 @@ export const GET_COUNTRY = 'GET_COUNTRY'
 export const TOP_FIVE='TOP_FIVE'
 export const GET_PURCHASE='GET_PURCHASE'
 export const USER_BY_ID='USER_BY_ID'
+export const PURCHASE_BY_ID='PURCHASE_BY_ID'
 
 const BD_URL = 'http://localhost:3001'
 
@@ -346,4 +347,12 @@ export function UserById(id){
    })
   }
 }
-
+export function PurchaseById(id){
+  return async function(dispatch){
+    const {data}=await axios.get(`${BD_URL}/purchase/${id}`) 
+    return dispatch({
+      type:PURCHASE_BY_ID,
+      payload:data
+    })
+  }
+}

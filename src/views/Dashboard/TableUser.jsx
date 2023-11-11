@@ -9,6 +9,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+
 function TableUser() {
   const user = useSelector((U) => U.user);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -33,7 +34,6 @@ function TableUser() {
   }, [dispatch, selectedUserId]);
 
   const DataUser=useSelector((state)=>state.userID);
- console.log(user)
   const rows = user?.map((u) => {
     return {
       id: u.id,
@@ -46,8 +46,8 @@ function TableUser() {
 
   const customStyles = {
     content: {
-      width: '80%',
-      height: '75vh',
+      width: '65%',
+      height: '80vh',
       // backdropFilter: 'blur(8px)',
       position: 'fixed',
       top: '56%',
@@ -59,7 +59,8 @@ function TableUser() {
       borderRadius:'0.5em'
     },
     overlay: {
-      backgroundColor: 'rgba(255, 255, 255, 0.10)',
+      backdropFilter: 'blur(5px)',
+      backgroundColor:' rgba(000, 000, 000,0.50)',
     },
   };
 
@@ -73,7 +74,7 @@ function TableUser() {
       headerName: 'Detail',
       renderCell: (params) => (
         <div>
-          <Button onClick={() => openModal(params.id)}>Detail</Button>
+          <Button variant="outlined" onClick={() => openModal(params.id)}>Detail</Button>
         </div>
       ),
     },
@@ -135,7 +136,6 @@ function TableUser() {
       LastEdit:r?.review?.lastEdit
     }
   })
-  console.log(dataReview)
   return (
     <Box sx={BoxMain} gap={2}>
       <Box sx={TitleBox}>
