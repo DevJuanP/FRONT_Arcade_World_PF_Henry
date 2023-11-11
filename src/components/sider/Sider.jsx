@@ -103,7 +103,7 @@ function Sider() {
         ))}
       </Select>
     </FormControl>
-      <FormControl color="success" size="small" sx={{ width: "200px" }}>
+      <FormControl size="small" sx={{ width: "200px" }}>
         <InputLabel  id="genres" sx={{color: '#fff'}} >Genres</InputLabel>
         <Select
           labelId="genres"
