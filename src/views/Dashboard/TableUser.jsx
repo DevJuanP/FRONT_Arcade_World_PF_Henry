@@ -34,6 +34,7 @@ function TableUser() {
   }, [dispatch, selectedUserId]);
 
   const DataUser=useSelector((state)=>state.userID);
+  console.log(DataUser)
   const rows = user?.map((u) => {
     return {
       id: u.id,
@@ -155,7 +156,7 @@ function TableUser() {
       <div style={{flexDirection:'column',background:'#90a4ae',borderRadius:'1em',display:'flex',alignContent:'center',justifyItems:'center',margin:'0% 0% 1% 0%'}}>
         <div style={{zIndex:'1',alignItems:'center',display:'flex'}}>
         <img
-          src={DataUser?.photo}
+          src={DataUser?.cover}
           alt="Portada"
           style={{ width: '100%', borderRadius: '8px',maxHeight:'30em',margin:'1em 1em 5em 1em' }}
           />

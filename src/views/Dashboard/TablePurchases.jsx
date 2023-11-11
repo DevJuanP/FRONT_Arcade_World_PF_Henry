@@ -27,6 +27,7 @@ function TablePurchases() {
     Dispatch(PurchaseById(selectedPurchaseId));
   }
   },[Dispatch,selectedPurchaseId])
+  console.log(selectedPurchaseId)
   const purchase=useSelector((P)=>P.Purchase)
   const DataPurchase=useSelector((P)=>P.PurchaseID)
  
@@ -102,7 +103,7 @@ function TablePurchases() {
   border: 'none',
 
  }
- const DataVideoGame=DataPurchase?.Videogames.map((DV)=>{
+ const DataVideoGame=DataPurchase?.Videogames?.map((DV)=>{
   const PGame=DV?.platforms?.join(',')
   const GGame=DV?.genres.join(',')
   return {
@@ -170,7 +171,7 @@ function TablePurchases() {
   </div>
   <div style={{border:'solid #b0bec5',padding:'0.5em',margin:'2% 0% 0% 0%'}}>
   {
-    DataVideoGame.map((o)=>{
+    DataVideoGame?.map((o)=>{
      return(  
       <Box sx={{borderBottom:'solid white 0.1em'}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>

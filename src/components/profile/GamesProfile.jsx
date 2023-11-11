@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Stack, Grid, Avatar, Box, CardContent } from "@mui/material";
+import {  Grid, CardContent } from "@mui/material";
+// import {
+//   removeFromFavorites,
+// } from "../../redux/actions";
+// import { useDispatch } from "react-redux";
+// import ClearIcon from '@mui/icons-material/Clear';
 
 const GamesProfile = ({ nPurchased }) => {
   return (
@@ -14,6 +19,7 @@ const GamesProfile = ({ nPurchased }) => {
               <Card
                 sx={{
                   width: "300px",
+                  height:'420px'
                 }}
               >
                 <CardMedia

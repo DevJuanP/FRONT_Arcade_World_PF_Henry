@@ -1,97 +1,127 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import { CardContent, Typography, Button, Box, Stack } from "@mui/material";
-import { purchaseSuccess } from '../../redux/actions.js';
-
+import {
+  CardContent,
+  Typography,
+  Button,
+  Box,
+  Stack,
+  CardMedia,
+  Avatar,
+  Grid
+} from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
 
 const Summary = () => {
-  const UserId = useSelector( s => s.userData?.user?.id);
   const games = JSON.parse(localStorage.getItem("allGames"));
   const [products, setProducts] = useState([]);
-  const dispatch = useDispatch();
-  const priceTotal = products.reduce((total, game) => total + game.price, 0).toFixed(2);
-    
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const videogameIds = await JSON.parse(localStorage.getItem("gameIds"));
-        const filteredGames = await games.filter((gm) =>
-        videogameIds?.includes(gm.id));
-        const payload = {
-          UserId,
-          GamesIds: videogameIds, 
-          amount: priceTotal,
-        }
-        setProducts(filteredGames);
-        dispatch(purchaseSuccess(payload));
-            
-      } catch (error) {
-        console.error(error);
-        }
-        return () => {localStorage.removeItem("gameIds")};
-    }
-    fetchData(); 
-    }, []);
-       
+    const videogameIds = JSON.parse(localStorage.getItem("gameIds"));
+    const filteredGames = games.filter((gm) => videogameIds?.includes(gm.id));
+
+    setProducts(filteredGames);
+
+    return () => {
+      localStorage.removeItem("videogameIds");
+    };
+  }, []);
+
   return (
-    <div style={{ display: "flex",
-    flexDirection: "column", alignItems:'center' }}>
-      <h2 >Payment successfully completed</h2>
-      <h3>Products purchased:</h3>
+    <div
+      style={{
+        backgroundColor:'#1a2a3b',
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
       <Box
-              sx={{
-                backgroundColor: "#fff",
-                height: "40vh",
-                width: "60vw",
-                borderRadius: "6px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems:'left',
-                marginTop:'18px',
-                gap: "10px",
-                boxShadow: "1px 1px 3px 1px black",
-                paddingLeft:"35px",
-                top: "0",
-              }}
-            >
+        sx={{
+          backgroundColor: "#fff",
+          borderRadius:'2% 0% 0% 2%',
+          height: "80vh",
+          width: "1100px",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "right",
+          alignItems: "left",
+          marginTop: "18px",
+          // gap: "10px",
+          border:'4px solid #000',
+          boxShadow: "1px 1px 3px 1px black",
+          top: "0",
+        }}
+      >
         {products.map((game) => (
-          <Stack sx={{display:'flex', alignItems:'center', alignContent:'center'}} key={game.id}>
-             <CardContent 
-               sx={{
-                width: "400px",
+          <Stack
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              alignContent: "center",
+            }}
+            key={game.id}
+          >
+            <CardContent
+              sx={{
+                marginLeft:'45px',
+                width: "300px",
                 display: "flex",
-                alignItems: "left",
+                textAlign: "center",
+                alignItems: "center",
                 flexDirection: "column",
                 gap: "40px",
-              }}>
-                <Typography variant="h6" component="div">
-                   {game.name}: ${game.price.toFixed(2)}
+              }}
+            >
+              <Avatar
+              src="https://res.cloudinary.com/du9kziyei/image/upload/v1699602012/images/g7oo7zdtcszck5kxmohu.png"
+              sx={{backgroundColor:'#1a2a3b', width:'65px', height:'65px', marginTop:'-10px', marginBottom:'-25px'}}
+              />
+              <Typography variant="h4">Arcade World</Typography>
+              <Typography variant="h5" color='GrayText'>Payment completed successfully</Typography>
+              <Typography variant="body2">Products purchased:</Typography>
+              <Typography variant="h6" component="div">
+                {game.name}: $ {game.price}
+              </Typography>
+            </CardContent>
+              <Stack style={{ display: "flex", alignItems: "center" }}>
+                <Typography variant="h6" sx={{marginBottom:'80px'}}>
+                  Total: ${products.reduce((total, game) => total + game.price, 0)}
                 </Typography>
-             </CardContent>
-             </Stack>
+                    <Typography variant="caption">Thanks for your support</Typography>
+              </Stack>
+          </Stack>
         ))}
-        <Stack style={{ display: "flex", alignItems:'center'}}>
-          <Typography variant="h6" component="div" >
-            Total: ${priceTotal}
-          </Typography>
-        </Stack>
-      </Box> 
-      <Stack sx={{display:'flex', alignContent:'center', alignItems:'center'}}>
-        <div style={{ display: "flex",
-    flexDirection: "column", marginTop:'25px', marginBottom:'17px' }}>
-
-          <NavLink to='/store'>
-            <Button variant="contained" >
-            Continue shopping
-            </Button>
+            <CardMedia
+            sx={{marginLeft:'20px', marginRight:'-25px', marginTop:'-3px', border:'4px solid #000', borderRadius:'0% 2% 2% 0%'}}
+            component="img"
+            height="550px"
+            width='350px'
+            image="https://cdn.dribbble.com/users/330915/screenshots/3806532/media/a5b29f241eacaafa4c08a0dbad63b7e1.gif"
+            alt="green iguana"
+            />
+          
+        <Grid>
+      </Grid>
+      </Box>
+      <Stack
+        sx={{ display: "flex", alignContent: "center", alignItems: "center" }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "25px",
+            marginBottom: "17px",
+          }}
+        >
+          <NavLink to="/store">
+            <Button variant="contained" endIcon={<SearchIcon/>}>Discover more products</Button>
           </NavLink>
         </div>
-      </Stack> 
-    
+      </Stack>
     </div>
   );
 };
-
 export default Summary;
