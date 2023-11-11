@@ -9,9 +9,9 @@ import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 function About() {
   
   return (
-    <Stack container sx={{display:'flex', flexDirection: 'colum', textAlign:'center', backgroundColor:'#1a2a3b'}}>
+    <Stack container sx={{display:'flex', flexDirection: 'colum', textAlign:'center', backgroundImage:`url('https://th.bing.com/th/id/R.5eca9af824ce557d667fe29298d474bd?rik=28WwQq7GYHkyLw&riu=http%3a%2f%2f2.bp.blogspot.com%2f-sj-ah7PMCvk%2fUeDD4EQkAqI%2fAAAAAAAAABo%2fQfKKgI5rw7w%2fs1600%2fClasicos.png&ehk=q%2f2JDoqvpFzVKsmYUdE%2fxl%2bFKx6x2vRv3EISg1YaI1A%3d&risl=&pid=ImgRaw&r=0')`}}>
       <Stack sx={{display:'flex', marginLeft:'20px', marginRight:'20px', marginTop:'10px'}}>
-        <Card sx={{transition: 'transform 0.3s','&:hover': {transform: 'scale(1.02)',}}}>
+        <Card sx={{ backgroundColor:' rgba(255, 255, 255, 0.8)', transition: 'transform 0.3s','&:hover': {transform: 'scale(1.02)',}}}>
           <CardContent>
             <SportsEsportsIcon sx={{fontSize:'50px', color:'#1a2a3b'}} />
             <Typography variant="h3" sx={{marginBottom:'20px'}}>Welcome to Arcade World!</Typography>
@@ -37,7 +37,7 @@ function About() {
       </Stack>
       <Grid container>
         <Grid item sm={5} sx={{margin:'20px',  marginRight:'100px'}}>
-            <Card  sx={{height:'100%', transition: 'transform 0.3s','&:hover': {transform: 'scale(1.05)',}}}>
+            <Card  sx={{backgroundColor:' rgba(255, 255, 255, 0.8)', height:'100%', transition: 'transform 0.3s','&:hover': {transform: 'scale(1.05)',}}}>
               <CardContent>
                 <QuestionMarkIcon sx={{color:'#1a2a3b', fontSize:'50px'}} />
                 <Typography variant="h4" sx={{marginBottom:'20px'}}>Mission of Arcade World</Typography>
@@ -62,7 +62,7 @@ function About() {
             </Card>
         </Grid>
         <Grid item sm={5} sx={{margin: '20px', marginLeft:'100px'}}>
-          <Card  sx={{height:'100%', transition: 'transform 0.3s','&:hover': {transform: 'scale(1.05)',}}}>
+          <Card  sx={{backgroundColor:' rgba(255, 255, 255, 0.8)', height:'100%', transition: 'transform 0.3s','&:hover': {transform: 'scale(1.05)',}}}>
             <CardContent>
               <VisibilityIcon sx={{color:'#1a2a3b', fontSize:'50px'}} />
               <Typography variant="h4" sx={{marginBottom:'20px'}}>Vision of Arcade World</Typography>

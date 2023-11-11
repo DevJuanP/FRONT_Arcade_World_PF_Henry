@@ -2,10 +2,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 import {
   GoogleAuthProvider,
   signInWithPopup,
-  onAuthStateChanged
+  onAuthStateChanged,
   // sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase/config";
+import axios from "axios";
 
 const authContext = createContext();
 
@@ -16,56 +17,29 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [userF, setUserF] = useState("");
+  const googleProvider = new GoogleAuthProvider();
 
-    const loginWithGoogle = async () => {
-      const googleProvider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, googleProvider);
-
-      const user = result.user;
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken
-      const headers = new Headers();
-      headers.append('Authorization', `Bearer ${token}`);
-      const response = await fetch('http://localhost:3001/user/firebase', { headers });
-      try{
-        const data = await response.json();
-        console.log('User data:', data)
-        setUser(data);
+  const loginWithGoogle = async () => {
+    try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    if (credential) {
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            const token = user.accessToken;
+              const response = await axios.post('http://localhost:3001/user/firebase', {
+                token: token
+              });
+              setUserF(response.data);
+            }
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
-      catch (err){
-        console.error(err);
-      };
-    };
-  
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        // Actualizar el estado solo si el usuario cambia
-        setUser({
-          // token: currentUser.accessToken,
-          login: true,
-          user: {
-            image: currentUser.photoURL,
-            email: currentUser.email,
-            name: currentUser.displayName.split(' ')[0],
-            lastname: currentUser.displayName.split(' ')[1],
-            nickname: currentUser.displayName,
-            uid: currentUser.uid,
-          },
-        });
-      } else {
-        // Usuario no autenticado
-        setUser(null);
-        localStorage.removeItem("login");
-      }
-      localStorage.setItem("login", JSON.stringify(user));
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
+  };
+  localStorage.setItem("login", JSON.stringify(userF));
   return (
     <authContext.Provider
       value={{

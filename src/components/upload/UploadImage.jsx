@@ -33,7 +33,7 @@ const UploadImage = ({ image, setImage }) => {
         onChange={uploadImage}
       />
         {
-            image.length ? <Stack sx={{alignItems:'center', marginBottom:'15px', marginTop:'-15px'}}><Avatar sx={{ width: 100, height: 100 }} src={image}/></Stack> : null
+            image?.length ? <Stack sx={{alignItems:'center', marginBottom:'15px', marginTop:'-15px'}}><Avatar sx={{ width: 100, height: 100 }} src={image}/></Stack> : null
         }
     </div>
   );
