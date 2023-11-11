@@ -1,61 +1,85 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import { DataGridPro} from '@mui/x-data-grid-pro';
-import { Box,Typography} from '@mui/material';
-const purchased= [
-  {
-    purchaseId: '52c3c42b-762d-4874-be32-b9509b49a6c1',
-    amount: 104.98,
-    paymentMethod: 'stripe',
-    date: '2023-11-09',
-    Hour:'12:56',
-    Nameuser:'pepe',
-    Nickname:'theApha',
-    Email:'pepe@gmail.com',
-    Videogames: [
-      {
-        GameId: 'a3216861-9b49-4eca-887b-63df7245d047',
-        name: 'Half-Life 2: Deathmatch',
-          plataforms:['',''],
-          genero:['','']
+import { Box,Typography,Button} from '@mui/material';
+import Modal from 'react-modal'
+import {useDispatch,useSelector}from 'react-redux'
+import { GetPuchase } from '../../redux/actions';
 
-      },
-      {
-        GameId: '47b14155-3335-4d8f-85ac-2a88884d2eeb',
-        name: 'Dark Souls III',
-          plataforms:['',''],
-          genero:['','']
-      }
-    ]
-  }
-  ]
+
 
 function TablePurchases() {
-  
-  const rows = purchased.map((p)=>{
-    const videoGamesNames = p.Videogames.map(game => game.name).join(', ');
+  const Dispatch=useDispatch()
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+  useEffect(()=>{
+   Dispatch(GetPuchase())
+  },[])
+  const purchase=useSelector((P)=>P.Purchase)
+  const rows = purchase.map((p)=>{
+    const videoGamesNames = p.Videogames.map(game => game.name).join(', ');
       return{
         id:p.purchaseId,
         amount:p.amount,
         paymentMethod:p.paymentMethod,
         date:p.date,
-        Hour:p.Hour,
-      Nameuser:p.Nameuser,
-      Nickname:p.Nickname,
+        Hour:p.hour,
+      Nameuser:p.username,
+      Nickname:p.nickname,
      Email:p.Email,
      videogame:videoGamesNames
       }
     })
+    const customStyles = {
+      content: {
+      width: '80%', // Puedes ajustar este valor según tus necesidades
+      height: '80vh', // Otra opción es utilizar porcentaje de la altura de la ventana
+      backdropFilter: 'blur(8px)',
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      zIndex: '1',
+      backgroundColor: 'rgba(255, 255, 255, 0.8)', // Cambiar el color de fondo del modal
+      },
+      overlay: {
+        backgroundColor:' rgba(255, 255, 255, 0.10)', // Cambiar el color de fondo del overlay
+      },
+    };
   const columns=[
     {field:'id'},
-    {field:'amount'},
-    {field:'paymentMethod'},
-    {field:'date'},
+    {field:'amount',headerName:'Amount'},
+    {field:'paymentMethod',headerName:'Payment Method'},
+    {field:'date',headerName:'Date'},
     {field:'Hour'},
     {field:'Nameuser'},
     {field:'Nickname'},
     {field:'Email'},
-    {field:'videogame'}
+    {field:'videogame',headerName:'Videogame'},
+    {field:'detail',headerName:'Detail', renderCell: () => {
+      
+      return(
+      <div>
+      <Button onClick={openModal}>Abrir Modal</Button>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Ejemplo de Modal"
+        style={customStyles}
+      >
+        <h2>Ejemplo de Modal</h2>
+        <p>Contenido del modal...</p>
+        <Button onClick={closeModal}>Cerrar Modal</Button>
+      </Modal>
+    </div>
+    )
+  }}
    ]
    const BoxMain={
     display:'flex',
