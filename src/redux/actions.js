@@ -212,6 +212,13 @@ export function postLogin(payload){
     return data
   }
 }
+export function putProfile(payload){
+  return async function(){
+    const data = await
+    axios.put(`${BD_URL}/user/update` ,payload)
+    return data
+  }
+}
 // export function setUserData(userData) {
 //   return {
 //     type: SET_USER_DATA,

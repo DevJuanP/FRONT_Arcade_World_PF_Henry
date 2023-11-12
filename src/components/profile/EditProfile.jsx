@@ -11,52 +11,80 @@ import {
 } from "@mui/material";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import { useForm } from "react-hook-form";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UploadImage from '../upload/UploadImage'
+import UploadImage from "../upload/UploadImage";
+import axios from "axios";
+import useImage from "../utils/useImage";
+import { putProfile } from "../../redux/actions";
+import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
 
-const EditProfile = ({ userLocal }) => {
+const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  useEffect(() => {
-    if ((userLocal === "" && !userLocal.login) || userLocal === null) {
-      navigate("/");
-    }
-  }, []);
+  const [image, setImage] = useState("");
+  const { uploadImage } = useImage(setImage);
   const {
     register,
     handleSubmit,
     formState: { errors, isDirty, isValid },
     reset,
   } = useForm();
-  const uploadImageN = async (e) => {
-    const files = e.target.files;
-    const data = new FormData();
 
-    data.append("file", files[0]);
-    data.append("upload_preset", "JesusBavaresco"); // el segundo campo varia dependiendo del nombre que utilices
-    setLoading(true);
+  const onSubmit = handleSubmit((data) => {
+    data.id = id;
+    data.image = image;
+    dispatch(putProfile(data)).then(() => {
+      setChanges(Math.random());
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "User Updated",
+      });
+      handleChangeRenderProfileEdit();
+    });
+  });
 
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/du9kziyei/image/upload", // el url varia por cada usuario 'https://api.cloudinary.com/v1_1/tuUsuario/image/upload'
-      {
-        method: "POST",
-        body: data,
-      }
-    );
-    const file = await res.json();
-    setImage(file.secure_url);
-    setLoading(false);
-  };
   return (
-    <Grid item sx={{ width: "100%", textAlign: "center"}}>
+    <Grid item sx={{ width: "100%", textAlign: "center" }}>
       <Stack sx={{ marginBottom: "10px", marginLeft: "45px" }}>
-        <Avatar sx={{ width: 250, height: 250 }} src="" alt="Profile image" />
+        <Avatar
+          sx={{ width: 250, height: 250, opacity: 0.6 }}
+          src={image ?? ""}
+          alt="Profile image"
+        />
       </Stack>
-      <Stack marginBottom='-20px'>
-      <Stack sx={{display:'flex', textAlign:'left', marginLeft:'12px', marginBottom:'-8px'}}>
-        <Typography variant='overline' color='GrayText'>change your profile image</Typography>
+      <Stack marginBottom="-20px">
+        <Stack
+          sx={{
+            display: "flex",
+            textAlign: "left",
+            marginLeft: "12px",
+            marginBottom: "-8px",
+          }}
+        >
+          <Typography variant="overline" color="GrayText">
+            change your profile image
+          </Typography>
         </Stack>
-        <UploadImage/>
+        <input
+          className="file-select"
+          id="exampleFile"
+          name="file"
+          type="file"
+          onChange={uploadImage}
+        />
       </Stack>
       <TextField
         sx={{ width: "320px", marginBottom: "10px" }}
@@ -139,17 +167,27 @@ const EditProfile = ({ userLocal }) => {
           {errors.Email.message}
         </Typography>
       )}
-      <Stack marginBottom='-20px'>
-        <Stack sx={{display:'flex', textAlign:'left', marginLeft:'12px', marginBottom:'-8px'}}>
-        <Typography variant='overline' color='GrayText'>Select your front Page image</Typography>
+      <Stack marginBottom="-20px">
+        <Stack
+          sx={{
+            display: "flex",
+            textAlign: "left",
+            marginLeft: "12px",
+            marginBottom: "-8px",
+          }}
+        >
+          <Typography variant="overline" color="GrayText">
+            Select your front Page image
+          </Typography>
         </Stack>
-        <UploadImage/>
+        <UploadImage />
       </Stack>
       <Button
         variant="contained"
         color="success"
         endIcon={<SaveAltIcon />}
         sx={{ width: "320px" }}
+        onClick={onSubmit}
       >
         Save Changes
       </Button>
