@@ -17,7 +17,6 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({ children }) {
-  const [userF, setUserF] = useState("");
   const googleProvider = new GoogleAuthProvider();
 
   const loginWithGoogle = async () => {
@@ -31,7 +30,7 @@ export function AuthProvider({ children }) {
               const response = await axios.post('http://localhost:3001/user/firebase', {
                 token: token
               });
-              setUserF(response.data);
+              localStorage.setItem("login", JSON.stringify(response.data));
             }
           });
         }
@@ -39,7 +38,6 @@ export function AuthProvider({ children }) {
         console.error("Error fetching user data:", error);
       }
   };
-  localStorage.setItem("login", JSON.stringify(userF));
   return (
     <authContext.Provider
       value={{
