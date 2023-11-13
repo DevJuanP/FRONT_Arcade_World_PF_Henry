@@ -19,11 +19,14 @@ import useImage from "../utils/useImage";
 import { putProfile } from "../../redux/actions";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
+import "./editProfile.css";
+
 
 const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [image, setImage] = useState("");
+  const [cover, setCover] = useState("");
   const { uploadImage } = useImage(setImage);
   const {
     register,
@@ -35,6 +38,7 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
   const onSubmit = handleSubmit((data) => {
     data.id = id;
     data.image = image;
+    data.coverImage = cover;
     dispatch(putProfile(data)).then(() => {
       setChanges(Math.random());
       const Toast = Swal.mixin({
@@ -74,17 +78,21 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
             marginBottom: "-8px",
           }}
         >
-          <Typography variant="overline" color="GrayText">
-            change your profile image
-          </Typography>
         </Stack>
+        <Stack
+          sx={{
+            alignItems: "center",
+            marginTop: "5px",
+          }}
+        >
         <input
-          className="file-select"
+          className="file-selectProfile"
           id="exampleFile"
           name="file"
           type="file"
           onChange={uploadImage}
         />
+      </Stack>
       </Stack>
       <TextField
         sx={{ width: "320px", marginBottom: "10px" }}
@@ -98,12 +106,12 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
           minLength: 3,
         })}
       />
-      {errors.name?.type === "maxLength" && (
+      {errors?.name?.type === "maxLength" && (
         <Typography marginTop="-25px" variant="overline" color="red">
           Name is To long
         </Typography>
       )}
-      {errors.name?.type === "minLength" && (
+      {errors?.name?.type === "minLength" && (
         <Typography marginTop="-25px" variant="overline" color="red">
           Name is to short
         </Typography>
@@ -120,12 +128,12 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
           minLength: 3,
         })}
       />
-      {errors.lastname?.type === "maxLength" && (
+      {errors?.lastname?.type === "maxLength" && (
         <Typography marginTop="-25px" variant="overline" color="red">
           Last name is To long
         </Typography>
       )}
-      {errors.lastname?.type === "minLength" && (
+      {errors?.lastname?.type === "minLength" && (
         <Typography marginTop="-25px" variant="overline" color="red">
           Last name is to short
         </Typography>
@@ -167,20 +175,16 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
           {errors.Email.message}
         </Typography>
       )}
-      <Stack marginBottom="-20px">
         <Stack
           sx={{
             display: "flex",
             textAlign: "left",
             marginLeft: "12px",
-            marginBottom: "-8px",
+            marginBottom: "5px",
           }}
         >
-          <Typography variant="overline" color="GrayText">
-            Select your front Page image
-          </Typography>
-        </Stack>
-        <UploadImage />
+        <Typography variant="overline" color='GrayText' mb='-10px'>Select your new front page image</Typography>
+        <UploadImage image={cover} setImage={setCover}/>
       </Stack>
       <Button
         variant="contained"
@@ -188,6 +192,7 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
         endIcon={<SaveAltIcon />}
         sx={{ width: "320px" }}
         onClick={onSubmit}
+        disabled={!isDirty || !isValid}
       >
         Save Changes
       </Button>

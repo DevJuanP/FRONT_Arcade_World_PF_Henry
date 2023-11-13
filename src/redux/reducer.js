@@ -147,21 +147,18 @@ const initialState = {
 
     case ADD_TO_FAVORITES:
             allGamesFav = [...state.favorites, action.payload];
-            console.log("Add:",allGamesFav)
       return {
                 ...state,
                 favorites: allGamesFav,
             };
     case REMOVE_FROM_FAVORITES:
             allGamesRemove = state.favorites.filter(game => game.id !== action.payload);
-              console.log("Remove:",allGamesRemove)
         return {
                 ...state,
                 favorites: allGamesRemove 
             };
     case ADD_COMMENT:
          allComments = [...state.reviews, action.payload];
-              console.log(allComments)
               return {
                 ...state,
                 reviews: allComments

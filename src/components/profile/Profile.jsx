@@ -66,21 +66,10 @@ const Profile = () => {
   let nPurchased = userLocal?.user?.purchased;
 
   const getUser = async () => {
-    await dispatch(UserById(userLocal?.user?.id)).then((res) => {
-      console.log(res)
+    await dispatch(UserById(userLocal?.user?.id || userLocal?.user?.uid)).then((res) => {
      setUser(res.payload)
     })
   }
-
-  console.log(userLocal)
-
-
-  // useEffect(() => {
-  //   if ((userLocal === '' && !userLocal.login) || userLocal === null) {
-  //     navigate("/");
-  //   }
-  // }, []);
-
   useEffect(() => {
     getUser()
   }, [changes])
