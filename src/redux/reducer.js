@@ -165,11 +165,11 @@ const initialState = {
                 reviews: allComments
               }
       case LOGOUT:
-              return {
-                ...state,
-                favorites,
-                reviews,
-              };
+        return {
+          ...state,
+          favorites,
+          reviews,
+        };
     case DELETE_ITEM_CART:
       
       return {

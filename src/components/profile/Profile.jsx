@@ -74,6 +74,7 @@ const Profile = () => {
       localStorage.removeItem("login");
     }
   };
+  console.log(userLocal)
   return (
     <Box sx={{ minHeight: "100vh", backgroundColor:'#1a2a3b', marginTop:'20px' }}>
       <Grid container spacing={3}>

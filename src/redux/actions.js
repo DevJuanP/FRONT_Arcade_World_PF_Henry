@@ -217,12 +217,6 @@ export function postLogin(payload){
     return data
   }
 }
-// export function setUserData(userData) {
-//   return {
-//     type: SET_USER_DATA,
-//     payload: userData,
-//   };
-// }
 export function setUserData(userData) {
   return (dispatch) => {
     // Actualiza userData
@@ -235,6 +229,13 @@ export function setUserData(userData) {
     if (userData && userData.user && userData.user.favorites) {
       userData.user.favorites.forEach(game => {
         dispatch(addToFavorites(game));
+      });
+    }
+
+    // Si userData tiene reviews, los agrega al estado global
+    if (userData && userData.user && userData.user.reviews) {
+      userData.user.reviews.forEach(review => {
+        dispatch(addReview(review));
       });
     }
   };
@@ -311,6 +312,7 @@ export function GetUser(){
   return async function(dispatch){
    try {
     const {data}= await axios.get(`${BD_URL}/user`)
+    console.log(data);
     return dispatch({
       type:GET_USER,
       payload:data
