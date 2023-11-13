@@ -9,10 +9,15 @@ import React,{useEffect} from 'react'
   import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
   import {Box}from '@mui/material'
-  import {useSelector}from 'react-redux'
+  import {useSelector,useDispatch}from 'react-redux'
+  import { GetPuchase } from '../../redux/actions';
 
   
   function GraficoViewMain() {
+    const Dispacth=useDispatch()
+    useEffect(()=>{
+      Dispacth(GetPuchase())
+    },[])
     const DataUsers=useSelector((s)=>s.UserTop)
     const Users=useSelector((U)=>U.user)
     const Videogame=useSelector((G)=>G.games)
@@ -30,7 +35,39 @@ import Typography from '@mui/material/Typography';
             totalAmount: y?.purchased.reduce((sum, purchase) => sum + purchase.amount, 0).toFixed(1)
         }
     })
-    
+
+      const CatidadPormes=(dataArray)=>{
+        const sumasPorMes = {};
+        dataArray.forEach((obj) => {
+
+          const mes = new Date(obj.date).getMonth() + 1;  
+          
+          if (!sumasPorMes[mes]) {
+            sumasPorMes[mes] = 0;
+          }
+          if (obj.Videogames) {
+            sumasPorMes[mes] += obj.Videogames.length;
+          }
+        });   
+        const arraySumas = Array.from({ length: 12 }, (_, index) => sumasPorMes[index + 1] || 0);   
+
+        return arraySumas;
+      }
+     const lafuncion=CatidadPormes(Purchaseds)
+     const CatidadPormesUser=(dataArray)=>{
+      const cantidadPorMes = {};
+      dataArray.forEach((obj) => {
+        const mes = new Date(obj.createdAt).getMonth() + 1; 
+        if (!cantidadPorMes[mes]) {
+          cantidadPorMes[mes] = 0;
+        }
+        cantidadPorMes[mes]++;
+      });
+      const arrayCantidades = Array.from({ length: 12 }, (_, index) => cantidadPorMes[index + 1] || 0);
+      return arrayCantidades;
+     }
+     const Usermes=CatidadPormesUser(Users)
+
       function createData(Photo, Name, Nickname, amountPurchases, amountProvided) {        
         return { Photo, Name, Nickname, amountPurchases , amountProvided  };
       }
@@ -47,10 +84,10 @@ import Typography from '@mui/material/Typography';
         new Chart(ctx, {
           type: 'line',  
           data: {
-            labels: ['Enero','Febrero','Marzo','Abril','Mayo'],
+            labels: ['Enero','Febrero','Marzo','Abril','Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre','Diciembre'],
             datasets: [{
-              label: 'Stars',
-              data: [18,19,23,11,25],
+              label: 'Purchaseds',
+              data: lafuncion,
               fill: true, // Habilitar relleno
               backgroundColor: 'rgba(189, 255, 255, 0.4)',
               borderWidth: 1, 
@@ -60,8 +97,8 @@ import Typography from '@mui/material/Typography';
               pointRadius: 5  // Cambiado el color del borde
             },
             {
-                label: 'Stars',
-                data: [32,30,38,31,36],
+                label: 'Users',
+                data: Usermes,
                 fill: true, // Habilitar relleno
                 backgroundColor: 'rgba(75, 002, 192, 0.2)',
                 borderWidth: 1, 

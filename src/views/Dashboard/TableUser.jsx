@@ -8,15 +8,33 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Switch from '@mui/material/Switch';
+import { updateItem } from '../../redux/actions';
 
 
 function TableUser() {
   const user = useSelector((U) => U.user);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
-
   const dispatch = useDispatch();
+  
+  const [checkAdmiMap, setCheckAdmiMap] = useState({});
 
+  const CheckearAdmi = (id, admin) => {
+    setCheckAdmiMap({
+      ...checkAdmiMap,
+      [id]: !admin, // Solo almacena el valor booleano directamente en lugar de un objeto
+    });
+  };
+  
+  const updateAdmiStatus = () => {
+    for (const id in checkAdmiMap) {
+      const admin = checkAdmiMap[id];
+      dispatch(updateItem({ id, admin }));
+    }
+  };
+  
+  console.log(checkAdmiMap)
   const openModal = (userId) => {
     setSelectedUserId(userId);
     setModalIsOpen(true);
@@ -32,13 +50,15 @@ function TableUser() {
       dispatch(UserById(selectedUserId));
     }
   }, [dispatch, selectedUserId]);
+  
 
   const DataUser=useSelector((state)=>state.userID);
-  console.log(DataUser)
   const rows = user?.map((u) => {
     return {
       id: u.id,
       name: u.name,
+      admin:u?.admin,
+      baneado:u?.banstatus,
       lastname: u.lastname,
       nickname: u.nickname,
       Email: u.Email,
@@ -80,16 +100,18 @@ function TableUser() {
       ),
     },
     {
-      field: 'Delete',
-      headerName: 'Delete',
-      renderCell: () => (
-        <Button variant="outlined" color="error">
-          Delete
-        </Button>
+      field: 'admifg',
+      headerName: 'Admi',
+      renderCell: (params) => (
+        <Switch
+          checked={checkAdmiMap[params.id] || false}
+          onChange={() => CheckearAdmi(params.id, checkAdmiMap[params.id])}
+          onBlur={updateAdmiStatus}
+        />
       ),
-    },
+    }
   ];
-
+ 
   const styleTable = {
     color: 'black',
     width: '98%',

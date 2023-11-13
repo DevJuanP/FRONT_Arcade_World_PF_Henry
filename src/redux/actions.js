@@ -31,6 +31,7 @@ export const TOP_FIVE='TOP_FIVE'
 export const GET_PURCHASE='GET_PURCHASE'
 export const USER_BY_ID='USER_BY_ID'
 export const PURCHASE_BY_ID='PURCHASE_BY_ID'
+export const UPDATE_ITEM='UPDATE_ITEM'
 
 
 const { VITE_IS_LOCAL } =import.meta.env
@@ -332,7 +333,7 @@ export function purchaseSuccess(payload){
 export function GetPuchase(){
   return async function(dispatch){
     try {
-      const {data}=await axios.get('http://localhost:3001/purchase')
+      const {data}=await axios.get(`http://localhost:3001/purchase`)
       return dispatch({
         type:GET_PURCHASE,
         payload:data
@@ -353,10 +354,25 @@ export function UserById(id){
 }
 export function PurchaseById(id){
   return async function(dispatch){
-    const {data}=await axios.get(`http://localhost:3001/purchase/${id}`) 
+    const {data}=await axios.get(`${BD_URL}/purchase/${id}`) 
     return dispatch({
       type:PURCHASE_BY_ID,
       payload:data
     })
   }
 }
+export const updateItem = (newData) => {
+  console.log(newData)
+  return async (dispatch) => {
+    try {
+      const {data}= await axios.put(`${BD_URL}/user/update`,newData);
+      console.log(data)
+           return dispatch({
+            type:UPDATE_ITEM,
+            payload:data
+           })
+    } catch (error) {
+     console.log({error:error.message})
+    }
+  };
+};
