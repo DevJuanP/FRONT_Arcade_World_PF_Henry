@@ -89,10 +89,10 @@ import Typography from '@mui/material/Typography';
               label: 'Purchaseds',
               data: lafuncion,
               fill: true, // Habilitar relleno
-              backgroundColor: 'rgba(189, 255, 255, 0.4)',
+              backgroundColor: 'rgba(144, 202, 249, 0.4)',
               borderWidth: 1, 
               borderRadius: 20,
-              borderColor: 'rgba(75, 192, 192)',
+              borderColor: '#0d47a1',
               pointBackgroundColor: 'white', // Color de los puntos de intersección
               pointRadius: 5  // Cambiado el color del borde
             },
@@ -100,10 +100,10 @@ import Typography from '@mui/material/Typography';
                 label: 'Users',
                 data: Usermes,
                 fill: true, // Habilitar relleno
-                backgroundColor: 'rgba(75, 002, 192, 0.2)',
+                backgroundColor: 'rgba(229, 57, 53,0.6)',
                 borderWidth: 1, 
                 borderRadius: 20,
-                borderColor: 'rgba(75, 002, 192, 1)',
+                borderColor: '#b71c1c',
                 pointBackgroundColor: 'white', // Color de los puntos de intersección
                 pointRadius: 5
             }
@@ -112,26 +112,28 @@ import Typography from '@mui/material/Typography';
           options: {
             scales: {
               x: {
-                display: true, 
-                color: 'white'
+                display: true,
+                color: '#fff', // Color del texto en el eje x
               },
               y: {
                 beginAtZero: true,
-                display: true, 
+                display: true,
+                color: '#fff', // Color del texto en el eje y
               }
             },
             plugins: {
               legend: {
-                display: true, 
+                display: true,
               }
             },
             layout: {
               padding: {
                 top: 0,
-                bottom: 0, 
+                bottom: 0,
               }
             }
           }
+          
         });
       }, []);
       useEffect(() => {
@@ -181,13 +183,13 @@ import Typography from '@mui/material/Typography';
    
        }
       const GraphicOne={
-        backgroundColor:'#37474f',
+        backgroundColor:'#90a4ae',//#37474f
         padding:'2em',
         borderRadius:'1em',
 
        }
        const GraphicTwo={
-        backgroundColor:'#37474f',
+        backgroundColor:'#90a4ae',
         padding:'2em',
         borderRadius:'1em',
 
@@ -208,20 +210,20 @@ import Typography from '@mui/material/Typography';
         borderRadius:'50%'
        }
        const StyleTop={
-        width:'49em',
+        width:'46em',
        }
   return (
     <Box>
         <Box style={BoxGraphis} gap={2}>
             <Box style={GraphicOne}>
-                <Typography>
-                Purchases
+                <Typography variant='p' style={{color:'white',fontSize:'115%',fontWeight:'bold'}}>
+                Purchases and Users statistics by Month
                 </Typography>
         <canvas  style={canvaStyleOne} id='GhRAPHICS' />
             </Box>
             <Box style={GraphicTwo}>
-            <Typography>
-                Cantidad
+            <Typography variant='p' style={{color:'white',fontSize:'80%',fontWeight:'bold'}}>
+            User,Shopping Cart,Videogames,Login
                 </Typography>
             <canvas style={canvaStyleTwo} id="doughnutChart"></canvas>
             </Box>

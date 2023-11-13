@@ -8,8 +8,8 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Switch from '@mui/material/Switch';
 import { updateItem } from '../../redux/actions';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 
 
 function TableUser() {
@@ -21,20 +21,30 @@ function TableUser() {
   const [checkAdmiMap, setCheckAdmiMap] = useState({});
 
   const CheckearAdmi = (id, admin) => {
-    setCheckAdmiMap({
-      ...checkAdmiMap,
-      [id]: !admin, // Solo almacena el valor booleano directamente en lugar de un objeto
-    });
+    setCheckAdmiMap((prevCheckAdmiMap) => ({
+      ...prevCheckAdmiMap,
+      [id]: admin === undefined ? true : !admin,
+    }));
+    dispatch(updateItem({ id, admin: admin === undefined ? true : !admin }));
+
   };
-  
+  console.log(checkAdmiMap)
   const updateAdmiStatus = () => {
+  // Verificamos si hay cambios antes de realizar la actualización
+  const hasChanges = Object.values(checkAdmiMap).some((value) => value);
+
+  if (hasChanges) {
     for (const id in checkAdmiMap) {
       const admin = checkAdmiMap[id];
       dispatch(updateItem({ id, admin }));
     }
+
+    // Limpia el estado checkAdmiMap después de la actualización
+    setCheckAdmiMap({});
+  }
   };
   
-  console.log(checkAdmiMap)
+  console.log(user)
   const openModal = (userId) => {
     setSelectedUserId(userId);
     setModalIsOpen(true);
@@ -101,15 +111,17 @@ function TableUser() {
     },
     {
       field: 'admifg',
-      headerName: 'Admi',
+      headerName: 'Change Status',
       renderCell: (params) => (
-        <Switch
-          checked={checkAdmiMap[params.id] || false}
-          onChange={() => CheckearAdmi(params.id, checkAdmiMap[params.id])}
-          onBlur={updateAdmiStatus}
-        />
-      ),
-    }
+        <Button
+        variant="contained" color="success"
+      onClick={() => CheckearAdmi(params.id, checkAdmiMap[params.id])}
+      onMouseLeave={updateAdmiStatus}
+    >
+  <ChangeCircleIcon/>
+    </Button>
+  ),
+    },{field:'admin', headerName: 'administrator '}
   ];
  
   const styleTable = {
@@ -206,18 +218,21 @@ function TableUser() {
         </div>
         <div style={{display:'flex',alignItems:'center',flexDirection:'column'}}>
         <Typography variant="h5"> Email: {DataUser?.Email}</Typography>
-        <Typography variant="h6" style={{ color: DataUser?.admin ? 'green' : 'red' }}>
-          Admi: {DataUser?.admin ? '✅True' : '⛔False'}
+        <div  style={{display:'felx',alignItems:'center' }}>
+          <Typography variant="h6">Admi:</Typography>
+        <Typography variant="h6" style={{ color: DataUser?.admin ? '#00e676' : 'red' }}>
+           {DataUser?.admin ? '✅True' : '⛔False'}
         </Typography>
+        </div>
         <Typography variant="p">Creation: {DataUser?.createdAt}</Typography>
         </div>
       </div>
     </div>
     <Typography variant='h5' color='white'>My Videogames</Typography>
-        <div style={{padding:'1em 1em 1em 0em',display:'flex',flexWrap:'wrap',width:'100%',background:'#90a4ae',borderRadius:'1em'}}>
+        <div style={{padding:'1em 1em 1em 0em',display:'flex',border:'solid',flexWrap:'wrap',width:'100%',background:'#90a4ae',borderRadius:'1em'}}>
          {dataGame?.map((t)=>{
            return(
-            <div style={{display:'flex',alignItems:'center',flexDirection:'column',margin:'1%',background:'white'}}>
+            <div style={{display:'flex',alignItems:'center',flexDirection:'column',border:'solid',margin:'1%',background:'white'}}>
             <img src={t.Image} alt={t.Name}  style={{minWidth:'8em',maxWidth:'8em',minHeight:'5em'}}/>
             <h4 style={{whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',maxWidth:'15ch'}}>{t.Name}</h4>
             </div>
@@ -225,7 +240,7 @@ function TableUser() {
          })}
         </div>
         <Typography variant='h5' color='white'>My Favorites</Typography>
-        <div style={{padding:'1em 1em 1em 0em',display:'flex',flexWrap:'wrap',width:'100%',background:'#90a4ae',borderRadius:'1em'}}>
+        <div style={{display:'flex',flexWrap:'wrap',width:'100%',background:'#90a4ae',borderRadius:'1em'}}>
          {dataFav?.map((t)=>{
            return(
             <div style={{display:'flex',alignItems:'center',flexDirection:'column',margin:'1%',background:'white'}}>

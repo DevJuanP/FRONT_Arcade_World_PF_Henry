@@ -233,10 +233,14 @@ const initialState = {
                   PurchaseID:action.payload
                 }
                 case UPDATE_ITEM:
-                  return{
+                  const usuarioActualizado = action.payload;
+
+                  return {
                     ...state,
-                    user,
-                  }
+                    user: state.user.map(u =>
+                      u.id === usuarioActualizado.id ? usuarioActualizado : u
+                    ),}
+
     default:
       return {...state}  
   }

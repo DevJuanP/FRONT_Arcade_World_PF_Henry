@@ -340,7 +340,7 @@ export function purchaseSuccess(payload){
 export function GetPuchase(){
   return async function(dispatch){
     try {
-      const {data}=await axios.get(`http://localhost:3001/purchase`)
+      const {data}=await axios.get(`${BD_URL}/purchase`)
       return dispatch({
         type:GET_PURCHASE,
         payload:data
@@ -372,7 +372,7 @@ export const updateItem = (newData) => {
   console.log(newData)
   return async (dispatch) => {
     try {
-      const {data}= await axios.put(`${BD_URL}/user/update`,newData);
+      const {data}= await axios.put(`http://localhost:3001/user/update`,newData);
       console.log(data)
            return dispatch({
             type:UPDATE_ITEM,
