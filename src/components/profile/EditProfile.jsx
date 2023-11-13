@@ -14,20 +14,14 @@ import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import { useForm } from "react-hook-form";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
-import UploadImage from '../upload/UploadImage'
 import { useSelector, useDispatch } from "react-redux";
-import { selectedCountry, getCountry }from "../../redux/actions";
-=======
+import { selectedCountry, getCountry } from "../../redux/actions";
 import UploadImage from "../upload/UploadImage";
 import axios from "axios";
 import useImage from "../utils/useImage";
 import { putProfile } from "../../redux/actions";
-import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import "./editProfile.css";
->>>>>>> 0b737829f9536fa7dad429c03e838a50c347a023
-
 
 const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
   const dispatch = useDispatch();
@@ -67,30 +61,15 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
     });
   });
 
-<<<<<<< HEAD
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/du9kziyei/image/upload", // el url varia por cada usuario 'https://api.cloudinary.com/v1_1/tuUsuario/image/upload'
-      {
-        method: "POST",
-        body: data,
-      }
-    );
-    const file = await res.json();
-    setImage(file.secure_url);
-    setLoading(false);
-    
-  };
-    const dispatch = useDispatch();
-    let selectedCountry = useSelector((state) => state.selectedCountry);
-    let allCountries = useSelector((state) => state.countries);
-    console.log(selectedCountry); 
-    let allCountriesArray = allCountries ? Object.values(allCountries) : [];
+  let selectedCountry = useSelector((state) => state.selectedCountry);
+  let allCountries = useSelector((state) => state.countries);
+  console.log(selectedCountry);
+  let allCountriesArray = allCountries ? Object.values(allCountries) : [];
 
-    useEffect(() => {
-      dispatch(getCountry());
-    }, [dispatch]);
-=======
->>>>>>> 0b737829f9536fa7dad429c03e838a50c347a023
+  useEffect(() => {
+    dispatch(getCountry());
+  }, [dispatch]);
+
   return (
     <Grid item sx={{ width: "100%", textAlign: "center" }}>
       <Stack sx={{ marginBottom: "10px", marginLeft: "45px" }}>
@@ -108,22 +87,21 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
             marginLeft: "12px",
             marginBottom: "-8px",
           }}
-        >
-        </Stack>
+        ></Stack>
         <Stack
           sx={{
             alignItems: "center",
             marginTop: "5px",
           }}
         >
-        <input
-          className="file-selectProfile"
-          id="exampleFile"
-          name="file"
-          type="file"
-          onChange={uploadImage}
-        />
-      </Stack>
+          <input
+            className="file-selectProfile"
+            id="exampleFile"
+            name="file"
+            type="file"
+            onChange={uploadImage}
+          />
+        </Stack>
       </Stack>
       <TextField
         sx={{ width: "320px", marginBottom: "10px" }}
@@ -185,7 +163,10 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
         name="country"
         label="Choose your country"
         value={selectedCountry}
-        onChange={(event) =>{console.log(event.target.value); dispatch(selectedCountry(event.target.value))}}
+        onChange={(event) => {
+          console.log(event.target.value);
+          dispatch(selectedCountry(event.target.value));
+        }}
         {...register("country")}
       >
         {allCountriesArray.map((country) => (
@@ -213,16 +194,18 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
           {errors.Email.message}
         </Typography>
       )}
-        <Stack
-          sx={{
-            display: "flex",
-            textAlign: "left",
-            marginLeft: "12px",
-            marginBottom: "5px",
-          }}
-        >
-        <Typography variant="overline" color='GrayText' mb='-10px'>Select your new front page image</Typography>
-        <UploadImage image={cover} setImage={setCover}/>
+      <Stack
+        sx={{
+          display: "flex",
+          textAlign: "left",
+          marginLeft: "12px",
+          marginBottom: "5px",
+        }}
+      >
+        <Typography variant="overline" color="GrayText" mb="-10px">
+          Select your new front page image
+        </Typography>
+        <UploadImage image={cover} setImage={setCover} />
       </Stack>
       <Button
         variant="contained"
@@ -237,5 +220,4 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
     </Grid>
   );
 };
-
 export default EditProfile;
