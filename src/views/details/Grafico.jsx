@@ -12,7 +12,6 @@ function Grafico() {
   useEffect(() => {
     dispatch(gameById(id));
   }, [dispatch, id]);
-  console.log(gameDetails)
   const Stargraphics= gameDetails?.graphics?.stars
   const scoregraphics= gameDetails?.graphics?.score
   const Stargameplay= gameDetails?.gameplay?.stars

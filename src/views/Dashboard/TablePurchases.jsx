@@ -27,7 +27,6 @@ function TablePurchases() {
     Dispatch(PurchaseById(selectedPurchaseId));
   }
   },[Dispatch,selectedPurchaseId])
-  console.log(selectedPurchaseId)
   const purchase=useSelector((P)=>P.Purchase)
   const DataPurchase=useSelector((P)=>P.PurchaseID)
  

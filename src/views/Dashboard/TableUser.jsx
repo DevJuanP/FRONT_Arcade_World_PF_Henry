@@ -34,7 +34,6 @@ function TableUser() {
   }, [dispatch, selectedUserId]);
 
   const DataUser=useSelector((state)=>state.userID);
-  console.log(DataUser)
   const rows = user?.map((u) => {
     return {
       id: u.id,

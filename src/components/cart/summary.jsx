@@ -8,9 +8,9 @@ import {
   Stack,
   CardMedia,
   Avatar,
-  Grid
+  Grid,
 } from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
 
 const Summary = () => {
   const games = JSON.parse(localStorage.getItem("allGames"));
@@ -28,44 +28,42 @@ const Summary = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        backgroundColor:'#1a2a3b',
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
-      <Box
-        sx={{
-          backgroundColor: "#fff",
-          borderRadius:'2% 0% 0% 2%',
-          height: "80vh",
-          width: "1100px",
+    <Stack>
+      <Stack
+        style={{
+          backgroundColor: "#1a2a3b",
           display: "flex",
-          flexDirection: "row",
-          justifyContent: "right",
-          alignItems: "left",
-          marginTop: "18px",
-          // gap: "10px",
-          border:'4px solid #000',
-          boxShadow: "1px 1px 3px 1px black",
-          top: "0",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        {products.map((game) => (
+        <Box
+          sx={{
+            backgroundColor: "#fff",
+            borderRadius: "3  % 3% 3% 3%",
+            width: "420px",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "left",
+            alignItems: "left",
+            marginTop: "18px",
+            marginLeft: "20px",
+            border: "2px solid #000",
+            boxShadow: "1px 1px 3px 1px black",
+            top: "0",
+          }}
+        >
           <Stack
             sx={{
               display: "flex",
-              alignItems: "center",
-              alignContent: "center",
+              alignItems: "flex-start",
+              alignContent: "flex-start",
             }}
-            key={game.id}
+            // key={game.id}
           >
             <CardContent
               sx={{
-                marginLeft:'45px',
+                marginLeft: "45px",
                 width: "300px",
                 display: "flex",
                 textAlign: "center",
@@ -75,53 +73,55 @@ const Summary = () => {
               }}
             >
               <Avatar
-              src="https://res.cloudinary.com/du9kziyei/image/upload/v1699602012/images/g7oo7zdtcszck5kxmohu.png"
-              sx={{backgroundColor:'#1a2a3b', width:'65px', height:'65px', marginTop:'-10px', marginBottom:'-25px'}}
+                src="https://res.cloudinary.com/du9kziyei/image/upload/v1699602012/images/g7oo7zdtcszck5kxmohu.png"
+                sx={{
+                  backgroundColor: "#1a2a3b",
+                  width: "65px",
+                  height: "65px",
+                  marginTop: "-10px",
+                  marginBottom: "-25px",
+                }}
               />
               <Typography variant="h4">Arcade World</Typography>
-              <Typography variant="h5" color='GrayText'>Payment completed successfully</Typography>
-              <Typography variant="body2">Products purchased:</Typography>
-              <Typography variant="h6" component="div">
-                {game.name}: $ {game.price}
+              <Typography variant="h5" color="GrayText">
+                Payment completed successfully
               </Typography>
-            </CardContent>
+              <Typography variant="body2">Products purchased:</Typography>
+              {products.map((game) => (
+                <>
+                  <Typography variant="h6" component="div">
+                    {game.name}: $ {game.price}
+                  </Typography>
+                </>
+              ))}
               <Stack style={{ display: "flex", alignItems: "center" }}>
-                <Typography variant="h6" sx={{marginBottom:'80px'}}>
-                  Total: ${products.reduce((total, game) => total + game.price, 0)}
+                <Typography variant="h6" sx={{ marginBottom: "5px" }}>
+                  Total: $
+                  {products.reduce((total, game) => total + game.price, 0)}
                 </Typography>
-                    <Typography variant="caption">Thanks for your support</Typography>
               </Stack>
+              <Typography variant="caption">Thanks for your support</Typography>
+            </CardContent>
           </Stack>
-        ))}
-            <CardMedia
-            sx={{marginLeft:'20px', marginRight:'-25px', marginTop:'-3px', border:'4px solid #000', borderRadius:'0% 2% 2% 0%'}}
-            component="img"
-            height="550px"
-            width='350px'
-            image="https://cdn.dribbble.com/users/330915/screenshots/3806532/media/a5b29f241eacaafa4c08a0dbad63b7e1.gif"
-            alt="green iguana"
-            />
-          
-        <Grid>
-      </Grid>
-      </Box>
-      <Stack
-        sx={{ display: "flex", alignContent: "center", alignItems: "center" }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginTop: "25px",
-            marginBottom: "17px",
-          }}
-        >
-          <NavLink to="/store">
-            <Button variant="contained" endIcon={<SearchIcon/>}>Discover more products</Button>
-          </NavLink>
-        </div>
+        </Box>
       </Stack>
-    </div>
+        <Stack backgroundColor='#1a2a3b' display='flex' p='20px' justifyContent='center' alignItems='center'>
+            <NavLink to="/store">
+              <Button variant="contained" endIcon={<SearchIcon />}>
+                Discover more products
+              </Button>
+            </NavLink>
+        </Stack>
+      <Stack
+        style={{
+          backgroundColor: "#1a2a3b",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+        }}
+        >
+      </Stack>
+    </Stack>
   );
 };
 export default Summary;

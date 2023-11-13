@@ -42,7 +42,6 @@ const Login = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        console.log("negativo");
       } else {
         const Toast = Swal.mixin({
           toast: true,

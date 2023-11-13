@@ -1,10 +1,7 @@
 import { Grid, Avatar, Typography, Stack } from "@mui/material";
 import React, {useEffect} from "react";
-import { useNavigate } from "react-router-dom";
 
-const onlyProfile = ({user}) => {
-  console.log(user)
- 
+const onlyProfile = ({user}) => { 
   return (
     <Grid item sx={{ width: "100%", textAlign:'center'}}>
       <Avatar
