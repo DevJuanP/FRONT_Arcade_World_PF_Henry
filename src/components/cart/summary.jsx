@@ -11,19 +11,30 @@ import {
   Grid
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
+import { useDispatch, useSelector } from "react-redux";
+import { purchaseSuccess } from '../../redux/actions.js';
 
 const Summary = () => {
+  const dispatch = useDispatch();
   const games = JSON.parse(localStorage.getItem("allGames"));
+  const UserId = useSelector(s => s.userData?.user.id)
   const [products, setProducts] = useState([]);
-
+  const amount = products.reduce((total, game) => total + game.price, 0)
+  
   useEffect(() => {
     const videogameIds = JSON.parse(localStorage.getItem("gameIds"));
     const filteredGames = games.filter((gm) => videogameIds?.includes(gm.id));
-
+    const payload = {
+      UserId: UserId,
+      amount: amount,
+      GamesIds: videogameIds
+  
+    }
     setProducts(filteredGames);
+    dispatch(purchaseSuccess(payload))
 
     return () => {
-      localStorage.removeItem("videogameIds");
+      localStorage.removeItem("gameIds");
     };
   }, []);
 
@@ -87,7 +98,7 @@ const Summary = () => {
             </CardContent>
               <Stack style={{ display: "flex", alignItems: "center" }}>
                 <Typography variant="h6" sx={{marginBottom:'80px'}}>
-                  Total: ${products.reduce((total, game) => total + game.price, 0)}
+                  Total: ${amount}
                 </Typography>
                     <Typography variant="caption">Thanks for your support</Typography>
               </Stack>

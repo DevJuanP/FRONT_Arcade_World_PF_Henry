@@ -4,7 +4,8 @@ import { GET_GAMES, GET_GAME_NAME, GET_GAME_ID,
          FILTER_GAMES, RESET_GENRE_FILTER, RESET_PLATFORM_FILTER,
          SORT_GAMES_ASC, SORT_GAMES_DESC, FILTER_GAMES_BY_PRICE, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES,
          ADD_COMMENT, DELETE_ITEM_CART, ADD_NEWS_PURCHASED, ADD_TO_CART, DELETE_ITEM,
-         LOGOUT, GET_USER, SET_SELECTED_PRICE, PURCHASE_SUCCESS,TOP_FIVE,GET_PURCHASE,USER_BY_ID,PURCHASE_BY_ID} from './actions.js';
+         LOGOUT, GET_USER, SET_SELECTED_PRICE, PURCHASE_SUCCESS,TOP_FIVE,GET_PURCHASE,USER_BY_ID,PURCHASE_BY_ID,
+         CREATE_GAME } from './actions.js';
                         
 const initialState = {
   games:[],
@@ -32,7 +33,8 @@ const initialState = {
   cartItemCount: 0,
   purchasedVideogames: [],
   Purchase:[],
-  PurchaseID:[]
+  PurchaseID:[],
+  
   }  
  
  const rootReducer = (state=initialState, action)=> {
@@ -75,11 +77,7 @@ const initialState = {
       ...state,
       selectedCountry: action.payload,
       };
-    case SET_SELECTED_GENRE:
-      return {
-      ...state,
-      selectedGenre: action.payload,
-      };
+
     case SET_SELECTED_PLATFORM:
       return {
       ...state,
@@ -211,7 +209,7 @@ const initialState = {
       case PURCHASE_SUCCESS:
         return{
           ...state,
-          purchasedVideogames:[...state.purchasedVideogames, action.payload]
+          purchasedVideogames:[...state.purchasedVideogames, ...action.payload]
         } 
         case TOP_FIVE:
           const userCopy=[...state.UserTop]
@@ -235,6 +233,12 @@ const initialState = {
                   ...state,
                   PurchaseID:action.payload
                 }
+              case CREATE_GAME:
+                return {
+                  ...state,
+                  games: [...state.games, action.payload],
+                  allGames: [...state.games, action.payload]
+                  };
     default:
       return {...state}  
   }

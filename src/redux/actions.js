@@ -31,6 +31,7 @@ export const TOP_FIVE='TOP_FIVE'
 export const GET_PURCHASE='GET_PURCHASE'
 export const USER_BY_ID='USER_BY_ID'
 export const PURCHASE_BY_ID='PURCHASE_BY_ID'
+export const CREATE_GAME='CREATE_GAME'
 
 
 const { VITE_IS_LOCAL } =import.meta.env
@@ -339,7 +340,7 @@ export function purchaseSuccess(payload){
 export function GetPuchase(){
   return async function(dispatch){
     try {
-      const {data}=await axios.get('http://localhost:3001/purchase')
+      const {data}=await axios.get(`${BD_URL}/purchase`)
       return dispatch({
         type:GET_PURCHASE,
         payload:data
@@ -360,10 +361,30 @@ export function UserById(id){
 }
 export function PurchaseById(id){
   return async function(dispatch){
-    const {data}=await axios.get(`http://localhost:3001/purchase/${id}`) 
+    const {data}=await axios.get(`${BD_URL}/purchase/${id}`) 
     return dispatch({
       type:PURCHASE_BY_ID,
       payload:data
     })
   }
 }
+export const createVideogame = (payload) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(
+        `${BD_URL}/videogame`,
+        payload
+      );
+      const createdProduct = response.data;
+      
+      dispatch({
+        type: CREATE_GAME,
+        payload: createdProduct,
+      })
+      
+    } catch (error) {
+      console.log("Error: createVideogame", error);
+      
+    }
+  };
+};
