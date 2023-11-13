@@ -1,15 +1,21 @@
 import { Card, CardContent, Grid, Stack } from "@mui/material";
 import Typography from "@mui/material/Typography";
-
+import GamesIcon from '@mui/icons-material/Games';
+import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 
 function About() {
+  
   return (
-    <Stack container sx={{display:'flex', flexDirection: 'colum', textAlign:'center'}}>
+    <Stack container sx={{display:'flex', flexDirection: 'colum', textAlign:'center', backgroundImage:`url('https://th.bing.com/th/id/R.5eca9af824ce557d667fe29298d474bd?rik=28WwQq7GYHkyLw&riu=http%3a%2f%2f2.bp.blogspot.com%2f-sj-ah7PMCvk%2fUeDD4EQkAqI%2fAAAAAAAAABo%2fQfKKgI5rw7w%2fs1600%2fClasicos.png&ehk=q%2f2JDoqvpFzVKsmYUdE%2fxl%2bFKx6x2vRv3EISg1YaI1A%3d&risl=&pid=ImgRaw&r=0')`}}>
       <Stack sx={{display:'flex', marginLeft:'20px', marginRight:'20px', marginTop:'10px'}}>
-        <Card>
+        <Card sx={{ backgroundColor:' rgba(255, 255, 255, 0.8)', transition: 'transform 0.3s','&:hover': {transform: 'scale(1.02)',}}}>
           <CardContent>
-            <Typography variant="h3">Welcome to Arcade World!</Typography>
-            <Typography variant="body1">
+            <SportsEsportsIcon sx={{fontSize:'50px', color:'#1a2a3b'}} />
+            <Typography variant="h3" sx={{marginBottom:'20px'}}>Welcome to Arcade World!</Typography>
+            <Typography variant="body1" >
               Arcade World is a virtual paradise for all video game lovers. Upon
               entering the site, you are met with a vibrant and dynamic design
               that captures the essence of the fun and excitement of video
@@ -30,11 +36,12 @@ function About() {
         </Card>
       </Stack>
       <Grid container>
-        <Grid item sm={5} sx={{margin:'20px', border: 'solid black 2px', marginRight:'59px'}}>
-            <Card sx={{height:'100%'}}>
+        <Grid item sm={5} sx={{margin:'20px',  marginRight:'100px'}}>
+            <Card  sx={{backgroundColor:' rgba(255, 255, 255, 0.8)', height:'100%', transition: 'transform 0.3s','&:hover': {transform: 'scale(1.05)',}}}>
               <CardContent>
-                <Typography variant="h4">Mission of Arcade World</Typography>
-                <Typography variant="body1">
+                <QuestionMarkIcon sx={{color:'#1a2a3b', fontSize:'50px'}} />
+                <Typography variant="h4" sx={{marginBottom:'20px'}}>Mission of Arcade World</Typography>
+                <Typography variant="body1" >
                   Operation Retro Game Rescue At Arcade World, we have
                   discovered that some of our treasured retro games have
                   mysteriously disappeared from our library. Your mission,
@@ -54,11 +61,12 @@ function About() {
               </CardContent>
             </Card>
         </Grid>
-        <Grid item sm={6} sx={{margin: '20px', border: 'solid black 2px'}}>
-          <Card sx={{height:'100%'}}>
+        <Grid item sm={5} sx={{margin: '20px', marginLeft:'100px'}}>
+          <Card  sx={{backgroundColor:' rgba(255, 255, 255, 0.8)', height:'100%', transition: 'transform 0.3s','&:hover': {transform: 'scale(1.05)',}}}>
             <CardContent>
-              <Typography variant="h4">Vision of Arcade World</Typography>
-              <Typography variant="body1">
+              <VisibilityIcon sx={{color:'#1a2a3b', fontSize:'50px'}} />
+              <Typography variant="h4" sx={{marginBottom:'20px'}}>Vision of Arcade World</Typography>
+              <Typography variant="body1" >
                 Imagine a digital universe, a cosmos of codes and pixels, where
                 every star is a video game waiting to be discovered. This is
                 Arcade World, an ever-expanding universe of interactive

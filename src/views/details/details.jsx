@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { gameById } from "../../redux/actions";
+import { gameById, GetUser } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Grafico from "./Grafico";
 import { useNavigate, useParams } from "react-router-dom";
@@ -30,6 +30,7 @@ const Details = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const shoppingCart = useSelector((state) => state.shoppingCart);
+  let commentari = useSelector((state)=>state.commentari)
   let userLocalDetail = localStorage.getItem("login");
   userLocalDetail = userLocalDetail ? JSON.parse(userLocalDetail) : null;
   
@@ -62,6 +63,7 @@ const Details = () => {
   useEffect(() => {
     dispatch(gameById(id));
   }, [dispatch, id]);
+
 
   const handleChange = (event) => {
     let cleanMessage = filter.clean(event.target.value)
@@ -119,20 +121,6 @@ const Details = () => {
                 image={gameDetails.image}
                 title="prueba"
               />
-              <Stack sx={{ textAlign: "left", marginLeft: "8px" }}>
-                {/* <Typography variant="overline">
-                  Score:
-                </Typography>
-                <Typography variant="overline">
-                  Graphics: {gameDetails?.graphics}
-                </Typography>
-                <Typography variant="overline">
-                  Gameplay: {gameDetails?.gameplay}
-                </Typography>
-                <Typography variant="overline">
-                  Quality price: {gameDetails?.quality_price}
-                </Typography> */}
-              </Stack>
             </Card>         
           </Stack>
           <Stack textAlign="left" marginLeft="20px">
@@ -203,15 +191,18 @@ const Details = () => {
         </Box>
       </Stack>
           <Grid container spacing={3} justifyContent='center' marginTop='30px'>
-            { gameComments.map((comment, index)=>(
-            <Stack textAlign='center' marginRight='20px'>
+            { gameDetails.reviews && gameDetails.reviews.map((review, index)=>(
+            <Stack textAlign='center' marginRight='20px' key={index}>
               <Card sx={{ minWidth: 275, marginBottom:'20px'}}>
                 <CardContent sx={{textAlign: 'center', height:'200px', width:'400px'}}>
                 <Stack alignItems='center'>
-                  <Avatar src={userLocalDetail?.user?.image}/>
+                  {/* <Avatar src={userLocalDetail?.user?.image}/> */}
+                  <Typography textAlign="center" sx={{color: 'black', fontWeight:'bold'}}>
+                  {review.nickName}
+                  </Typography>
+                  {/* <Rating value={review.rating} readOnly precision={0.5} /> */}
                   </Stack>
-                  <Typography textAlign="center" marginBottom='10px'>{userLocalDetail?.user?.nickname}</Typography>
-                  <Typography textAlign="center">{comment.message}</Typography>
+                  <Typography textAlign="center">{review.review}</Typography>
                 </CardContent>
               </Card>
             </Stack>
@@ -221,3 +212,10 @@ const Details = () => {
   );
 };
 export default Details;
+
+/* {gameDetails.reviews && gameDetails.reviews.map((review, index) => (
+  <div key={index}>
+    <h3>{review.title}</h3>
+    <p>{review.content}</p>
+  </div>
+))}*/
