@@ -17,19 +17,24 @@ import CreateIcon from "@mui/icons-material/Create";
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import {
+  UserById,
   deleteItem,
   deleteItemCart,
 } from "../../redux/actions";
 import GamesProfile from "./GamesProfile";
 import FavoriteProfile from "./FavoriteProfile";
-import EditProfile from "./editProfile";
+import EditProfile from "./EditProfile";
 import OnlyProfile from "./OnlyProfile";
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import LayoutAuth from "../auth/LayoutAuth";
+
 
 const Profile = () => {
   const [rederFav, setRenderFav] = useState(false);
   const [renderBuy, setRenderBuy] = useState(true);
+  const [user, setUser] = useState()
+  const [changes, setChanges] = useState(0)
 
   const handleChangeRender = () => {
     setRenderFav((elemento) => !elemento);
@@ -56,15 +61,19 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   //parte del login
-  let userLocal = localStorage.getItem("login");
+  let userLocal =  localStorage.getItem("login");
   userLocal = userLocal ? JSON.parse(userLocal) : null;
   let nPurchased = userLocal?.user?.purchased;
 
+  const getUser = async () => {
+    await dispatch(UserById(userLocal?.user?.id || userLocal?.user?.uid)).then((res) => {
+     setUser(res.payload)
+    })
+  }
   useEffect(() => {
-    if ((userLocal === '' && !userLocal.login) || userLocal === null) {
-      navigate("/");
-    }
-  }, []);
+    getUser()
+  }, [changes])
+
   const handleLogout = () => {
     if (userLocal) {
       userLocal.login = false;
@@ -75,10 +84,11 @@ const Profile = () => {
     }
   };
   return (
+    <LayoutAuth>
     <Box sx={{ minHeight: "100vh", backgroundColor:'#1a2a3b', marginTop:'20px' }}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6} lg={3}>
-          <Card sx={{ width: "100%", height:'125vh', marginLeft:'25px', marginTop:'30px', marginBottom:'20px'}}>
+        <Grid  item xs={12} md={6} lg={3}>
+          <Card sx={{ width: "100%", p:1, pb: 3, marginLeft:'25px', marginTop:'30px', marginBottom:'20px'}}>
             <Stack direction="column" alignItems="center">
               <Stack marginRight="290px" marginBottom="-20px">
                 <Button
@@ -95,13 +105,13 @@ const Profile = () => {
                   sx={{ backgroundColor: "transparent", color: "#000" }}
                   onClick={handleChangeRenderProfileEdit}
                 >
-                  {<CreateIcon userLocal={userLocal} />}
+                  {<CreateIcon />}
                 </IconButton>
                 </Stack>
                 {renderProfile === true ? (
-                  <OnlyProfile userLocal={userLocal} />
+                  <OnlyProfile user={user ?? userLocal?.user} />  // quitar el user local cuando el back solucione el validate
                 ) : (
-                  <EditProfile />
+                  <EditProfile setChanges={setChanges} handleChangeRenderProfileEdit={handleChangeRenderProfileEdit} id={userLocal.user?.id} />
                 )}
               </Stack>
             </Stack>
@@ -145,6 +155,7 @@ const Profile = () => {
         </Grid>
       </Grid>
     </Box>
+    </LayoutAuth>
   );
 };
 export default Profile;
