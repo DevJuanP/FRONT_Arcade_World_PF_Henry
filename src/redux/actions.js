@@ -38,6 +38,7 @@ const { VITE_IS_LOCAL } =import.meta.env
 const URL_DEPLOY = 'https://back-arcade-world-pf-henry.onrender.com';
 const urlLocal = 'http://localhost:3001';
 const BD_URL =  VITE_IS_LOCAL === 'true' ? urlLocal : URL_DEPLOY
+console.log(BD_URL);
 
 export const getGames = ()=>{ 
   return async function(dispatch) {
