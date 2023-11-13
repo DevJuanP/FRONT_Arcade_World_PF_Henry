@@ -6,9 +6,8 @@ import { DataGridPro } from '@mui/x-data-grid-pro';
 
 function TableGames() {
  const games=useSelector((g)=>g.games)
-
  const rows = games.map((G)=>{
-  console.log(G)
+  
     return{
         id:G.id,
         Name:G.name,
@@ -21,7 +20,7 @@ function TableGames() {
  })
  const styleTable={
   color:'black',
-  width:'98%',
+  width:'60%',
   backgroundColor: '#90a4ae',
   border: 'none',
 

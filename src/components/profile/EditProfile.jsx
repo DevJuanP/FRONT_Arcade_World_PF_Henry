@@ -12,33 +12,62 @@ import {
 import MenuItem from "@mui/material/MenuItem";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import { useForm } from "react-hook-form";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import UploadImage from '../upload/UploadImage'
 import { useSelector, useDispatch } from "react-redux";
 import { selectedCountry, getCountry }from "../../redux/actions";
+=======
+import UploadImage from "../upload/UploadImage";
+import axios from "axios";
+import useImage from "../utils/useImage";
+import { putProfile } from "../../redux/actions";
+import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+import "./editProfile.css";
+>>>>>>> 0b737829f9536fa7dad429c03e838a50c347a023
 
-const EditProfile = ({ userLocal }) => {
+
+const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  useEffect(() => {
-    if ((userLocal === "" && !userLocal.login) || userLocal === null) {
-      navigate("/");
-    }
-  }, []);
+  const [image, setImage] = useState("");
+  const [cover, setCover] = useState("");
+  const { uploadImage } = useImage(setImage);
   const {
     register,
     handleSubmit,
     formState: { errors, isDirty, isValid },
     reset,
   } = useForm();
-  const uploadImageN = async (e) => {
-    const files = e.target.files;
-    const data = new FormData();
 
-    data.append("file", files[0]);
-    data.append("upload_preset", "JesusBavaresco"); // el segundo campo varia dependiendo del nombre que utilices
-    setLoading(true);
+  const onSubmit = handleSubmit((data) => {
+    data.id = id;
+    data.image = image;
+    data.coverImage = cover;
+    dispatch(putProfile(data)).then(() => {
+      setChanges(Math.random());
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "User Updated",
+      });
+      handleChangeRenderProfileEdit();
+    });
+  });
 
+<<<<<<< HEAD
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/du9kziyei/image/upload", // el url varia por cada usuario 'https://api.cloudinary.com/v1_1/tuUsuario/image/upload'
       {
@@ -60,16 +89,41 @@ const EditProfile = ({ userLocal }) => {
     useEffect(() => {
       dispatch(getCountry());
     }, [dispatch]);
+=======
+>>>>>>> 0b737829f9536fa7dad429c03e838a50c347a023
   return (
-    <Grid item sx={{ width: "100%", textAlign: "center"}}>
+    <Grid item sx={{ width: "100%", textAlign: "center" }}>
       <Stack sx={{ marginBottom: "10px", marginLeft: "45px" }}>
-        <Avatar sx={{ width: 250, height: 250 }} src="" alt="Profile image" />
+        <Avatar
+          sx={{ width: 250, height: 250, opacity: 0.6 }}
+          src={image ?? ""}
+          alt="Profile image"
+        />
       </Stack>
-      <Stack marginBottom='-20px'>
-      <Stack sx={{display:'flex', textAlign:'left', marginLeft:'12px', marginBottom:'-8px'}}>
-        <Typography variant='overline' color='GrayText'>change your profile image</Typography>
+      <Stack marginBottom="-20px">
+        <Stack
+          sx={{
+            display: "flex",
+            textAlign: "left",
+            marginLeft: "12px",
+            marginBottom: "-8px",
+          }}
+        >
         </Stack>
-        <UploadImage/>
+        <Stack
+          sx={{
+            alignItems: "center",
+            marginTop: "5px",
+          }}
+        >
+        <input
+          className="file-selectProfile"
+          id="exampleFile"
+          name="file"
+          type="file"
+          onChange={uploadImage}
+        />
+      </Stack>
       </Stack>
       <TextField
         sx={{ width: "320px", marginBottom: "10px" }}
@@ -83,12 +137,12 @@ const EditProfile = ({ userLocal }) => {
           minLength: 3,
         })}
       />
-      {errors.name?.type === "maxLength" && (
+      {errors?.name?.type === "maxLength" && (
         <Typography marginTop="-25px" variant="overline" color="red">
           Name is To long
         </Typography>
       )}
-      {errors.name?.type === "minLength" && (
+      {errors?.name?.type === "minLength" && (
         <Typography marginTop="-25px" variant="overline" color="red">
           Name is to short
         </Typography>
@@ -105,12 +159,12 @@ const EditProfile = ({ userLocal }) => {
           minLength: 3,
         })}
       />
-      {errors.lastname?.type === "maxLength" && (
+      {errors?.lastname?.type === "maxLength" && (
         <Typography marginTop="-25px" variant="overline" color="red">
           Last name is To long
         </Typography>
       )}
-      {errors.lastname?.type === "minLength" && (
+      {errors?.lastname?.type === "minLength" && (
         <Typography marginTop="-25px" variant="overline" color="red">
           Last name is to short
         </Typography>
@@ -159,17 +213,24 @@ const EditProfile = ({ userLocal }) => {
           {errors.Email.message}
         </Typography>
       )}
-      <Stack marginBottom='-20px'>
-        <Stack sx={{display:'flex', textAlign:'left', marginLeft:'12px', marginBottom:'-8px'}}>
-        <Typography variant='overline' color='GrayText'>Select your front Page image</Typography>
-        </Stack>
-        <UploadImage/>
+        <Stack
+          sx={{
+            display: "flex",
+            textAlign: "left",
+            marginLeft: "12px",
+            marginBottom: "5px",
+          }}
+        >
+        <Typography variant="overline" color='GrayText' mb='-10px'>Select your new front page image</Typography>
+        <UploadImage image={cover} setImage={setCover}/>
       </Stack>
       <Button
         variant="contained"
         color="success"
         endIcon={<SaveAltIcon />}
         sx={{ width: "320px" }}
+        onClick={onSubmit}
+        disabled={!isDirty || !isValid}
       >
         Save Changes
       </Button>

@@ -11,8 +11,8 @@ import {  Grid, CardContent } from "@mui/material";
 
 const GamesProfile = ({ nPurchased }) => {
   return (
-    <Grid container columnSpacing={3} rowSpacing={3}>
-      {nPurchased?.map((elemento) => (
+    <Grid container columnSpacing={3} rowSpacing={3} mb={2}>
+      {nPurchased?.map((elemento, key) => (
         <React.Fragment>
           {elemento?.Videogames?.map((gameBuy) => (
             <Grid item xs>

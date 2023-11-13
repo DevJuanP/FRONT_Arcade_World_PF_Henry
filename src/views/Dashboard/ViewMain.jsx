@@ -6,11 +6,13 @@ import PersonIcon from '@mui/icons-material/Person';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import LocalMallSharpIcon from '@mui/icons-material/LocalMallSharp';
 import { useDispatch, useSelector } from 'react-redux'
+import GraficoViewMain from './GraficoViewMain';
 
 function ViewMain() {
     const dispatch=useDispatch()
     const game = useSelector((G)=>G?.games)
-    const user = useSelector((U)=>U.user)
+    const user = useSelector((U)=>U?.user)
+ 
     const Counterpurchased=(users)=>{
       let arrayConteiner=[]
       users.forEach(objeto=>{
@@ -57,8 +59,21 @@ function ViewMain() {
       padding:'1em' // Fondo semitransparente
  
     };
+   const BoxMain={
+    display:'flex',
+    alignItems: 'center',
+    flexDirection:'column',
+   }
+
+   const BoxGraphis={
+    display:'flex',
+    width:'100%',
+    justifyContent:'space-evenly',
+    paadding:'0px'
+   }
   return (
-    <Box bgcolor='#546e7a' style={BoxCard} >
+    <Box bgcolor='#546e7a' style={BoxMain} gap={2}>
+    <Box  style={BoxCard} >
      {/*  //?Card Games ↓*/} 
      <Box >
       <Card style={cardStyle} >
@@ -125,6 +140,10 @@ function ViewMain() {
                 </CardContent>
             </Card>
         </Box>
+    </Box>
+    <Box style={BoxGraphis}> 
+          <GraficoViewMain />
+    </Box>
     </Box>
   )
 }
