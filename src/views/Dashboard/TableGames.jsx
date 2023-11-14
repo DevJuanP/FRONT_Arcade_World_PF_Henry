@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { Box, Typography,Button } from '@mui/material'
 import {useSelector } from 'react-redux'
 import { DataGridPro } from '@mui/x-data-grid-pro';
@@ -6,7 +6,7 @@ import { DataGridPro } from '@mui/x-data-grid-pro';
 
 function TableGames() {
  const games=useSelector((g)=>g.games)
-
+//  const [chekearActive,setchekearActive]=useState({})
  const rows = games.map((G)=>{
   
     return{

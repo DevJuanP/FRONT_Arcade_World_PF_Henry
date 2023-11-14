@@ -33,6 +33,7 @@ export const GET_PURCHASE='GET_PURCHASE'
 export const USER_BY_ID='USER_BY_ID'
 export const PURCHASE_BY_ID='PURCHASE_BY_ID'
 export const UPDATE_ITEM='UPDATE_ITEM'
+export const UPDATE_ISACTIVE_VG='UPDATE_ISACTIVE_VG'
 
 
 const { VITE_IS_LOCAL } =import.meta.env
@@ -390,11 +391,11 @@ export function PurchaseById(id){
   }
 }
 export const updateItem = (newData) => {
-  console.log(newData)
+
   return async (dispatch) => {
     try {
       const {data}= await axios.put(`http://localhost:3001/user/update`,newData);
-      console.log(data)
+
            return dispatch({
             type:UPDATE_ITEM,
             payload:data
@@ -404,3 +405,18 @@ export const updateItem = (newData) => {
     }
   };
 };
+
+export const UpdateActiveVG=(newData)=>{
+  return async function(dispatch){
+  try {
+    const {data} =await axios.put('http://localhost:3001/videogame/update',newData)
+    return dispatch({
+      type:UPDATE_ISACTIVE_VG,
+      payload:data
+    })
+  } catch (error) {
+    console.log({error:error.message})
+  }
+   
+ }
+}
