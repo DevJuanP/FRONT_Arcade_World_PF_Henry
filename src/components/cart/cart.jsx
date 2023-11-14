@@ -1,18 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { Button, Box, CardContent, Typography } from "@mui/material";
+import { Button, Box, CardContent, Typography, Stack } from "@mui/material";
 import CartCard from "./cartCard";
 import Purchased from "./Purchased";
 import { NavLink } from "react-router-dom";
 import { deleteItemCart } from "../../redux/actions.js";
+import SearchIcon from '@mui/icons-material/Search';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 function Cart() {
   const dispatch = useDispatch();
   const shoppingCart = useSelector((state) => state.shoppingCart);
   const gamesIds = !shoppingCart.length ? [] : shoppingCart.map((vg) => vg.id);
-  const UserId = useSelector((state) => state.userData);
-  const priceTotal = shoppingCart.reduce((a, b) => a + b.price, 0);
-
+  const priceTotal = shoppingCart.reduce((a, b) => a + b.price, 0).toFixed(2);
+  
   const showAlert = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -30,13 +31,17 @@ function Cart() {
     });
   };
   const handleClearClick = () => {
-    dispatch(deleteItemCart(UserId));
+   
+    dispatch(deleteItemCart(gamesIds));
   };
 
   return (
     <Box
-      sx={{
-        height: "100vh",
+      sx={{ 
+        backgroundColor:'#1a2a3b',
+        paddingLeft:'40px',
+        paddingTop:'12px',
+        minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "flex-start",
@@ -47,11 +52,11 @@ function Cart() {
         sx={{
           paddingTop: "30px",
           paddingBottom: "30px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start",
+          marginLeft:'20px',
+          display: "grid",
+          gridTemplateColumns: shoppingCart.length < 2 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
           alignItems: "center",
-          gap: "30px",
+          gap: "40px",
         }}
       >
         {shoppingCart.length ? (
@@ -60,26 +65,26 @@ function Cart() {
           <div>
             <Box
               sx={{
-                backgroundColor: "#eddcb9",
+                backgroundColor: "#fff",
                 height: "300px",
-                width: "400px",
+                width: "700px",
                 borderRadius: "6px",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "space-around",
-                padding: "50px",
+                justifyContent: "center",
+                marginTop:'-18px',
                 gap: "20px",
                 boxShadow: "1px 1px 3px 1px black",
                 position: "sticky",
                 top: "32px",
               }}
             >
+              <Stack sx={{display:'flex', alignItems:'center', alignContent:'center'}}>
               <CardContent
                 sx={{
                   width: "400px",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "space-around",
                   flexDirection: "column",
                   gap: "60px",
                 }}
@@ -88,31 +93,29 @@ function Cart() {
                   variant="body1"
                   component="div"
                   sx={{
-                    fontSize: 25,
-                    display: "flex",
-                    alignItems: "center",
+                    fontSize: 25
                   }}
                 >
                   Ups! You have no items in your cart
                 </Typography>
                 <Typography
-                  variant="body1"
+                  variant="inherit"
                   component="div"
                   sx={{
-                    fontSize: 20,
-                    display: "flex",
-                    alignItems: "center",
-                    opacity: "0.8",
+                    fontSize: 20
                   }}
                 >
                   Add something to your Shopping Cart !
                 </Typography>
               </CardContent>
+              </Stack>
+              <Stack sx={{display:'flex', alignContent:'center', alignItems:'center'}}>
               <NavLink to="/store">
-                <Button variant="contained" color="success">
+                <Button variant="contained" color="primary" endIcon={<SearchIcon/>}>
                   Discover Products
                 </Button>
               </NavLink>
+              </Stack>
             </Box>
           </div>
         )}
@@ -120,15 +123,19 @@ function Cart() {
 
       <Box
         sx={{
-          marginTop: "30px",
-          backgroundColor: "#eddcb9",
+          marginTop: "12px",
+          marginRight:'30px',
+          backgroundColor: "#fff",
           height: "150px",
           width: "360px",
           borderRadius: "6px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-around",
-          padding: "50px",
+          paddingTop:'50px',
+          paddingLeft:'20px',
+          paddingBottom:'50px',
+          paddingRight:'20px',
           gap: "20px",
           boxShadow: "1px 1px 3px 1px black",
           position: "sticky",
@@ -181,6 +188,7 @@ function Cart() {
               display: "flex",
               alignItems: "flex-starts",
               justifyContent: "space-between",
+              width:'300px'
             }}
           >
             <Typography
@@ -203,7 +211,7 @@ function Cart() {
                 alignItems: "center",
               }}
             >
-              $ {priceTotal.toFixed(2)}
+              $ {priceTotal}
             </Typography>
           </Box>
         </CardContent>
@@ -219,6 +227,7 @@ function Cart() {
           <Button
             onClick={showAlert}
             variant="outlined"
+            endIcon={<DeleteForeverIcon/>}
             sx={{
               color: "rgb(114, 8, 8)",
               borderColor: "rgb(114, 8, 8)",

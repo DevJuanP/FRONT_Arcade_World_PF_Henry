@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import style from "./Sider.module.css";
 import {
   gamePlataforms,
   gameGenres,
@@ -13,6 +12,7 @@ import {
   sortGamesAsc,
   sortGamesDesc,
   filterGamesByPrice,
+  setSelectedPrice
 } from "../../redux/actions";
 import { Stack, Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -20,7 +20,6 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-
 function Sider() {
   //fetch platforms:
   const dispatch = useDispatch();
@@ -66,7 +65,14 @@ function Sider() {
   }
 
   //input
-  const [inputValue, setInputValue] = useState("");
+  const selectedPrice = useSelector(state => state.selectedPrice);
+  const handlePriceChange = (e) => {
+    const regex = /^[0-9]*$/;
+    if (regex.test(e.target.value)) {
+      dispatch(setSelectedPrice(e.target.value));
+      dispatch(filterGames());
+    }
+  };
   return (
     <Stack
       sx={{
@@ -87,15 +93,15 @@ function Sider() {
         onChange={handlePlatformSelectChange}
         sx={{ '& .MuiSelect-select': { color: selectedPlatform ? '#fff' : '#000' } }}
       >
-        <MenuItem value="" sx={{ color: selectedPlatform === '' ? '#fff' : '#000' }}>All</MenuItem>
+        <MenuItem value="" sx={{ color: selectedPlatform === '' ? '#5c74ff' : '#000' }}>All</MenuItem>
         {allPlatformsArray.map((platformName, index) => (
-          <MenuItem key={index} value={platformName} sx={{ color: selectedPlatform === platformName ? '#fff' : '#000' }}>
+          <MenuItem key={index} value={platformName} sx={{ color: selectedPlatform === platformName ? '#5c74ff' : '#000' }}>
             {platformName}
           </MenuItem>
         ))}
       </Select>
     </FormControl>
-      <FormControl color="success" size="small" sx={{ width: "200px" }}>
+      <FormControl size="small" sx={{ width: "200px" }}>
         <InputLabel  id="genres" sx={{color: '#fff'}} >Genres</InputLabel>
         <Select
           labelId="genres"
@@ -104,9 +110,9 @@ function Sider() {
           onChange={handleGenreSelectChange}
           sx={{ '& .MuiSelect-select': { color: selectedGenre ? '#fff' : '#000' } }}
         >
-          <MenuItem value="" sx={{ color: selectedGenre === '' ? '#fff' : '#000' }}>All</MenuItem>
+          <MenuItem value="" sx={{ color: selectedGenre === '' ? '#5c74ff' : '#000' }}>All</MenuItem>
           {allGenresArray.map((genresName, index) => (
-            <MenuItem key={index} value={genresName} sx={{ color: selectedGenre === genresName ? '#fff' : '#000' }}>
+            <MenuItem key={index} value={genresName} sx={{ color: selectedGenre === genresName ? '#5c74ff' : '#000'}}>
               {genresName}
             </MenuItem>
           ))}
@@ -121,15 +127,9 @@ function Sider() {
         labelId="price"
         label="Price"
         type="number"
-        value={inputValue}
         sx={{ '& .MuiInputBase-input': { color: 'white' }}}
-        onChange={(e) => {
-          const regex = /^[0-9]*$/;
-          if (regex.test(e.target.value)) {
-            setInputValue(e.target.value);
-            dispatch(filterGamesByPrice(e.target.value));
-          }
-        }}
+        value={selectedPrice}
+        onChange={handlePriceChange}
       />
       <Button
         variant="outlined"

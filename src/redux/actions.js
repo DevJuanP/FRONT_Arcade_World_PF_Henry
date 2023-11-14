@@ -21,16 +21,32 @@ export const ADD_COMMENT = 'ADD_COMMENT';
 export const LOGOUT = 'LOGOUT';
 export const DELETE_ITEM_CART = 'DELETE_ITEM_CART';
 export const ADD_NEWS_PURCHASED = 'ADD_NEWS_PURCHASED';
-export const ADD_TO_CART = 'ADD_TO_CART'
-export const DELETE_ITEM = 'DELETE_ITEM'
-export const GET_USER='GET_USER'
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const DELETE_ITEM = 'DELETE_ITEM';
+export const GET_USER='GET_USER';
+export const SET_SELECTED_PRICE = 'SET_SELECTED_PRICE';
+export const PURCHASE_SUCCESS = 'PURCHASE_SUCCESS';
+export const GET_COUNTRIES = 'GET_COUNTRIES'
+export const SET_SELECTED_COUNTRY = 'SET_SELECTED_COUNTRY';
+export const TOP_FIVE='TOP_FIVE'
+export const GET_PURCHASE='GET_PURCHASE'
+export const USER_BY_ID='USER_BY_ID'
+export const PURCHASE_BY_ID='PURCHASE_BY_ID'
+export const UPDATE_ITEM='UPDATE_ITEM'
+export const UPDATE_ISACTIVE_VG='UPDATE_ISACTIVE_VG'
+export const CREATE_GAME='CREATE_GAME'
 
 
+const { VITE_IS_LOCAL } =import.meta.env
+const URL_DEPLOY = 'https://back-arcade-world-pf-henry.onrender.com';
+const urlLocal = 'http://localhost:3001';
+const BD_URL =  VITE_IS_LOCAL === 'true' ? urlLocal : URL_DEPLOY
 
 export const getGames = ()=>{ 
   return async function(dispatch) {
   try {
-   const dataGm = (await axios.get('http://localhost:3001/videogame')).data;
+   const dataGm = (await axios.get(`${BD_URL}/videogame`)).data;
+   localStorage.setItem("allGames", JSON.stringify(dataGm));
    return dispatch({
       type: GET_GAMES, 
       payload: dataGm
@@ -45,7 +61,7 @@ export const getGames = ()=>{
 export const gameByName = (name)=> {
 return async function(dispatch) {
   try {
-    const {data} = await axios.get(`http://localhost:3001/videogame/?name=${name}`);
+    const {data} = await axios.get(`${BD_URL}/videogame/?name=${name}`);
             
       return dispatch({
       type: GET_GAME_NAME, 
@@ -60,7 +76,7 @@ return async function(dispatch) {
 export const gameById = (id)=> {
 return async function(dispatch) {
   try {
-    const dataId = (await axios.get(`http://localhost:3001/videogame/${id}`)).data;
+    const dataId = (await axios.get(`${BD_URL}/videogame/${id}`)).data;
 
       return dispatch({
       type: GET_GAME_ID,
@@ -75,7 +91,7 @@ return async function(dispatch) {
 export const gamePlataforms = ()=> {
   return async function(dispatch) {
     try {
-      const dataPl = (await axios.get('http://localhost:3001/platform')).data;
+      const dataPl = (await axios.get(`${BD_URL}/platform` )).data;
       return dispatch({
         type: GET_PLATFORMS,
         payload: dataPl
@@ -88,7 +104,7 @@ export const gamePlataforms = ()=> {
 export const gameGenres = ()=> {
   return async function(dispatch) {
     try {
-      const dataGn = (await axios.get('http://localhost:3001/genre')).data;
+      const dataGn = (await axios.get(`${BD_URL}/genre`)).data;
       return dispatch({
         type: GET_GENRES,
         payload: dataGn
@@ -96,6 +112,30 @@ export const gameGenres = ()=> {
     } catch (error) {
       console.log(error.message)
     }
+  }
+};
+export const getCountry = ()=>{ 
+  return async function(dispatch) {
+  try {
+   const response  = (await axios.get('https://restcountries.com/v3.1/all')).data;
+   const countries = response.map(country => country.name.common);
+   const sortedCountries = countries.sort();
+   console.log(sortedCountries); // Imprime el contenido de countries
+   dispatch({
+      type: GET_COUNTRIES, 
+      payload: sortedCountries
+    });
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+};
+export const selectedCountry = (country) => {
+  console.log(country);
+  return {
+    type: SET_SELECTED_COUNTRY,
+    payload: country
   }
 };
 export const setSelectedGenre = (genre) => {
@@ -110,9 +150,15 @@ export const setSelectedPlatform = (platform) => {
     payload: platform
   }
 };
+export const setSelectedPrice = (price) => {
+  return {
+    type: SET_SELECTED_PRICE,
+    payload: price
+  }
+};
 export const filterGames = () => {
   return (dispatch, getState) => {
-    const { allGames, selectedGenre, selectedPlatform } = getState();
+    const { allGames, selectedGenre, selectedPlatform, selectedPrice } = getState();
     let filteredGames = [...allGames]; // Crear una copia del array
     if (selectedGenre && selectedGenre !== "") {
       filteredGames = filteredGames.filter((game) =>
@@ -124,6 +170,13 @@ export const filterGames = () => {
         game.platforms.includes(selectedPlatform)
       );
     }
+    if (selectedPrice && selectedPrice !== "") {
+      filteredGames = filteredGames.filter((game) =>
+        game.price <= selectedPrice
+      );
+    }
+    // Ordenar los juegos por precio de mayor a menor
+    filteredGames.sort((a, b) => b.price - a.price);
     dispatch({
       type: FILTER_GAMES,
       payload: filteredGames,
@@ -162,21 +215,52 @@ export const resetFilters = () => {
 export function postRegister(payload){
   return async function(){
     const data = await
-    axios.post("http://localhost:3001/user/register",payload)
+    axios.post(`${BD_URL}/user/register` ,payload)
     return data
   }
 }
 export function postLogin(payload){
   return async function(){
     const data = await
-    axios.post("http://localhost:3001/user/login",payload)
+    axios.post(`${BD_URL}/user/login`,payload)
+    return data
+  }
+}
+export function postFirebase(payload){
+  return async function(){
+    const data = await
+    axios.post(`${BD_URL}/user/firebase`,payload)
+    return data
+  }
+}
+export function putProfile(payload){
+  return async function(){
+    const data = await
+    axios.put(`${BD_URL}/user/update` ,payload)
     return data
   }
 }
 export function setUserData(userData) {
-  return {
-    type: SET_USER_DATA,
-    payload: userData,
+  return (dispatch) => {
+    // Actualiza userData
+    dispatch({
+      type: SET_USER_DATA,
+      payload: userData,
+    });
+
+    // Si userData tiene favoritos, los agrega al estado global
+    if (userData && userData.user && userData.user.favorites) {
+      userData.user.favorites.forEach(game => {
+        dispatch(addToFavorites(game));
+      });
+    }
+
+    // Si userData tiene reviews, los agrega al estado global
+    if (userData && userData.user && userData.user.reviews) {
+      userData.user.reviews.forEach(review => {
+        dispatch(addComments(review));
+      });
+    }
   };
 }
 export function setAuthenticated(isAuthenticated) {
@@ -200,7 +284,8 @@ export const addComments = (gameComment) => ({
 });
 export const logout = () => async dispatch => {
   try {
-    const response = await axios.put('/user/logout');
+    const response = await axios.put(`${BD_URL}/user/logout`);
+    console.log(response);
     dispatch({
       type: LOGOUT
     });
@@ -209,10 +294,10 @@ export const logout = () => async dispatch => {
     console.error('Error al cerrar la sesión:', error);
   }
 };
-export const deleteItemCart = (UserId) => {
+export const deleteItemCart = (gamesIds) => {
   return {
     type: DELETE_ITEM_CART,
-    payload: UserId,
+    payload: gamesIds,
   };
 }
 
@@ -250,7 +335,8 @@ export const deleteItem = (id) => {
 export function GetUser(){
   return async function(dispatch){
    try {
-    const {data}= await axios.get('http://localhost:3001/user')
+    const {data}= await axios.get(`${BD_URL}/user`)
+    console.log(data);
     return dispatch({
       type:GET_USER,
       payload:data
@@ -260,5 +346,98 @@ export function GetUser(){
    }
   }
 }
+export function purchaseSuccess(payload){
+  return async function(dispatch){
+   try {
+    const response = await axios.post(`${BD_URL}/cart/success`, payload);
+        return dispatch({
+        type:PURCHASE_SUCCESS,
+        payload:response.data
+      });
+    
+   } catch (error) {
+    console.log(error.message)
+   }
+  }
+}
+export function GetPuchase(){
+  return async function(dispatch){
+    try {
+      const {data}=await axios.get(`${BD_URL}/purchase`)
+      return dispatch({
+        type:GET_PURCHASE,
+        payload:data
+      })
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+}
+export function UserById(id){
+  return async function(dispatch){
+   const {data} = await axios.get(`${BD_URL}/user/${id}`)
+   return dispatch({
+    type:USER_BY_ID,
+    payload:data
+   })
+  }
+}
+export function PurchaseById(id){
+  return async function(dispatch){
+    const {data}=await axios.get(`${BD_URL}/purchase/${id}`) 
+    return dispatch({
+      type:PURCHASE_BY_ID,
+      payload:data
+    })
+  }
+}
+export const updateItem = (newData) => {
 
+  return async (dispatch) => {
+    try {
+      const {data}= await axios.put(`http://localhost:3001/user/update`,newData);
 
+           return dispatch({
+            type:UPDATE_ITEM,
+            payload:data
+           })
+    } catch (error) {
+     console.log({error:error.message})
+    }
+  };
+};
+
+export const UpdateActiveVG=(newData)=>{
+  return async function(dispatch){
+  try {
+    const {data} =await axios.put('http://localhost:3001/videogame/update',newData)
+    return dispatch({
+      type:UPDATE_ISACTIVE_VG,
+      payload:data
+    })
+  } catch (error) {
+    console.log({error:error.message})
+  }
+   
+ }
+}
+export const createVideogame = (payload) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(
+        `${BD_URL}/videogame`,
+        payload
+      );
+      const createdProduct = response.data;
+      
+      dispatch({
+        type: CREATE_GAME,
+        payload: createdProduct,
+      })
+      
+    } catch (error) {
+      console.log("Error: createVideogame", error);
+      
+    }
+  };
+};

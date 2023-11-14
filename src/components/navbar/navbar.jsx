@@ -1,4 +1,4 @@
-import React from 'react'
+import Swal from "sweetalert2";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import Profile from "../profile/Profile";
 import Search from "../search/Search";
@@ -11,6 +11,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Box } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
+import { useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import IconButton from '@mui/material/IconButton';
 
 function Navbar() {
   let userLocal = localStorage.getItem("login");
@@ -20,6 +23,25 @@ function Navbar() {
   const appbar = {
     flexwrap: "wrap",
   };
+  const cartItemCount = useSelector(state => state.cartItemCount);
+  const navigate = useNavigate();
+  const handleOnclickCart = () => {
+    if (userLocal === null || userLocal === "")  {
+      Swal.fire({
+        toast: true,
+        icon: "info",
+        title: "Login to enter",
+        showConfirmButton: true,
+        position: "center",
+        confirmButtonText: "Login",
+      }).then((willRedirect) => {
+        if (willRedirect) {
+            navigate("/auth");
+        }
+      });
+    } else {
+      navigate("/cart");
+    }}
   return (
     <AppBar position="" sx={{ background: "#263238" }} style={appbar}>
       <Container maxWidth="xl">
@@ -31,7 +53,9 @@ function Navbar() {
             alignItems="center"
             gap={2}
           >
+            <Link to='/'>
             <img src={logo} style={{ width: "5em" }} alt="Logo" />
+            </Link>
             <Typography
               variant="h4"
               sx={{
@@ -42,6 +66,7 @@ function Navbar() {
             >
               Arcade World
             </Typography>
+            
             {location.pathname === "/store" && <Search />}
           </Box>
           {/* Links */}
@@ -71,12 +96,18 @@ function Navbar() {
           >
             {location.pathname !== "/auth" && (
               <>
-                <Link to="/cart">
-                  <ShoppingCartIcon sx={{ color: "#f1f1f1" }} />
-                </Link>
+                <div style={{ position: 'relative' }}>
+                 <IconButton  onClick={handleOnclickCart}><ShoppingCartIcon sx={{ color: "#f1f1f1" }}/></IconButton>
+                  {cartItemCount > 0 && (
+                      <div style={{ position: 'absolute', top: -12, right: 20, background: '#c0c0c0', 
+                      borderRadius: '50%', padding: '8px', color: 'black',width:'6px', height:'6px', margin:'2px', display: 'flex', alignItems: 'center',fontSize:'13.5px' }}>
+                     {cartItemCount}
+                   </div>
+                   )}
+                 </div>
                 {userLog && (
                   <Link to="/user/profile">
-                    <Avatar alt="Remy Sharp" src={userLocal?.user?.image} />
+                    <Avatar alt="Remy Sharp" src={userLocal?.user?.photo} />
                   </Link>
                 )}
                 {location.pathname !== "/user/profile" && !userLocal?.login && (

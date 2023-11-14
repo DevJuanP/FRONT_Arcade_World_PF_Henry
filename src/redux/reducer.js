@@ -4,7 +4,8 @@ import { GET_GAMES, GET_GAME_NAME, GET_GAME_ID,
          FILTER_GAMES, RESET_GENRE_FILTER, RESET_PLATFORM_FILTER,
          SORT_GAMES_ASC, SORT_GAMES_DESC, FILTER_GAMES_BY_PRICE, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES,
          ADD_COMMENT, DELETE_ITEM_CART, ADD_NEWS_PURCHASED, ADD_TO_CART, DELETE_ITEM,
-         LOGOUT, GET_USER } from './actions.js';
+         LOGOUT, GET_USER, SET_SELECTED_PRICE, PURCHASE_SUCCESS, GET_COUNTRIES, SET_SELECTED_COUNTRY,
+         TOP_FIVE,GET_PURCHASE,USER_BY_ID,PURCHASE_BY_ID, CREATE_GAME,UPDATE_ITEM,UPDATE_ISACTIVE_VG }from './actions.js';
                         
 const initialState = {
   games:[],
@@ -13,6 +14,8 @@ const initialState = {
   gameFilter: [],
   platforms:[],
   genres:[],
+  countries:[],
+  selectedCountry:"",
   selectedGenre: "",
   selectedPlatform: "",
   sortDirection: 'asc',
@@ -23,7 +26,15 @@ const initialState = {
   favorites: [],
   reviews:[],
   shoppingCart: [],
-  user:[]
+  user:[],
+  UserTop:[],
+  userID:[],
+  selectedPrice: "",
+  cartItemCount: 0,
+  purchasedVideogames: [],
+  Purchase:[],
+  PurchaseID:[],
+  
   }  
  
  const rootReducer = (state=initialState, action)=> {
@@ -56,15 +67,28 @@ const initialState = {
       ...state,
       genres: action.payload
         };
-    case SET_SELECTED_GENRE:
+    case GET_COUNTRIES:
+      console.log(action.payload); // Imprime el contenido de action.payload
       return {
       ...state,
-      selectedGenre: action.payload,
+      countries: action.payload
       };
+    case SET_SELECTED_COUNTRY:
+      console.log(action.payload)
+      return {
+      ...state,
+      selectedCountry: action.payload,
+      };
+
     case SET_SELECTED_PLATFORM:
       return {
       ...state,
       selectedPlatform: action.payload,
+      };
+    case SET_SELECTED_PRICE:
+      return {
+        ...state,
+        selectedPrice: action.payload,
       };
     case FILTER_GAMES:
       return {
@@ -123,36 +147,34 @@ const initialState = {
 
     case ADD_TO_FAVORITES:
             allGamesFav = [...state.favorites, action.payload];
-            console.log("Add:",allGamesFav)
       return {
                 ...state,
                 favorites: allGamesFav,
             };
     case REMOVE_FROM_FAVORITES:
-         allGamesRemove = state.favorites.filter(game => game.id !== action.payload);
-              console.log("Remove:",allGamesRemove)
+            allGamesRemove = state.favorites.filter(game => game.id !== action.payload);
         return {
                 ...state,
                 favorites: allGamesRemove 
             };
     case ADD_COMMENT:
          allComments = [...state.reviews, action.payload];
-              console.log(allComments)
               return {
                 ...state,
                 reviews: allComments
               }
       case LOGOUT:
-              return {
-                ...state,
-                favorites,
-                reviews,
-              };
+        return {
+          ...state,
+          favorites,
+          reviews,
+        };
     case DELETE_ITEM_CART:
       
       return {
         ...state,
-        shoppingCart:[]
+        shoppingCart:[],
+        cartItemCount: 0,
       };
     case ADD_NEWS_PURCHASED:
       return{
@@ -162,25 +184,77 @@ const initialState = {
           purchased: [...state.userData.purchased, ...action.payload]
         }
       }
-
     case ADD_TO_CART:
          
        return {
         ...state,
-        shoppingCart: [...state.shoppingCart, action.payload]
+        shoppingCart: [...state.shoppingCart, action.payload],
+        cartItemCount: state.cartItemCount +1,
       }
                 
     case DELETE_ITEM:
       filtrado = state.shoppingCart.filter((el) => el.id !== action.payload);
       return{
         ...state,
-        shoppingCart: filtrado
+        shoppingCart: filtrado,
+        cartItemCount: state.cartItemCount -1,
       }
       case GET_USER:
         return{
           ...state,
-          user:action.payload
+          user:action.payload,
+          UserTop:action.payload
         } 
+      case PURCHASE_SUCCESS:
+        return{
+          ...state,
+          purchasedVideogames:[...state.purchasedVideogames, ...action.payload]
+        } 
+        case TOP_FIVE:
+          const userCopy=[...state.UserTop]
+          const Ordenar =userCopy.sort((a, b) => b.purchased.reduce((countA, purchaseA) => countA + purchaseA.videogames.length, 0) - a.purchased.reduce((countB, purchaseB) => countB + purchaseB.videogames.length, 0));
+          return{
+           ...state,
+           UserTop:[...Ordenar]
+          }
+          case GET_PURCHASE:
+            return{
+              ...state,
+              Purchase:action.payload
+            }
+            case USER_BY_ID:
+              return{
+                ...state,
+                userID:action.payload
+              }
+              case PURCHASE_BY_ID:
+                return{
+                  ...state,
+                  PurchaseID:action.payload
+                }
+                case UPDATE_ITEM:
+                  const usuarioActualizado = action.payload;
+
+                  return {
+                    ...state,
+                    user: state.user.map(u =>
+                      u.id === usuarioActualizado.id ? usuarioActualizado : u
+                    ),}
+                    case UPDATE_ISACTIVE_VG:
+                      const VGisActive=action.payload
+                      return{
+                        ...state,
+                        games:state.games.map(VG=>
+                          VG.id=== VGisActive.id ? VGisActive : VG
+                          )
+                      }
+
+              case CREATE_GAME:
+                return {
+                  ...state,
+                  games: [...state.games, action.payload],
+                  allGames: [...state.games, action.payload]
+                  };
     default:
       return {...state}  
   }

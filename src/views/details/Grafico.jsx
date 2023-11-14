@@ -6,20 +6,18 @@ import { useDispatch,useSelector } from "react-redux";
 import { gameById } from "../../redux/actions";
 
 function Grafico() {
-  const dispatch = useDispatch()
+  const dispatch= useDispatch()
   const gameDetails = useSelector((state) => state?.gameId);
   const { id } = useParams();
   useEffect(() => {
     dispatch(gameById(id));
   }, [dispatch, id]);
-  console.log(gameDetails)
-    const starGraphics=gameDetails?.graphics?.stars
-    const scoreGraphics=gameDetails?.graphics?.score
-  const starGameplay=gameDetails?.gameplay?.stars
-  const scoregameplay=gameDetails?.gameplay?.score
-  const starqualityprice=gameDetails?.quality_price?.stars
-  const scorequalityprice=gameDetails?.quality_price?.score
-
+  const Stargraphics= gameDetails?.graphics?.stars
+  const scoregraphics= gameDetails?.graphics?.score
+  const Stargameplay= gameDetails?.gameplay?.stars
+  const scoregameplay= gameDetails?.gameplay?.score
+  const Starquality_price= gameDetails?.quality_price?.stars
+  const scorequality_price= gameDetails?.quality_price?.score
     useEffect(() => {
       const ctx = document.getElementById('GRAPHICS').getContext('2d');
 
@@ -168,7 +166,6 @@ function Grafico() {
       justifyContent: 'center',
       flexDirection:'column'
     }
-
       return (  <div>
         <Box display='flex' sx={estilos} gap={12}>
           <Box sx={estilosG}>

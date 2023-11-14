@@ -24,7 +24,7 @@ const Create = ({ handleSign }) => {
     data.image = image;
     dispatch(postRegister(data)).then((response) => {
       Swal.fire({
-        position: "top-center",
+        position: "center",
         icon: "success",
         title: "Welcome to arcade World",
         showConfirmButton: false,
@@ -35,39 +35,14 @@ const Create = ({ handleSign }) => {
       handleSign();
     });
   });
-  const handleGoogleLogin = async () => {
-    try {
-      await loginWithGoogle();
-      navigate("/user/profile");
-    } catch (error) {
-      setError(error.message);
-    }
-  };
   return (
-    <Card sx={{ height: "125vh", width: "400px" }}>
+    <Card sx={{ py:3, mt:4, width: "400px" }}>
       <Stack
         sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
       >
         <Stack marginTop="20px" marginBottom="20px">
           <Typography variant="h5">Welcome to Arcade World</Typography>
         </Stack>
-        <Stack>
-          <Button
-            variant="contained"
-            sx={{ backgroundColor: "#fff", color: "#000", width: "320px" }}
-            onClick={handleGoogleLogin}
-          >
-            <img
-              width="20px"
-              height="20px"
-              style={{ padding: "0.5rem" }}
-              src="https://img.icons8.com/color/48/google-logo.png"
-              alt="google-logo"
-            />
-            Log In with Google
-          </Button>
-        </Stack>
-        <Typography variant="overline">or</Typography>
         <Stack sx={{display:'flex', flexDirection:'column'}}>
         <TextField
           sx={{ width: "320px", marginBottom: "30px" }}
@@ -195,8 +170,8 @@ const Create = ({ handleSign }) => {
                 message: "Password is required",
               },
               minLength: {
-                value: 8,
-                message: "Password must be at least 8 characters",
+                value: 6,
+                message: "Password must be at least 6 characters",
               },
             })}
           />
@@ -219,8 +194,8 @@ const Create = ({ handleSign }) => {
                   message: "Confirm password is required",
                 },
                 minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
+                  value: 6,
+                  message: "Password must be at least 6 characters",
                 },
                 validate: (value) =>
                   value === watch("password") || "Passwords don't match",

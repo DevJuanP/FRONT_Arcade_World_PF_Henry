@@ -1,34 +1,59 @@
 import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { Stack, Grid, Avatar, Box } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {
+  Stack,
+  Grid,
+  Avatar,
+  Box,
+  CardContent,
+  IconButton,
+} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CreateIcon from "@mui/icons-material/Create";
 import { styled } from "@mui/material/styles";
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
-import { useDispatch } from 'react-redux';
-import { deleteItem, removeFromFavorites, deleteItemCart } from '../../redux/actions'
+import { useDispatch } from "react-redux";
+import {
+  UserById,
+  deleteItem,
+  deleteItemCart,
+} from "../../redux/actions";
+import GamesProfile from "./GamesProfile";
+import FavoriteProfile from "./FavoriteProfile";
+import EditProfile from "./EditProfile";
+import OnlyProfile from "./OnlyProfile";
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import LayoutAuth from "../auth/LayoutAuth";
+
 
 const Profile = () => {
+  const [rederFav, setRenderFav] = useState(false);
+  const [renderBuy, setRenderBuy] = useState(true);
+  const [user, setUser] = useState()
+  const [changes, setChanges] = useState(0)
+
+  const handleChangeRender = () => {
+    setRenderFav((elemento) => !elemento);
+    setRenderBuy((elemento) => !elemento);
+  };
+
+  const [renderEdit, setRenderEdit] = useState(false);
+  const [renderProfile, setRenderProfile] = useState(true);
+
+  const handleChangeRenderProfileEdit = () => {
+    setRenderEdit((elemento) => !elemento);
+    setRenderProfile((elemento) => !elemento);
+  };
   const dispatch = useDispatch();
 
-  const removeFav = (id) => {
-    dispatch(removeFromFavorites(id));
-  }
+  
   const removeItemCart = (id) => {
     dispatch(deleteItem(id));
-  }
+  };
   //llamada a favoritos
   const favorites = useSelector((state) => state.favorites);
   const shoppingCart = useSelector((state) => state.shoppingCart);
@@ -36,214 +61,102 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   //parte del login
-  let userLocal = localStorage.getItem("login");
+  let userLocal =  localStorage.getItem("login");
   userLocal = userLocal ? JSON.parse(userLocal) : null;
-  console.log(userLocal);
+  let nPurchased = userLocal?.user?.purchased;
 
+  const getUser = async () => {
+    await dispatch(UserById(userLocal?.user?.id || userLocal?.user?.uid)).then((res) => {
+     setUser(res.payload)
+    })
+  }
   useEffect(() => {
-    if ((userLocal && !userLocal.login) || userLocal === null) {
-      navigate("/");
-    }
-  }, []);
+    getUser()
+  }, [changes])
+
   const handleLogout = () => {
     if (userLocal) {
       userLocal.login = false;
       userLocal.user = null;
-      console.log(userLocal);
-      // localStorage.setItem('login', JSON.stringify(userLocal));
-      localStorage.removeItem("login");
-      dispatch(deleteItemCart(shoppingCart))
+      dispatch(deleteItemCart(shoppingCart));
       navigate("/");
-      userLocal = "";
+      localStorage.removeItem("login");
     }
   };
-  const uploadImageN = async (e) => {
-    const files = e.target.files;
-    const data = new FormData();
-
-    data.append("file", files[0]);
-    data.append("upload_preset", "JesusBavaresco"); // el segundo campo varia dependiendo del nombre que utilices
-    setLoading(true);
-
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/du9kziyei/image/upload", // el url varia por cada usuario 'https://api.cloudinary.com/v1_1/tuUsuario/image/upload'
-      {
-        method: "POST",
-        body: data,
-      }
-    );
-    const file = await res.json();
-    setImage(file.secure_url);
-    setLoading(false);
-  };
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
+  console.log(userLocal)
   return (
-    <Box sx={{ flexGrow: 1, minHeight: "100vh" }}>
+    <LayoutAuth>
+    <Box sx={{ minHeight: "100vh", backgroundColor:'#1a2a3b', marginTop:'20px' }}>
       <Grid container spacing={3}>
-        <Grid item xs >
-          <Card sx={{ width: "100%" }}>
+        <Grid  item xs={12} md={6} lg={3}>
+          <Card sx={{ width: "100%", p:1, pb: 3, marginLeft:'25px', marginTop:'30px', marginBottom:'20px'}}>
             <Stack direction="column" alignItems="center">
-              <Stack marginLeft="299px" marginTop="5px" marginBottom="-20px">
+              <Stack marginRight="290px" marginBottom="-20px">
                 <Button
-                  sx={{ backgroundColor: "transparent", color: "#000" }}
-                  component="label"
-                  variant="text"
-                  startIcon={<CreateIcon />}
-                  onChange={uploadImageN}
+                  size="large"
+                  sx={{ color: "#000" }}
+                  onClick={handleLogout}
                 >
-                  <VisuallyHiddenInput type="file" />
+                  <LogoutIcon />
                 </Button>
               </Stack>
-              <Avatar
-                sx={{ width: 300, height: 300, marginTop: "4px" }}
-                src={userLocal?.user?.image}
-                alt="Profile image"
-              />
-              <Typography variant="h5" component="div">
-                Name: {userLocal?.user?.name}
-              </Typography>
-              <Typography variant="h5">
-                Lastname: {userLocal?.user?.lastname}
-              </Typography>
-              <Typography variant="h5">
-                Nickname: {userLocal?.user?.nickname}
-              </Typography>
-              <Typography variant="h5">
-                Email: {userLocal?.user?.Email}
-              </Typography>
+              <Stack>
+              <Stack sx={{display:'flex', alignItems:'flex-end', marginTop:'-20px', marginRight:'5px'}} >
+                <IconButton
+                  sx={{ backgroundColor: "transparent", color: "#000" }}
+                  onClick={handleChangeRenderProfileEdit}
+                >
+                  {<CreateIcon />}
+                </IconButton>
+                </Stack>
+                {renderProfile === true ? (
+                  <OnlyProfile user={user ?? userLocal?.user} />  // quitar el user local cuando el back solucione el validate
+                ) : (
+                  <EditProfile setChanges={setChanges} handleChangeRenderProfileEdit={handleChangeRenderProfileEdit} id={userLocal.user?.id} />
+                )}
+              </Stack>
             </Stack>
           </Card>
-          <Stack marginTop="20px">
-            <Card>
-              <Accordion sx={{marginBottom: 'auto'}}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography variant="h5" component="div">
-                    <Link to='/cart'>
-                    <ShoppingCartIcon sx={{color:'#000'}}/>
-                    <Typography color='#000' variant="h5">Your Cart</Typography> 
-                    </Link>
-                  </Typography>
-                </AccordionSummary>
-                {shoppingCart.map((shopping) => (
-                <Stack display='flex' alignItems='center' >
-                <AccordionDetails key={shopping.id}>
-                  <Stack display='flex' alignItems='end'>
-                    <IconButton onClick={() => removeItemCart(shopping.id)}><CloseIcon/></IconButton>
-                  </Stack>
-                  <Avatar
-                    sx={{ width: 150, height: 150 }}
-                    src={shopping.image}
-                    alt="Profile image"
-                    />
-                  <Typography sx={{textAlign:'center'}} >{shopping.name}</Typography>
-                  <Typography sx={{textAlign:'center'}} >${shopping.price}</Typography>
-                </AccordionDetails>
-                </Stack>
-              ))}
-              </Accordion>
-            </Card>
-          </Stack>
-          <Stack marginTop='20px'>
-          <Card>
-            <Accordion sx={{marginBottom: 'auto'}}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                >
-                <Typography variant="h5" component="div">
-                  <FavoriteIcon color="error" />
-                  Favorites
-                </Typography>
-              </AccordionSummary>
-              {favorites.map((favorite) => (
-                <Stack display='flex' alignItems='center' >
-                <AccordionDetails key={favorite.id}>
-                  <Stack display='flex' alignItems='end'>
-                    <IconButton onClick={() => removeFav(favorite.id)}><CloseIcon/></IconButton>
-                  </Stack>
-                  <Avatar
-                    sx={{ width: 150, height: 150 }}
-                    src={favorite.image}
-                    alt="Profile image"
-                    />
-                  <Typography sx={{textAlign:'center'}} >{favorite.name}</Typography>
-                </AccordionDetails>
-                </Stack>
-              ))}
-            </Accordion>
-          </Card>
-            <Button size="large" sx={{ color: "#000" }} onClick={handleLogout}>
-              <LogoutIcon />
-            </Button>
-              </Stack>
         </Grid>
-        <Grid item xs={6}>
-          <Grid container>
-            <Typography variant="h2">Your Games</Typography>
-            <Grid item>
-              <Stack
-                display="flex"
-                flexDirection="row"
-                justifyContent="space-evenly"
-              >
-                <Card sx={{ height: 500, width: 450 }}>
-                  <div>
-                    <CardMedia
-                      sx={{ height: 350 }}
-                      image="https://m.media-amazon.com/images/I/81KUccM8azL._AC_UF1000,1000_QL80_.jpg"
-                      title="Nombre del juego"
-                    />
-                    <Typography variant="h6">Super Smash Bros Brawl</Typography>
-                    <Typography variant="subtitle2">Plataforms:</Typography>
-                    <Typography variant="overline">
-                      Wii, Wii U, Nintendo Switch
-                    </Typography>
-                    <Typography variant="subtitle2">Genres:</Typography>
-                    <Typography variant="overline">
-                      Action, Adventure, Multiplayer
-                    </Typography>
-                  </div>
-                </Card>
-                <Card sx={{ height: 500, width: 450 }}>
-                  <div>
-                    <CardMedia
-                      sx={{ height: 350 }}
-                      image="https://m.media-amazon.com/images/I/81KUccM8azL._AC_UF1000,1000_QL80_.jpg"
-                      title="nombre del juego"
-                    />
-                    <Typography variant="h6">Super Smash Bros Brawl</Typography>
-                    <Typography variant="subtitle2">Plataforms:</Typography>
-                    <Typography variant="overline">
-                      Wii, Wii U, Nintendo Switch
-                    </Typography>
-                    <Typography variant="subtitle2">Genres:</Typography>
-                    <Typography variant="overline">
-                      Action, Adventure, Multiplayer
-                    </Typography>
-                  </div>
-                </Card>
-              </Stack>
-            </Grid>
+        <Grid
+          item
+          xs={8}
+          gridTemplateColumns="repeat(3, 1fr)"
+          sx={{ marginTop: "50px", marginLeft: "70px" }}
+        >
+          <Grid container columnSpacing={3} rowSpacing={3} marginTop='-60px'>
+            {renderBuy === true ? (
+              <FormControlLabel
+              control={
+                <Switch
+                  // sx={{ marginBottom: "20px" }}
+                  onClick={handleChangeRender}
+                />
+              }
+              label="Your Favorites" sx={{color: 'white'}}
+              />
+            ) : (
+                <FormControlLabel
+                control={
+                  <Switch
+                    defaultChecked
+                    // sx={{ marginBottom: "20px" }}
+                    onClick={handleChangeRender}
+                  />
+                }
+                label="Your Games" sx={{color: 'white'}}
+                />
+            )}
+            {renderBuy === true ? (
+              <FavoriteProfile favorites={favorites}/>
+            ) : (
+              <GamesProfile nPurchased={nPurchased} />
+            )}
           </Grid>
         </Grid>
-        <Grid item xs></Grid>
       </Grid>
     </Box>
+    </LayoutAuth>
   );
 };
 export default Profile;

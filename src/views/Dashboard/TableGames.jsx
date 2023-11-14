@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { Box, Typography,Button } from '@mui/material'
 import {useSelector } from 'react-redux'
 import { DataGridPro } from '@mui/x-data-grid-pro';
@@ -6,12 +6,13 @@ import { DataGridPro } from '@mui/x-data-grid-pro';
 
 function TableGames() {
  const games=useSelector((g)=>g.games)
-
+//  const [chekearActive,setchekearActive]=useState({})
  const rows = games.map((G)=>{
-  console.log(G)
+  
     return{
         id:G.id,
         Name:G.name,
+        isActive:G.isActive,
         Price:'$/'+G.price,
         Plataforms:G.platforms[0],
         Genres:G.genres[0],
@@ -21,7 +22,7 @@ function TableGames() {
  })
  const styleTable={
   color:'black',
-  width:'98%',
+  width:'60%',
   backgroundColor: '#90a4ae',
   border: 'none',
 
@@ -63,7 +64,7 @@ function TableGames() {
          Delete
        </Button>
      )
-   }
+   },{field:'isActive'}
  ];
   
   return (

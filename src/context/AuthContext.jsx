@@ -2,12 +2,20 @@ import { createContext, useContext, useEffect, useState } from "react";
 import {
   GoogleAuthProvider,
   signInWithPopup,
-  onAuthStateChanged
+  onAuthStateChanged,
   // sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase/config";
-
+import axios from "axios";
 const authContext = createContext();
+const { VITE_IS_LOCAL } =import.meta.env
+const URL_DEPLOY = 'https://back-arcade-world-pf-henry.onrender.com';
+const urlLocal = 'http://localhost:3001';
+const BD_URL =  VITE_IS_LOCAL === 'true' ? urlLocal : URL_DEPLOY
+import { useDispatch } from "react-redux";
+import { setAuthenticated, setUserData } from "../redux/actions";
+
+
 
 export const useAuth = () => {
   const context = useContext(authContext);
@@ -16,41 +24,32 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-
-  const loginWithGoogle = () => {
-    const googleProvider = new GoogleAuthProvider();
-    return signInWithPopup(auth, googleProvider);
+  const googleProvider = new GoogleAuthProvider();
+  const dispatch = useDispatch();
+  const loginWithGoogle = async () => {
+    try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    if (credential) {
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            const token = user.accessToken;
+              const response = await axios.post(`${BD_URL}/user/firebase`, {
+                token: token
+              });
+              //permanencia de usuario
+              localStorage.setItem("login", JSON.stringify(response.data));
+              //Autenticación para pasar al profile
+              dispatch(setAuthenticated(true));
+              //Toma de datos para pasarlos al profile
+              dispatch(setUserData(response.data));
+            }
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
   };
- 
-  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    if (currentUser) {
-      // Actualizar el estado solo si el usuario cambia
-      setUser({
-        login: true,
-        user: {
-          image: currentUser.photoURL,
-          email: currentUser.email,
-          name: currentUser.displayName.split(' ')[0],
-          lastname: currentUser.displayName.split(' ')[1],
-          nickname: currentUser.displayName,
-          uid: currentUser.uid,
-        },
-      });
-    } else {
-      // Usuario no autenticado
-      setUser(null);
-      localStorage.removeItem("login");
-    }
-    // console.log(user);
-    localStorage.setItem('login', JSON.stringify(user)) 
-  });
-  useEffect(() => {
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
   return (
     <authContext.Provider
       value={{

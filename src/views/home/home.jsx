@@ -7,6 +7,10 @@ import { useEffect } from "react"
 import Carrusel from './components/Carrusel.jsx';
 import { Box, Container, Typography, Stack } from '@mui/material';
 import FloatingBtn from '../../components/floatingButton/FloatinBtn.jsx'
+import GradeIcon from '@mui/icons-material/Grade';
+import DownloadingIcon from '@mui/icons-material/Downloading';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -28,9 +32,9 @@ const Home = () => {
         <Carrusel imagenes={IMGcarrusel}  />
       </Box>
       <Typography variant="h3" component="h3" className="titulo" textAlign="center" color="beige" sx={{ margin: '1em 0em' }}>
-         🎉NEWS🎉
+      <GradeIcon style={{ fontSize: 40 }}/>NEWS<GradeIcon style={{ fontSize: 40 }}/>
       </Typography>
-      <Box className="com" display="flex" justifyContent="space-around" flexWrap="wrap">
+      <Box display="flex" justifyContent="space-around" flexWrap="wrap">
         {NewsGame?.map((games) => (
           <News
           key={games?.id}
@@ -43,9 +47,9 @@ const Home = () => {
       </Box>
 
       <Typography variant="h3" sx={{ margin: '1em 0em' }} component="h3" className="titulo" textAlign="center" color="beige">
-        📥DOWNLOADS📥
+      <DownloadingIcon style={{ fontSize: 40 }}/>DOWNLOADS<DownloadingIcon style={{ fontSize: 40 }}/>
       </Typography>
-      <Box className="com" display="flex" justifyContent="space-around" flexWrap="wrap">
+      <Box display="flex" justifyContent="space-around" flexWrap="wrap">
         {DownloadsGame?.map((games) => (
           <MoreDownload
             key={games?.id}
@@ -58,9 +62,9 @@ const Home = () => {
       </Box>
 
       <Typography variant="h3" sx={{ margin: '1em 0em' }} component="h3" className="titulo" textAlign="center" color="beige">
-        🎮RATING🎮
+      <TrendingUpIcon style={{ fontSize: 40 }}/>RATING<TrendingUpIcon style={{ fontSize: 40 }}/>
       </Typography>
-      <Box className="com" display="flex" justifyContent="space-around" flexWrap="wrap" paddingBottom='35px'>
+      <Box display="flex" justifyContent="space-around" flexWrap="wrap" paddingBottom='35px'>
         {RatingGame?.map((games) => (
           <Rating
             key={games?.id}
