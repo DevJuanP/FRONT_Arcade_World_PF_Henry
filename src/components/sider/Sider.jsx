@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import style from "./Sider.module.css";
 import {
   gamePlataforms,
   gameGenres,
@@ -21,7 +20,6 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-
 function Sider() {
   //fetch platforms:
   const dispatch = useDispatch();
@@ -103,7 +101,7 @@ function Sider() {
         ))}
       </Select>
     </FormControl>
-      <FormControl color="success" size="small" sx={{ width: "200px" }}>
+      <FormControl size="small" sx={{ width: "200px" }}>
         <InputLabel  id="genres" sx={{color: '#fff'}} >Genres</InputLabel>
         <Select
           labelId="genres"

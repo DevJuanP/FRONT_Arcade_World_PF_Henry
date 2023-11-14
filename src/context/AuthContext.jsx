@@ -7,8 +7,15 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/config";
 import axios from "axios";
-
 const authContext = createContext();
+const { VITE_IS_LOCAL } =import.meta.env
+const URL_DEPLOY = 'https://back-arcade-world-pf-henry.onrender.com';
+const urlLocal = 'http://localhost:3001';
+const BD_URL =  VITE_IS_LOCAL === 'true' ? urlLocal : URL_DEPLOY
+import { useDispatch } from "react-redux";
+import { setAuthenticated, setUserData } from "../redux/actions";
+
+
 
 export const useAuth = () => {
   const context = useContext(authContext);
@@ -18,7 +25,7 @@ export const useAuth = () => {
 
 export function AuthProvider({ children }) {
   const googleProvider = new GoogleAuthProvider();
-
+  const dispatch = useDispatch();
   const loginWithGoogle = async () => {
     try {
     const result = await signInWithPopup(auth, googleProvider);
@@ -27,10 +34,15 @@ export function AuthProvider({ children }) {
         onAuthStateChanged(auth, async (user) => {
           if (user) {
             const token = user.accessToken;
-              const response = await axios.post('http://localhost:3001/user/firebase', {
+              const response = await axios.post(`${BD_URL}/user/firebase`, {
                 token: token
               });
+              //permanencia de usuario
               localStorage.setItem("login", JSON.stringify(response.data));
+              //Autenticación para pasar al profile
+              dispatch(setAuthenticated(true));
+              //Toma de datos para pasarlos al profile
+              dispatch(setUserData(response.data));
             }
           });
         }

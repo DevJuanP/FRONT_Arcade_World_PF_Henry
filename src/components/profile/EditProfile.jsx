@@ -8,33 +8,48 @@ import {
   TextField,
   Typography,
   Button,
+  Select,
 } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getCountry, selectedCountry } from "../../redux/actions";
 import UploadImage from "../upload/UploadImage";
-import axios from "axios";
 import useImage from "../utils/useImage";
 import { putProfile } from "../../redux/actions";
-import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
+import "./editProfile.css";
+import FormControl from "@mui/material/FormControl";
 
 const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
+  let selectedCountryForm = useSelector((state) => state.selectedCountry);
+  useEffect(() => {}, [selectedCountryForm]);
+  let allCountries = useSelector((state) => state.countries);
+  let allCountriesArray = allCountries ? Object.values(allCountries) : [];
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [image, setImage] = useState("");
+  const [cover, setCover] = useState("");
   const { uploadImage } = useImage(setImage);
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isDirty, isValid },
     reset,
   } = useForm();
 
+  function handleCountrySelectChange(e) {
+    let countryName = e.target.value;
+    dispatch(selectedCountry(countryName));
+  }
+
   const onSubmit = handleSubmit((data) => {
     data.id = id;
     data.image = image;
+    data.coverImage = cover;
     dispatch(putProfile(data)).then(() => {
       setChanges(Math.random());
       const Toast = Swal.mixin({
@@ -55,6 +70,9 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
       handleChangeRenderProfileEdit();
     });
   });
+  useEffect(() => {
+    dispatch(getCountry());
+  }, [dispatch]);
 
   return (
     <Grid item sx={{ width: "100%", textAlign: "center" }}>
@@ -73,18 +91,21 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
             marginLeft: "12px",
             marginBottom: "-8px",
           }}
+        ></Stack>
+        <Stack
+          sx={{
+            alignItems: "center",
+            marginTop: "5px",
+          }}
         >
-          <Typography variant="overline" color="GrayText">
-            change your profile image
-          </Typography>
+          <input
+            className="file-selectProfile"
+            id="exampleFile"
+            name="file"
+            type="file"
+            onChange={uploadImage}
+          />
         </Stack>
-        <input
-          className="file-select"
-          id="exampleFile"
-          name="file"
-          type="file"
-          onChange={uploadImage}
-        />
       </Stack>
       <TextField
         sx={{ width: "320px", marginBottom: "10px" }}
@@ -98,12 +119,12 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
           minLength: 3,
         })}
       />
-      {errors.name?.type === "maxLength" && (
+      {errors?.name?.type === "maxLength" && (
         <Typography marginTop="-25px" variant="overline" color="red">
           Name is To long
         </Typography>
       )}
-      {errors.name?.type === "minLength" && (
+      {errors?.name?.type === "minLength" && (
         <Typography marginTop="-25px" variant="overline" color="red">
           Name is to short
         </Typography>
@@ -120,12 +141,12 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
           minLength: 3,
         })}
       />
-      {errors.lastname?.type === "maxLength" && (
+      {errors?.lastname?.type === "maxLength" && (
         <Typography marginTop="-25px" variant="overline" color="red">
           Last name is To long
         </Typography>
       )}
-      {errors.lastname?.type === "minLength" && (
+      {errors?.lastname?.type === "minLength" && (
         <Typography marginTop="-25px" variant="overline" color="red">
           Last name is to short
         </Typography>
@@ -139,15 +160,30 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
         // onSubmit={onSubmit}
         {...register("nickname")}
       />
-      <TextField
-        sx={{ width: "320px", marginBottom: "10px" }}
-        variant="outlined"
-        select
-        name="country"
-        label="Choose your country"
-        // onSubmit={onSubmit}
-        {...register("country")}
-      />
+      <FormControl>
+        <InputLabel id="country">Country</InputLabel>
+        <Controller
+          name="country"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <Select
+              labelId="country"
+              sx={{ width: "320px", marginBottom: "10px" }}
+              variant="outlined"
+              label="Choose your country"
+              onChange={handleCountrySelectChange}
+              {...field}
+            >
+              {allCountriesArray.map((country) => (
+                <MenuItem key={country} value={country}>
+                  {country}
+                </MenuItem>
+              ))}
+            </Select>
+          )}
+        />
+      </FormControl>
       <TextField
         sx={{ width: "320px", marginBottom: "10px" }}
         variant="outlined"
@@ -167,20 +203,18 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
           {errors.Email.message}
         </Typography>
       )}
-      <Stack marginBottom="-20px">
-        <Stack
-          sx={{
-            display: "flex",
-            textAlign: "left",
-            marginLeft: "12px",
-            marginBottom: "-8px",
-          }}
-        >
-          <Typography variant="overline" color="GrayText">
-            Select your front Page image
-          </Typography>
-        </Stack>
-        <UploadImage />
+      <Stack
+        sx={{
+          display: "flex",
+          textAlign: "left",
+          marginLeft: "12px",
+          marginBottom: "5px",
+        }}
+      >
+        <Typography variant="overline" color="GrayText" mb="-10px">
+          Select your new front page image
+        </Typography>
+        <UploadImage image={cover} setImage={setCover} />
       </Stack>
       <Button
         variant="contained"
@@ -188,11 +222,11 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
         endIcon={<SaveAltIcon />}
         sx={{ width: "320px" }}
         onClick={onSubmit}
+        disabled={!isDirty || !isValid}
       >
         Save Changes
       </Button>
     </Grid>
   );
 };
-
 export default EditProfile;

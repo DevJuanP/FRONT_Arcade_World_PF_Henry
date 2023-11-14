@@ -13,7 +13,7 @@ const FavoriteProfile = ({favorites}) => {
     dispatch(removeFromFavorites(id));
   };
   return (
-            <Grid container columnSpacing={3} rowSpacing={3}>
+            <Grid container columnSpacing={3} rowSpacing={3} mb={2}>
               {favorites?.map((favorite) => (
                 <Grid item xs>
                   <Card

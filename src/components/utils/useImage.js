@@ -14,7 +14,6 @@ const useImage = (setImage) => {
       }
     );
     const file = await res.json();
-    console.log(file.secure_url);
     setImage(file.secure_url);
   };
   return {

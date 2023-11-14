@@ -66,21 +66,10 @@ const Profile = () => {
   let nPurchased = userLocal?.user?.purchased;
 
   const getUser = async () => {
-    await dispatch(UserById(userLocal?.user?.id)).then((res) => {
-      console.log(res)
+    await dispatch(UserById(userLocal?.user?.id || userLocal?.user?.uid)).then((res) => {
      setUser(res.payload)
     })
   }
-
-  console.log(userLocal)
-
-
-  // useEffect(() => {
-  //   if ((userLocal === '' && !userLocal.login) || userLocal === null) {
-  //     navigate("/");
-  //   }
-  // }, []);
-
   useEffect(() => {
     getUser()
   }, [changes])
@@ -94,6 +83,7 @@ const Profile = () => {
       localStorage.removeItem("login");
     }
   };
+  console.log(userLocal)
   return (
     <LayoutAuth>
     <Box sx={{ minHeight: "100vh", backgroundColor:'#1a2a3b', marginTop:'20px' }}>
@@ -143,7 +133,7 @@ const Profile = () => {
                   onClick={handleChangeRender}
                 />
               }
-              label="Your Favorites" 
+              label="Your Favorites" sx={{color: 'white'}}
               />
             ) : (
                 <FormControlLabel
@@ -154,7 +144,7 @@ const Profile = () => {
                     onClick={handleChangeRender}
                   />
                 }
-                label="Your Games" 
+                label="Your Games" sx={{color: 'white'}}
                 />
             )}
             {renderBuy === true ? (

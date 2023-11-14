@@ -4,8 +4,8 @@ import { GET_GAMES, GET_GAME_NAME, GET_GAME_ID,
          FILTER_GAMES, RESET_GENRE_FILTER, RESET_PLATFORM_FILTER,
          SORT_GAMES_ASC, SORT_GAMES_DESC, FILTER_GAMES_BY_PRICE, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES,
          ADD_COMMENT, DELETE_ITEM_CART, ADD_NEWS_PURCHASED, ADD_TO_CART, DELETE_ITEM,
-         LOGOUT, GET_USER, SET_SELECTED_PRICE, PURCHASE_SUCCESS,TOP_FIVE,GET_PURCHASE,USER_BY_ID,PURCHASE_BY_ID,
-         CREATE_GAME } from './actions.js';
+         LOGOUT, GET_USER, SET_SELECTED_PRICE, PURCHASE_SUCCESS, GET_COUNTRIES, SET_SELECTED_COUNTRY,
+         TOP_FIVE,GET_PURCHASE,USER_BY_ID,PURCHASE_BY_ID, CREATE_GAME from './actions.js';
                         
 const initialState = {
   games:[],
@@ -67,12 +67,14 @@ const initialState = {
       ...state,
       genres: action.payload
         };
-    case GET_GAME_NAME:
+    case GET_COUNTRIES:
+      console.log(action.payload); // Imprime el contenido de action.payload
       return {
       ...state,
       countries: action.payload
       };
-    case SET_SELECTED_GENRE:
+    case SET_SELECTED_COUNTRY:
+      console.log(action.payload)
       return {
       ...state,
       selectedCountry: action.payload,
@@ -145,31 +147,28 @@ const initialState = {
 
     case ADD_TO_FAVORITES:
             allGamesFav = [...state.favorites, action.payload];
-            console.log("Add:",allGamesFav)
       return {
                 ...state,
                 favorites: allGamesFav,
             };
     case REMOVE_FROM_FAVORITES:
             allGamesRemove = state.favorites.filter(game => game.id !== action.payload);
-              console.log("Remove:",allGamesRemove)
         return {
                 ...state,
                 favorites: allGamesRemove 
             };
     case ADD_COMMENT:
          allComments = [...state.reviews, action.payload];
-              console.log(allComments)
               return {
                 ...state,
                 reviews: allComments
               }
       case LOGOUT:
-              return {
-                ...state,
-                favorites,
-                reviews,
-              };
+        return {
+          ...state,
+          favorites,
+          reviews,
+        };
     case DELETE_ITEM_CART:
       
       return {

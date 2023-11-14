@@ -53,7 +53,9 @@ function Navbar() {
             alignItems="center"
             gap={2}
           >
+            <Link to='/'>
             <img src={logo} style={{ width: "5em" }} alt="Logo" />
+            </Link>
             <Typography
               variant="h4"
               sx={{
@@ -64,6 +66,7 @@ function Navbar() {
             >
               Arcade World
             </Typography>
+            
             {location.pathname === "/store" && <Search />}
           </Box>
           {/* Links */}
