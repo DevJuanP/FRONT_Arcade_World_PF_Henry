@@ -255,7 +255,7 @@ export function setUserData(userData) {
     // Si userData tiene reviews, los agrega al estado global
     if (userData && userData.user && userData.user.reviews) {
       userData.user.reviews.forEach(review => {
-        dispatch(addReview(review));
+        dispatch(addComments(review));
       });
     }
   };
@@ -282,6 +282,7 @@ export const addComments = (gameComment) => ({
 export const logout = () => async dispatch => {
   try {
     const response = await axios.put(`${BD_URL}/user/logout`);
+    console.log(response);
     dispatch({
       type: LOGOUT
     });

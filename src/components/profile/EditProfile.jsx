@@ -8,33 +8,43 @@ import {
   TextField,
   Typography,
   Button,
+  Select,
 } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { selectedCountry, getCountry } from "../../redux/actions";
+import { getCountry, selectedCountry } from "../../redux/actions";
 import UploadImage from "../upload/UploadImage";
-import axios from "axios";
 import useImage from "../utils/useImage";
 import { putProfile } from "../../redux/actions";
 import Swal from "sweetalert2";
 import "./editProfile.css";
+import FormControl from "@mui/material/FormControl";
 
 const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
+  let selectedCountryForm = useSelector((state) => state.selectedCountry);
+  useEffect(() => {}, [selectedCountryForm]);
+  let allCountries = useSelector((state) => state.countries);
+  let allCountriesArray = allCountries ? Object.values(allCountries) : [];
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [image, setImage] = useState("");
   const [cover, setCover] = useState("");
   const { uploadImage } = useImage(setImage);
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isDirty, isValid },
     reset,
   } = useForm();
+
+  function handleCountrySelectChange(e) {
+    let countryName = e.target.value;
+    dispatch(selectedCountry(countryName));
+  }
 
   const onSubmit = handleSubmit((data) => {
     data.id = id;
@@ -60,12 +70,6 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
       handleChangeRenderProfileEdit();
     });
   });
-
-  let selectedCountry = useSelector((state) => state.selectedCountry);
-  let allCountries = useSelector((state) => state.countries);
-  console.log(selectedCountry);
-  let allCountriesArray = allCountries ? Object.values(allCountries) : [];
-
   useEffect(() => {
     dispatch(getCountry());
   }, [dispatch]);
@@ -156,25 +160,30 @@ const EditProfile = ({ id, handleChangeRenderProfileEdit, setChanges }) => {
         // onSubmit={onSubmit}
         {...register("nickname")}
       />
-      <TextField
-        sx={{ width: "320px", marginBottom: "10px" }}
-        variant="outlined"
-        select
-        name="country"
-        label="Choose your country"
-        value={selectedCountry}
-        onChange={(event) => {
-          console.log(event.target.value);
-          dispatch(selectedCountry(event.target.value));
-        }}
-        {...register("country")}
-      >
-        {allCountriesArray.map((country) => (
-          <MenuItem key={country} value={country}>
-            {country}
-          </MenuItem>
-        ))}
-      </TextField>
+      <FormControl>
+        <InputLabel id="country">Country</InputLabel>
+        <Controller
+          name="country"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <Select
+              labelId="country"
+              sx={{ width: "320px", marginBottom: "10px" }}
+              variant="outlined"
+              label="Choose your country"
+              onChange={handleCountrySelectChange}
+              {...field}
+            >
+              {allCountriesArray.map((country) => (
+                <MenuItem key={country} value={country}>
+                  {country}
+                </MenuItem>
+              ))}
+            </Select>
+          )}
+        />
+      </FormControl>
       <TextField
         sx={{ width: "320px", marginBottom: "10px" }}
         variant="outlined"
