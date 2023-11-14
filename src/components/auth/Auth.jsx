@@ -12,7 +12,7 @@ export default function AuthLogin() {
     setSignIn((elemento) => !elemento)
   }
   return (
-    <Stack style={{display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column', minHeight:'142vh'}}>
+    <Stack style={{display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column'}}>
       {
         signIn === true ? (<Login/>) : (<Create handleSign={handleSign}/>)
       }
@@ -27,7 +27,7 @@ export default function AuthLogin() {
         :
        ( 
         <Stack>
-          <Typography variant='body1'>Already have account? <Button color='primary' variant='text' onClick={handleSign}  className='btnCreate'>Sign in</Button></Typography>
+          <Typography mb={2} variant='body1'>Already have account? <Button color='primary' variant='text' onClick={handleSign}  className='btnCreate'>Sign in</Button></Typography>
         </Stack>
       )
       }

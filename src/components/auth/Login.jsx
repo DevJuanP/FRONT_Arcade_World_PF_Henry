@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { useAuth } from "../../context/AuthContext";
 import { Button, Card, Stack, Typography, TextField } from "@mui/material";
 
+
 const Login = () => {
   const { loginWithGoogle, resetPassword } = useAuth();
   const [error, setError] = useState("");
@@ -24,7 +25,9 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     try {
       await loginWithGoogle();
-      navigate("/user/profile");
+      setTimeout(() => {
+        navigate("/user/profile");
+      }, 200)
     } catch (error) {
       setError(error.message);
     }
@@ -64,13 +67,15 @@ const Login = () => {
         //Toma de datos para pasarlos al profile
         dispatch(setUserData(response.data));
         //Migración al profile
+
+
         navigate("/user/profile");
       }
     });
     reset();
   });
   return (
-    <Card sx={{ height: "400px", width: "400px" }}>
+    <Card sx={{ py:4, mt:4, width: "400px" }}>
       <Stack
         sx={{ display: "flex", alignItems: "center", justifyContent: "center"}}
       >

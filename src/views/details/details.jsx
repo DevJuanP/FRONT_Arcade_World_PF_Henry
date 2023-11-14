@@ -204,7 +204,7 @@ const Details = () => {
       </Stack>
           <Grid container spacing={3} justifyContent='center' marginTop='30px'>
             { gameComments.map((comment, index)=>(
-            <Stack textAlign='center' marginRight='20px'>
+            <Stack  key={index} textAlign='center' marginRight='20px'>
               <Card sx={{ minWidth: 275, marginBottom:'20px'}}>
                 <CardContent sx={{textAlign: 'center', height:'200px', width:'400px'}}>
                 <Stack alignItems='center'>
