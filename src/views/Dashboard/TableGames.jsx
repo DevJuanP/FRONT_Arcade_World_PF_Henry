@@ -6,11 +6,13 @@ import { DataGridPro } from '@mui/x-data-grid-pro';
 
 function TableGames() {
  const games=useSelector((g)=>g.games)
+
  const rows = games.map((G)=>{
   
     return{
         id:G.id,
         Name:G.name,
+        isActive:G.isActive,
         Price:'$/'+G.price,
         Plataforms:G.platforms[0],
         Genres:G.genres[0],
@@ -62,7 +64,7 @@ function TableGames() {
          Delete
        </Button>
      )
-   }
+   },{field:'isActive'}
  ];
   
   return (

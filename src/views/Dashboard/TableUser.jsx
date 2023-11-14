@@ -10,6 +10,8 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { updateItem } from '../../redux/actions';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 
 function TableUser() {
@@ -17,7 +19,7 @@ function TableUser() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const dispatch = useDispatch();
-  
+ 
   const [stateBan,setstateBan]=useState({})
  const chekearBan=(id,banstatus)=>{
   setstateBan((prevCheckBan)=>({
@@ -78,7 +80,26 @@ function TableUser() {
     }
   }, [dispatch, selectedUserId]);
   
-
+  const CounterAdmi=(DUser)=>{
+    let Counter=0;
+     DUser.map((f)=>{ 
+     if(f?.admin){
+        Counter+=1
+     }
+    })
+  return Counter
+   }
+   const funcionCounterAdmim=CounterAdmi(user)
+   const CounterBan=(DUser)=>{
+    let Counter=0;
+     DUser.map((f)=>{ 
+     if(f?.banstatus){
+        Counter+=1
+     }
+    })
+  return Counter
+   }
+   const funcionCounterBan=CounterBan(user)
   const DataUser=useSelector((state)=>state.userID);
   const rows = user?.map((u) => {
     return {
@@ -86,7 +107,6 @@ function TableUser() {
       name: u.name,
       admin:u?.admin,
       banstatus:u?.banstatus,
-      baneado:u?.banstatus,
       lastname: u.lastname,
       nickname: u.nickname,
       Email: u.Email,
@@ -158,7 +178,7 @@ function TableUser() {
  
   const styleTable = {
     color: 'black',
-    width: '98%',
+    width: '75%',
     backgroundColor: '#90a4ae',
     border: 'none',
   };
@@ -181,6 +201,21 @@ function TableUser() {
     color: 'white',
     margin: '1em',
   };
+  const BoxState={
+   border:'solid',
+   background:'#3d5afe',
+   padding:'0.5em',
+   display:'flex',
+   borderRadius:'1em',
+   alignItems:'center'
+  }
+  const BoxMainState={
+    display:'flex',
+    flexWrap:'wrap',
+    alignItems:'center',
+    width:'100%',
+    justifyContent: 'space-evenly'
+  }
 
   const dataGame = DataUser?.purchased?.flatMap((T) => {
     const Game = T?.Videogames;
@@ -210,6 +245,16 @@ function TableUser() {
           Table User
         </Typography>
       </Box>
+      <Box style={BoxMainState}>
+        <Box style={BoxState}>
+          <AdminPanelSettingsIcon/>
+          Administrators:{funcionCounterAdmim}
+        </Box>
+        <Box style={BoxState}>
+          <RemoveCircleIcon/>
+          Banned:{funcionCounterBan}
+        </Box>
+      </Box>
       <DataGridPro style={styleTable} rows={rows} columns={columns} pagination />
       <Modal
         isOpen={modalIsOpen}
@@ -226,14 +271,13 @@ function TableUser() {
           alt="Portada"
           style={{ width: '100%', borderRadius: '8px',maxHeight:'30em',margin:'1em 1em 5em 1em' }}
           />
-          </div>
-        <div style={{ zIndex: '2',position:'absolute',top:'25em',left:'5%'}}>
+        <div style={{ zIndex: '2',position:'ABSOLUTE',top:'50%',left:'40%'}}>
         <img
           src={DataUser?.photo}
           alt={DataUser?.name}
           style={{
-            minWidth: '100%',
-            maxWidth:'10em',
+            minWidth: '25%',
+            maxWidth:'100%',
             maxHeight: '49%',
             borderRadius: '50%',
             border: '5px solid #fff',
@@ -241,6 +285,7 @@ function TableUser() {
            
           }}
         />
+          </div>
           </div>
       </div> 
       <div style={{padding:'1em',background:'#90a4ae',flexDirection:'column',borderRadius:'1em',display:'flex',alignContent:'center',alignItems:'center',margin:'0% 0% 1% 0%',flexWrap:'wrap'}}>
@@ -261,7 +306,7 @@ function TableUser() {
       </div>
     </div>
     <Typography variant='h5' color='white'>My Videogames</Typography>
-        <div style={{padding:'1em 1em 1em 0em',display:'flex',border:'solid',flexWrap:'wrap',width:'100%',background:'#90a4ae',borderRadius:'1em'}}>
+        <div style={{padding:'1em 1em 1em 0em',display:'flex',flexWrap:'wrap',width:'100%',background:'#90a4ae',borderRadius:'1em'}}>
          {dataGame?.map((t)=>{
            return(
             <div style={{display:'flex',alignItems:'center',flexDirection:'column',border:'solid',margin:'1%',background:'white'}}>
@@ -307,6 +352,8 @@ function TableUser() {
       </div>
         <Button onClick={closeModal}>Close Modal</Button>
       </Modal>
+      
+  
     </Box>
   );
 }

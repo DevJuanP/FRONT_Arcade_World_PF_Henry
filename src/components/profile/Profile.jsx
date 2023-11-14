@@ -83,6 +83,7 @@ const Profile = () => {
       localStorage.removeItem("login");
     }
   };
+  console.log(userLocal)
   return (
     <LayoutAuth>
     <Box sx={{ minHeight: "100vh", backgroundColor:'#1a2a3b', marginTop:'20px' }}>
@@ -132,7 +133,7 @@ const Profile = () => {
                   onClick={handleChangeRender}
                 />
               }
-              label="Your Favorites" 
+              label="Your Favorites" sx={{color: 'white'}}
               />
             ) : (
                 <FormControlLabel
@@ -143,7 +144,7 @@ const Profile = () => {
                     onClick={handleChangeRender}
                   />
                 }
-                label="Your Games" 
+                label="Your Games" sx={{color: 'white'}}
                 />
             )}
             {renderBuy === true ? (

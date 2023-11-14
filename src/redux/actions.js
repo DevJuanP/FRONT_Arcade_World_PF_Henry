@@ -26,7 +26,8 @@ export const DELETE_ITEM = 'DELETE_ITEM';
 export const GET_USER='GET_USER';
 export const SET_SELECTED_PRICE = 'SET_SELECTED_PRICE';
 export const PURCHASE_SUCCESS = 'PURCHASE_SUCCESS';
-export const GET_COUNTRY = 'GET_COUNTRY'
+export const GET_COUNTRIES = 'GET_COUNTRIES'
+export const SET_SELECTED_COUNTRY = 'SET_SELECTED_COUNTRY';
 export const TOP_FIVE='TOP_FIVE'
 export const GET_PURCHASE='GET_PURCHASE'
 export const USER_BY_ID='USER_BY_ID'
@@ -114,16 +115,26 @@ export const gameGenres = ()=> {
 export const getCountry = ()=>{ 
   return async function(dispatch) {
   try {
-   const country = (await axios.get('https://restcountries.com/v3.1/all')).data;
-   return dispatch({
-      type: GET_COUNTRY, 
-      payload: country
+   const response  = (await axios.get('https://restcountries.com/v3.1/all')).data;
+   const countries = response.map(country => country.name.common);
+   const sortedCountries = countries.sort();
+   console.log(sortedCountries); // Imprime el contenido de countries
+   dispatch({
+      type: GET_COUNTRIES, 
+      payload: sortedCountries
     });
     
   } catch (error) {
     console.log(error.message)
   }
 }
+};
+export const selectedCountry = (country) => {
+  console.log(country);
+  return {
+    type: SET_SELECTED_COUNTRY,
+    payload: country
+  }
 };
 export const setSelectedGenre = (genre) => {
   return {
@@ -213,6 +224,13 @@ export function postLogin(payload){
     return data
   }
 }
+export function postFirebase(payload){
+  return async function(){
+    const data = await
+    axios.post(`${BD_URL}/user/firebase`,payload)
+    return data
+  }
+}
 export function putProfile(payload){
   return async function(){
     const data = await
@@ -220,12 +238,6 @@ export function putProfile(payload){
     return data
   }
 }
-// export function setUserData(userData) {
-//   return {
-//     type: SET_USER_DATA,
-//     payload: userData,
-//   };
-// }
 export function setUserData(userData) {
   return (dispatch) => {
     // Actualiza userData
@@ -238,6 +250,13 @@ export function setUserData(userData) {
     if (userData && userData.user && userData.user.favorites) {
       userData.user.favorites.forEach(game => {
         dispatch(addToFavorites(game));
+      });
+    }
+
+    // Si userData tiene reviews, los agrega al estado global
+    if (userData && userData.user && userData.user.reviews) {
+      userData.user.reviews.forEach(review => {
+        dispatch(addComments(review));
       });
     }
   };
@@ -264,6 +283,7 @@ export const addComments = (gameComment) => ({
 export const logout = () => async dispatch => {
   try {
     const response = await axios.put(`${BD_URL}/user/logout`);
+    console.log(response);
     dispatch({
       type: LOGOUT
     });
@@ -314,6 +334,7 @@ export function GetUser(){
   return async function(dispatch){
    try {
     const {data}= await axios.get(`${BD_URL}/user`)
+    console.log(data);
     return dispatch({
       type:GET_USER,
       payload:data
