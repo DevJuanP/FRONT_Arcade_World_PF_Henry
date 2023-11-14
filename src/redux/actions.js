@@ -35,6 +35,7 @@ export const PURCHASE_BY_ID='PURCHASE_BY_ID'
 export const UPDATE_ITEM='UPDATE_ITEM'
 export const UPDATE_ISACTIVE_VG='UPDATE_ISACTIVE_VG'
 export const CREATE_GAME='CREATE_GAME'
+export const VG_ACTIVE_NOACTIVE='VG_ACTIVE_NOACTIVE'
 
 
 const { VITE_IS_LOCAL } =import.meta.env
@@ -335,7 +336,7 @@ export const deleteItem = (id) => {
 export function GetUser(){
   return async function(dispatch){
    try {
-    const {data}= await axios.get(`${BD_URL}/user`)
+    const {data}= await axios.get('http://localhost:3001/user')
     console.log(data);
     return dispatch({
       type:GET_USER,
@@ -411,6 +412,7 @@ export const UpdateActiveVG=(newData)=>{
   return async function(dispatch){
   try {
     const {data} =await axios.put('http://localhost:3001/videogame/update',newData)
+    console.log(data)
     return dispatch({
       type:UPDATE_ISACTIVE_VG,
       payload:data
@@ -441,3 +443,17 @@ export const createVideogame = (payload) => {
     }
   };
 };
+
+export const VGactive=()=>{
+  return async function (dispatch){
+    try{
+      const {data}= await axios.get(`${BD_URL}/videogame/admin`)
+      return dispatch({
+        type:VG_ACTIVE_NOACTIVE,
+        payload:data
+      })
+    }catch(error){
+      console.log({error:error.message})
+    }
+  }
+}
