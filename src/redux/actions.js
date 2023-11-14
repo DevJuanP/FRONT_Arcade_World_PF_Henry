@@ -223,6 +223,13 @@ export function postLogin(payload){
     return data
   }
 }
+export function postFirebase(payload){
+  return async function(){
+    const data = await
+    axios.post(`${BD_URL}/user/firebase`,payload)
+    return data
+  }
+}
 export function putProfile(payload){
   return async function(){
     const data = await
@@ -352,7 +359,7 @@ export function purchaseSuccess(payload){
 export function GetPuchase(){
   return async function(dispatch){
     try {
-      const {data}=await axios.get('http://localhost:3001/purchase')
+      const {data}=await axios.get(`${BD_URL}/purchase`)
       return dispatch({
         type:GET_PURCHASE,
         payload:data
@@ -373,7 +380,7 @@ export function UserById(id){
 }
 export function PurchaseById(id){
   return async function(dispatch){
-    const {data}=await axios.get(`http://localhost:3001/purchase/${id}`) 
+    const {data}=await axios.get(`${BD_URL}/purchase/${id}`) 
     return dispatch({
       type:PURCHASE_BY_ID,
       payload:data
