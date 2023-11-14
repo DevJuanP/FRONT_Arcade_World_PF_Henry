@@ -14,7 +14,6 @@ const PublishGame = () => {
   const genres = useSelector(state => state.genres)
   const allVG = useSelector( state => state.games )
   const allnames = allVG.map( vg => vg.name)
-  //const url = 'https://images.pexels.com/photos/1670977/pexels-photo-1670977.jpeg?'
   const currentDate = new Date();
   
   const [state, setState] = useState({
@@ -29,13 +28,13 @@ const PublishGame = () => {
   })
   
   const [errors, setErrors] = useState({
-    name: 'campo requerido* ',
-    description: 'campo requerido* ',
+    name: 'required field* ',
+    description: 'required field* ',
     image: '',
-    released: 'campo requerido* ',
-    price: 'campo requerido* ',
-    genres: 'campo requerido* ',
-    platforms:'campo requerido* '
+    released: 'required field* ',
+    price: 'required field* ',
+    genres: 'required field* ',
+    platforms:'required field* '
   })
 
   useEffect(() => {
@@ -52,16 +51,16 @@ const PublishGame = () => {
   const validate = (state, name) => {
     switch(name){
       case `name`:
-        if(state.name === "") setErrors({...errors, name: 'campo requerido*'})
-        else if(state.name.length<4 || state.name.length>20) setErrors({...errors, name: 'el nombre debe tener entre 3 y 20 caracteres'})
-        else if(!/^[a-zA-Z0-9\-": ]+$/.test(state.name)) setErrors({...errors, name: 'solo usar simbolos alfanuméricos, "", - y :'})
-        else if(allnames.includes(state.name)) setErrors({...errors, name: 'este nombre ya existe'})
+        if(state.name === "") setErrors({...errors, name: 'required field*'})
+        else if(state.name.length<4 || state.name.length>20) setErrors({...errors, name: 'The name must be between 3 and 20 characters long'})
+        else if(!/^[a-zA-Z0-9\-": ]+$/.test(state.name)) setErrors({...errors, name: 'Only use alphanumeric symbols, "", - and :'})
+        else if(allnames.includes(state.name)) setErrors({...errors, name: 'This name already exists'})
         else setErrors({...errors, name: ''}); break
       
       case `description`:
-        if(state.description === "") setErrors({...errors, description: 'campo requerido*'})
-        else if(state.description.length<16 || state.description.length>300) setErrors({...errors, description: 'el nombre debe tener entre 15 y 300 caracteres'})
-        else if(!/^[a-zA-Z0-9\-": ]+$/.test(state.description)) setErrors({...errors, description: 'solo usar simbolos alfanuméricos, "", - y :'})
+        if(state.description === "") setErrors({...errors, description: 'required field*'})
+        else if(state.description.length<16 || state.description.length>300) setErrors({...errors, description: 'The description must be between 15 and 300 characters'})
+        else if(!/^[a-zA-Z0-9\-": ]+$/.test(state.description)) setErrors({...errors, description: 'Only use alphanumeric symbols, "", - and :'})
         else setErrors({...errors, description: ''}); break
 
       /*case 'image':
@@ -70,20 +69,20 @@ const PublishGame = () => {
         else setErrors({...errors, image: ''}); break*/
 
       case `released`:
-        if(state.released === "") setErrors({...errors, released: 'campo requerido*'})
-        else if(!/^\d{4}-\d{2}-\d{2}$/.test(state.released)) setErrors({...errors, released: 'El formato de fecha debe ser yyyy-mm-dd'})
-        else if((new Date(state.released))> currentDate) setErrors({...errors, released: 'No se permiten fechas futuras.'})
+        if(state.released === "") setErrors({...errors, released: 'required field*'})
+        else if(!/^\d{4}-\d{2}-\d{2}$/.test(state.released)) setErrors({...errors, released: 'The date format must be yyyy-mm-dd'})
+        else if((new Date(state.released))> currentDate) setErrors({...errors, released: 'No future dates allowed.'})
         else setErrors({...errors, released: ''}); break
 
       case `price`:
-        if(state.price === "") setErrors({...errors, price: 'campo requerido*'})
+        if(state.price === "") setErrors({...errors, price: 'required field*'})
         else setErrors({...errors, price: ''}); break
 
       case 'genres':
         state.genres.length === 0
           ? setErrors({
               ...errors,
-              genres: 'campo requerido* ',
+              genres: 'required field* ',
             })
           : setErrors({
               ...errors,
@@ -95,7 +94,7 @@ const PublishGame = () => {
         state.platforms.length === 0
           ? setErrors({
               ...errors,
-              platforms: 'campo requerido* ',
+              platforms: 'required field* ',
             })
           : setErrors({
               ...errors,
@@ -142,10 +141,7 @@ const PublishGame = () => {
           ...state,
           isActive: isActive.checked
         })
-        /*validate({
-          ...state,
-          isActive: !isActive.value
-        }, 'isActive')*/
+        
         break;
 
       /*case 'image':
@@ -159,6 +155,7 @@ const PublishGame = () => {
           ...state,
           price: event.target.value
         }, 'price')
+        break;
 
       default:
         setState({ 
@@ -201,15 +198,36 @@ const PublishGame = () => {
       ...state,
       genres: state.genres.map( g => genres.indexOf(g)+1),
       platforms: state.platforms.map( p => platforms.indexOf(p)+1)
-    }))
+    })).then(() => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Successfully created",
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          content: 'small-font'
+        },
+      });
+     });
+    setState({
+      name: '',
+    description: '',
+    image: '',
+    released: '',
+    price: 0,
+    isActive: false,
+    genres: [],
+    platforms:[]
+    })
   }
 
 
   return (
-    
+  <div className={styles.container}>
     <div className={styles.createcontainer}>
       <h2>Create a new videogame</h2>
-      <form
+    <form
         className={styles.createform}
         onSubmit={handleSubmit}
       >
@@ -241,13 +259,12 @@ const PublishGame = () => {
         <div className={styles.group}>
           <label htmlFor="image">Imagen:</label>
           <input
-            className={styles.selectimg}
             type="text"
             id="image"
             name="image"
             onChange={handleInputChange}
             accept="image/*"
-            value=''
+            value={state.image}
           />
           {/* <label  htmlFor="image">
             <span className={styles.uploadButton}>Select file</span>
@@ -325,9 +342,8 @@ const PublishGame = () => {
                       
                       return (
                           <div key={selectedId} className={styles.selectedTemp}>
-                              {selectedId}
                               <button type="button" name="genres" id={selectedId} onClick={handleRemove}>
-                                  ✖
+                              {selectedId}
                               </button>
                           </div>)
                           })}
@@ -358,10 +374,9 @@ const PublishGame = () => {
                    
                    return (
                        <div key={selectedId} className={styles.selectedTemp}>
+                         <button type="button" name="platforms" id={selectedId} onClick={handleRemove}>
                            {selectedId}
-                           <button type="button" name="platforms" id={selectedId} onClick={handleRemove}>
-                               ✖
-                           </button>
+                          </button>
                        </div>)
                        })}
         {errors.platforms && (
@@ -376,6 +391,7 @@ const PublishGame = () => {
         </div>
       </form>
     </div>
+  </div>
   );
 };
 export default PublishGame

@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { CardContent, Typography, Button, Box, Stack } from "@mui/material";
 import { purchaseSuccess } from '../../redux/actions.js';
 
