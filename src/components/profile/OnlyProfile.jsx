@@ -1,7 +1,8 @@
-import { Grid, Avatar, Typography, Stack } from "@mui/material";
-import React, {useEffect} from "react";
+import { Grid, Avatar, Typography } from "@mui/material";
+import React from "react";
 
 const onlyProfile = ({user}) => { 
+  console.log(user);
   return (
     <Grid item sx={{ width: "100%", textAlign:'center'}}>
       <Avatar
@@ -21,6 +22,7 @@ const onlyProfile = ({user}) => {
         Nickname: {user?.nickname}
       </Typography>
       <Typography sx={{marginBottom:'20px'}} variant="h5">Email: {user?.Email}</Typography>
+        {user?.country ? <Typography sx={{marginBottom:'20px'}} variant="h5">Country: {user?.country}</Typography> : ''}
         </Grid> 
     </Grid>
   );

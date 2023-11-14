@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { gameById, GetUser } from "../../redux/actions";
+import { gameById, GetUser, logout } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Grafico from "./Grafico";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,7 +10,7 @@ import {
   CardMedia,
   Stack,
   Typography,
-  Avatar
+  Avatar,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Skeleton from "@mui/material/Skeleton";
@@ -18,23 +18,27 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Swal from "sweetalert2";
 import Grid from "@mui/material/Grid";
-import Filter from 'bad-words'
-var  filter = new Filter();
-import { addComments } from "../../redux/actions"
-import Pay from '../../components/cart/Pay.jsx'
-import { addToCart } from '../../redux/actions.js'
+import Filter from "bad-words";
+var filter = new Filter();
+import { addComments } from "../../redux/actions";
+import Pay from "../../components/cart/Pay.jsx";
+import { addToCart } from "../../redux/actions.js";
+import { useForm } from "react-hook-form";
 
 const Details = () => {
   const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit
+  } = useForm();
   const [comments, setComments] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const shoppingCart = useSelector((state) => state.shoppingCart);
-  let commentari = useSelector((state)=>state.commentari)
   let userLocalDetail = localStorage.getItem("login");
   userLocalDetail = userLocalDetail ? JSON.parse(userLocalDetail) : null;
-  
-  const handleButton = () => {
+  console.log(userLocalDetail);
+  const handleButton = handleSubmit((data) => {
     if (userLocalDetail === null || userLocalDetail === "") {
       Swal.fire({
         position: "top-center",
@@ -52,26 +56,36 @@ const Details = () => {
         }
       });
     } else {
-      dispatch(addComments({ id, message }))
-      // setComments(message);
+      dispatch(logout(data))
+      dispatch(addComments({ id, message }));
+      setComments(message);
     }
-  };
+  });
 
   const gameDetails = useSelector((state) => state.gameId);
   const { id } = useParams();
+
+  let searchUserGameId = userLocalDetail?.user?.purchased.flatMap(
+    (purchase) => purchase.Videogames
+  );
+  let resSearch = searchUserGameId.find((gamePurchasedId) => {
+    return gamePurchasedId.GameId === gameDetails.id;
+  });
+  let gameMatch;
+  if (resSearch) {
+    gameMatch = true;
+  } else {
+    gameMatch = false;
+  }
 
   useEffect(() => {
     dispatch(gameById(id));
   }, [dispatch, id]);
 
-
   const handleChange = (event) => {
-    let cleanMessage = filter.clean(event.target.value)
+    let cleanMessage = filter.clean(event.target.value);
     setMessage(cleanMessage);
   };
-
-  const reviews = useSelector(state => state.reviews);
-  const gameComments = reviews.filter(review => review.id === id);
 
   const showAlert = () => {
     Swal.fire({
@@ -97,18 +111,17 @@ const Details = () => {
     });
   };
 
-  
   const handleAdd = () => {
-    const found = shoppingCart.find(el => el.id === id)
-    if(!found) {
-      dispatch(addToCart(gameDetails))
+    const found = shoppingCart.find((el) => el.id === id);
+    if (!found) {
+      dispatch(addToCart(gameDetails));
       showAlert();
-       } else {
-      showAlert2()
-  }
- }
- const updateShoppingCart = useSelector((state) => state.shoppingCart);
- localStorage.setItem('cart', JSON.stringify(updateShoppingCart))
+    } else {
+      showAlert2();
+    }
+  };
+  const updateShoppingCart = useSelector((state) => state.shoppingCart);
+  localStorage.setItem("cart", JSON.stringify(updateShoppingCart));
 
   return (
     <>
@@ -121,7 +134,7 @@ const Details = () => {
                 image={gameDetails.image}
                 title="prueba"
               />
-            </Card>         
+            </Card>
           </Stack>
           <Stack textAlign="left" marginLeft="20px">
             <Typography variant="h3">{gameDetails.name}</Typography>
@@ -154,7 +167,7 @@ const Details = () => {
               >
                 Adds
               </Button>
-              
+
               <Pay />
             </div>
           </Stack>
@@ -162,12 +175,9 @@ const Details = () => {
       ) : (
         <Skeleton variant="rectangular" width={450} height={500} />
       )}
-   <Grafico />
+      <Grafico />
       <Stack sx={{ textAlign: "center", marginTop: "20px" }}>
         <Typography variant="h6">Comments:</Typography>
-        {/* {comments.map((comment, index) => (
-                    <p key={index}>{comment}</p>
-                ))} */}
         <Box
           component="form"
           sx={{
@@ -177,45 +187,49 @@ const Details = () => {
           noValidate
           autoComplete="off"
         >
-          <TextField
-            variant="outlined"
-            label="Message"
-            id="message"
-            name="message"
-            onChange={handleChange}
-          ></TextField>
-          <br />
-          <Button onClick={handleButton} variant="outlined" color="info">
-            Submit
-          </Button>
+          {gameMatch === true ? (
+            <>
+              <TextField
+                variant="outlined"
+                name="message"
+                // onChange={handleChange}
+                {...register('message')}
+              ></TextField>
+              <br />
+              <Button onClick={handleButton} variant="outlined" color="info">
+                Submit
+              </Button>
+              </>
+          ) : (
+            ""
+          )}
         </Box>
       </Stack>
-          <Grid container spacing={3} justifyContent='center' marginTop='30px'>
-            { gameDetails.reviews && gameDetails.reviews.map((review, index)=>(
-            <Stack textAlign='center' marginRight='20px' key={index}>
-              <Card sx={{ minWidth: 275, marginBottom:'20px'}}>
-                <CardContent sx={{textAlign: 'center', height:'200px', width:'400px'}}>
-                <Stack alignItems='center'>
-                  {/* <Avatar src={userLocalDetail?.user?.image}/> */}
-                  <Typography textAlign="center" sx={{color: 'black', fontWeight:'bold'}}>
-                  {review.nickName}
-                  </Typography>
-                  {/* <Rating value={review.rating} readOnly precision={0.5} /> */}
+      <Grid container spacing={3} justifyContent="center" marginTop="30px">
+        {gameDetails.reviews &&
+          gameDetails.reviews.map((review, index) => (
+            <Stack textAlign="center" marginRight="20px" key={index}>
+              <Card sx={{ minWidth: 275, marginBottom: "20px" }}>
+                <CardContent
+                  sx={{ textAlign: "center", height: "200px", width: "400px" }}
+                >
+                  <Stack alignItems="center">
+                    {/* <Avatar src={userLocalDetail?.user?.image}/> */}
+                    <Typography
+                      textAlign="center"
+                      sx={{ color: "black", fontWeight: "bold" }}
+                    >
+                      {review.nickName}
+                    </Typography>
+                    {/* <Rating value={review.rating} readOnly precision={0.5} /> */}
                   </Stack>
                   <Typography textAlign="center">{review.review}</Typography>
                 </CardContent>
               </Card>
             </Stack>
-            ))}
-          </Grid>
+          ))}
+      </Grid>
     </>
   );
 };
 export default Details;
-
-/* {gameDetails.reviews && gameDetails.reviews.map((review, index) => (
-  <div key={index}>
-    <h3>{review.title}</h3>
-    <p>{review.content}</p>
-  </div>
-))}*/
