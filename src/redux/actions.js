@@ -34,6 +34,7 @@ export const USER_BY_ID='USER_BY_ID'
 export const PURCHASE_BY_ID='PURCHASE_BY_ID'
 export const UPDATE_ITEM='UPDATE_ITEM'
 export const UPDATE_ISACTIVE_VG='UPDATE_ISACTIVE_VG'
+export const CREATE_GAME='CREATE_GAME'
 
 
 const { VITE_IS_LOCAL } =import.meta.env
@@ -420,3 +421,23 @@ export const UpdateActiveVG=(newData)=>{
    
  }
 }
+export const createVideogame = (payload) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(
+        `${BD_URL}/videogame`,
+        payload
+      );
+      const createdProduct = response.data;
+      
+      dispatch({
+        type: CREATE_GAME,
+        payload: createdProduct,
+      })
+      
+    } catch (error) {
+      console.log("Error: createVideogame", error);
+      
+    }
+  };
+};
