@@ -18,8 +18,28 @@ function TableUser() {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const dispatch = useDispatch();
   
-  const [checkAdmiMap, setCheckAdmiMap] = useState({});
+  const [stateBan,setstateBan]=useState({})
+ const chekearBan=(id,banstatus)=>{
+  setstateBan((prevCheckBan)=>({
+    ...prevCheckBan,
+    [id]:banstatus===undefined ? true : !banstatus,
+  }))
+  dispatch(updateItem({id,banstatus:banstatus === undefined ? true : !banstatus}))
+ }
 
+ const updateStatusBan=()=>{
+  const hasChangesBan=Object.values(stateBan).some((value)=>value);
+
+  if (hasChangesBan) {
+    for(const id in stateBan){
+      const banstatus=stateBan[id];
+      dispatch(updateItem({id,banstatus}))
+    }
+    setstateBan({})
+  }
+ }
+
+  const [checkAdmiMap, setCheckAdmiMap] = useState({});
   const CheckearAdmi = (id, admin) => {
     setCheckAdmiMap((prevCheckAdmiMap) => ({
       ...prevCheckAdmiMap,
@@ -28,9 +48,8 @@ function TableUser() {
     dispatch(updateItem({ id, admin: admin === undefined ? true : !admin }));
 
   };
-  console.log(checkAdmiMap)
   const updateAdmiStatus = () => {
-  // Verificamos si hay cambios antes de realizar la actualización
+
   const hasChanges = Object.values(checkAdmiMap).some((value) => value);
 
   if (hasChanges) {
@@ -39,22 +58,20 @@ function TableUser() {
       dispatch(updateItem({ id, admin }));
     }
 
-    // Limpia el estado checkAdmiMap después de la actualización
+
     setCheckAdmiMap({});
   }
   };
   
-  console.log(user)
+
   const openModal = (userId) => {
     setSelectedUserId(userId);
     setModalIsOpen(true);
   };
-
   const closeModal = () => {
     setSelectedUserId(null);
     setModalIsOpen(false);
   };
-
   useEffect(() => {
     if (selectedUserId !== null) {
       dispatch(UserById(selectedUserId));
@@ -68,6 +85,7 @@ function TableUser() {
       id: u.id,
       name: u.name,
       admin:u?.admin,
+      banstatus:u?.banstatus,
       baneado:u?.banstatus,
       lastname: u.lastname,
       nickname: u.nickname,
@@ -118,10 +136,24 @@ function TableUser() {
       onClick={() => CheckearAdmi(params.id, checkAdmiMap[params.id])}
       onMouseLeave={updateAdmiStatus}
     >
-  <ChangeCircleIcon/>
+  <ChangeCircleIcon/>→
     </Button>
   ),
-    },{field:'admin', headerName: 'administrator '}
+    },{field:'admin', headerName: 'administrator '},
+    {
+      field:'banstatusButton',
+      headerName:'Change Ban',
+      renderCell:(params)=>(
+       <Button
+       variant="contained" style={{background:"#3f51b5"}}
+       onClick={()=>chekearBan(params.id,stateBan[params.id])}
+       onMouseLeave={updateStatusBan}       
+       >
+  <ChangeCircleIcon/>→
+       </Button>
+      )
+    },
+    {field:'banstatus'}
   ];
  
   const styleTable = {
