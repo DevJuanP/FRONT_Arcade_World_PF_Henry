@@ -38,8 +38,11 @@ export default function Purchased() {
   
       const response = await axios.post(`${BD_URL}/cart/purchased`, {UserId: UserId, GamesIds: videogameIds})
       const url = response.data.session_url
-      window.location.href = url;
+      const amount = response.data.amount
       localStorage.setItem("gameIds", JSON.stringify(videogameIds));
+      localStorage.setItem("amount", `${amount}`);
+      localStorage.setItem("UserId", UserId);
+      window.location.href = url;
     } catch (error) {
       console.log(error);
     }

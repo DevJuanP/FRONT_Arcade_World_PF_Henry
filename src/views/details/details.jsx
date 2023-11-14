@@ -205,7 +205,7 @@ const Details = () => {
           )}
         </Box>
       </Stack>
-      <Grid container spacing={3} justifyContent="center" marginTop="30px">
+       <Grid container spacing={3} justifyContent="center" marginTop="30px">
         {gameDetails.reviews &&
           gameDetails.reviews.map((review, index) => (
             <Stack textAlign="center" marginRight="20px" key={index}>
