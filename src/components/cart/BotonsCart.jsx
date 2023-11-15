@@ -1,6 +1,5 @@
 import { useDispatch } from "react-redux";
 import CardContent from "@mui/material/CardContent";
-// import Fab from "@mui/material/Fab";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteItem } from "../../redux/actions.js";
 import { IconButton } from "@mui/material";
