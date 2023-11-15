@@ -1,0 +1,9 @@
+.createcontainer{
+  border: solid;
+}
+.FormCard{
+  border: solid;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}

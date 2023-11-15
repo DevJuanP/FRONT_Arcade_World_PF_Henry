@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { gameGenres, gamePlataforms, createVideogame } from '../../../src/redux/actions.js';
-
-import styles from "./PublishGame.module.css";
+import "./PublishGameStyle.css";
 
 
 const PublishGame = () => {
@@ -221,17 +220,28 @@ const PublishGame = () => {
     platforms:[]
     })
   }
-
+  const BoxMain={
+    display:'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection:'column',
+    backgroundAttachment: 'fixed',
+    backgroundSize: 'cover',
+    height: '100vh',
+    backgroundColor:'#546e7a'
+ }
 
   return (
-  <div className={styles.container}>
-    <div className={styles.createcontainer}>
+  <div  style={BoxMain}>
+    <div className="FormCard">
+    
+    <div className='createcontainer'>
       <h2>Create a new videogame</h2>
     <form
-        className={styles.createform}
+        className='createform'
         onSubmit={handleSubmit}
       >
-        <div className={styles.group}>
+        <div className='group'>
           <label htmlFor="name">Name:</label>
           <input
             type="text"
@@ -241,9 +251,9 @@ const PublishGame = () => {
             onChange={handleInputChange}
             required
           />
-          {errors.name && <p className={styles.error}>{errors.name}</p>}
+          {errors.name && <p className='error'>{errors.name}</p>}
         </div>
-        <div className={styles.group}>
+        <div className='group'>
           <label htmlFor="description">Description:</label>
           <textarea
             id="description"
@@ -253,10 +263,10 @@ const PublishGame = () => {
             required
           ></textarea>
           {errors.description && (
-            <p className={styles.error}>{errors.description}</p>
+            <p className='error'>{errors.description}</p>
           )}
         </div>
-        <div className={styles.group}>
+        <div className='group'>
           <label htmlFor="image">Imagen:</label>
           <input
             type="text"
@@ -266,26 +276,8 @@ const PublishGame = () => {
             accept="image/*"
             value={state.image}
           />
-          {/* <label  htmlFor="image">
-            <span className={styles.uploadButton}>Select file</span>
-          </label>
-          {previewImage && (
-            <img
-              className={styles.image}
-              id="preview"
-              src={previewImage}
-              alt="Preview"
-            />
-          )} 
-          <button
-            className={styles.buttonDelete}
-            type="button"
-            onClick={handleRemoveImage}
-          >
-            Delete image
-          </button>*/}
         </div>
-        <div className={styles.group}>
+        <div className='group'>
           <label htmlFor="price">Price:</label>
           <input
             type="number"
@@ -294,9 +286,9 @@ const PublishGame = () => {
             value={state.price}
             onChange={handleInputChange}
           />
-          {errors.price && <p className={styles.error}>{errors.price}</p>}
+          {errors.price && <p className='error'>{errors.price}</p>}
         </div>
-        <div className={styles.group}>
+        <div className='group'>
           <label htmlFor="released">Released:</label>
           <input
             type="date"
@@ -306,11 +298,11 @@ const PublishGame = () => {
             onChange={handleInputChange}
           />
           {errors.released && (
-            <p className={styles.error}>{errors.released}</p>
+            <p className='error'>{errors.released}</p>
           )}
           
         </div>
-        <div className={styles.group}>
+        <div className='group'>
           <label htmlFor="isActive">Active:</label>
           <input
             type="checkbox"
@@ -321,7 +313,7 @@ const PublishGame = () => {
           />
         </div>
 
-        <div className={styles.group}>
+        <div className='group'>
           <label htmlFor="genreIds">Select genres:</label>
           <div>
               <select
@@ -337,11 +329,11 @@ const PublishGame = () => {
                   </option>
                 ))}
               </select>
-              <div className={styles.contentSelecPlatfGn}>
+              <div className='contentSelecPlatfGn'>
                     {state.genres.map((selectedId)=>{
                       
                       return (
-                          <div key={selectedId} className={styles.selectedTemp}>
+                          <div key={selectedId} className='selectedTemp'>
                               <button type="button" name="genres" id={selectedId} onClick={handleRemove}>
                               {selectedId}
                               </button>
@@ -350,10 +342,10 @@ const PublishGame = () => {
                </div>
           </div>
               {errors.genres && (
-            <p className={styles.error}>{errors.genres}</p>
+            <p className='error'>{errors.genres}</p>
           )} 
         </div>
-        <div className={styles.group}>
+        <div className='group'>
           <label htmlFor="platformIds">Select platforms:</label>
           <div >
               <select
@@ -369,27 +361,31 @@ const PublishGame = () => {
                   </option>
                 ))}
               </select>
-             <div className={styles.contentSelecPlatfGn}>
+             <div className='contentSelecPlatfGn'>
                  {state.platforms.map((selectedId)=>{
                    
                    return (
-                       <div key={selectedId} className={styles.selectedTemp}>
+                       <div key={selectedId} className='selectedTemp'>
                          <button type="button" name="platforms" id={selectedId} onClick={handleRemove}>
                            {selectedId}
                           </button>
                        </div>)
                        })}
         {errors.platforms && (
-            <p className={styles.error}>{errors.platforms}</p>
+            <p className='error'>{errors.platforms}</p>
           )} 
               </div> 
           </div>
         </div>
        
-          <div className={styles.group}>
+          <div className='group'>
           <button type="submit" >Create videogame</button>
         </div>
       </form>
+    </div>
+    <div>
+      caja de auto creacion de la carta  
+    </div>
     </div>
   </div>
   );
