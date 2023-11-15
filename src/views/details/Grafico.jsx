@@ -27,7 +27,7 @@ function Grafico() {
           labels: ['5','4','3','2','1'],
           datasets: [{
             label: 'Stars',
-            data: Stargraphics,
+            data: starGraphics,
             backgroundColor: '#4CAF50', 
             borderWidth: 1, 
             borderRadius: 20,
@@ -70,7 +70,7 @@ function Grafico() {
           labels: ['5','4','3','2','1'],
           datasets: [{
             label: 'Stars',
-            data: Stargameplay,
+            data:starGameplay,
             backgroundColor: '#4CAF50',
             borderWidth: 1, 
             borderRadius: 20,
@@ -113,7 +113,7 @@ function Grafico() {
           labels: ['5','4','3','2','1'],
           datasets: [{
             label: 'Stars',
-            data: Starquality_price,
+            data: starqualityprice,
             backgroundColor: '#4CAF50', 
             borderWidth: 1, 
             borderRadius: 20,
@@ -170,7 +170,7 @@ function Grafico() {
         <Box display='flex' sx={estilos} gap={12}>
           <Box sx={estilosG}>
             <div style={estiloss}>
-              <h2 style={{margin:'0'}}>{scoregraphics}</h2>
+              <h2 style={{margin:'0'}}>{scoreGraphics}</h2>
               <p>Graphics</p>
             </div>
             <canvas id="GRAPHICS" ></canvas>
@@ -184,7 +184,7 @@ function Grafico() {
           </Box>
           <Box sx={estilosG}>
             <div style={estiloss}>
-              <h2 style={{margin:'0'}}>{scorequality_price}</h2>
+              <h2 style={{margin:'0'}}>{scorequalityprice}</h2>
               <p>Quality Price</p>
             </div>
             <canvas id="QUALITYPRICE" ></canvas>

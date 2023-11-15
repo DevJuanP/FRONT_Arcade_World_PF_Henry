@@ -42,6 +42,7 @@ const { VITE_IS_LOCAL } =import.meta.env
 const URL_DEPLOY = 'https://back-arcade-world-pf-henry.onrender.com';
 const urlLocal = 'http://localhost:3001';
 const BD_URL =  VITE_IS_LOCAL === 'true' ? urlLocal : URL_DEPLOY
+console.log(BD_URL);
 
 export const getGames = ()=>{ 
   return async function(dispatch) {
@@ -283,9 +284,9 @@ export const addComments = (gameComment) => ({
   type: ADD_COMMENT,
   payload: gameComment,
 });
-export const logout = () => async dispatch => {
+export const logout = (payload) => async dispatch => {
   try {
-    const response = await axios.put(`${BD_URL}/user/logout`);
+    const response = await axios.put(`${BD_URL}/user/logout`, payload);
     console.log(response);
     dispatch({
       type: LOGOUT
