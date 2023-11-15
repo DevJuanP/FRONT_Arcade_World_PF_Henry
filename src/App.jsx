@@ -11,7 +11,6 @@ import Footer from './components/footer/Footer.jsx'
 import { AuthProvider } from "./context/AuthContext.jsx";
 import './App.css'
 
-
 function App() {
 
   return (
@@ -34,7 +33,6 @@ function App() {
       </AuthProvider>
     </div>
   )
-
 }
 
 export default App
