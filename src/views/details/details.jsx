@@ -79,7 +79,7 @@ const Details = () => {
   let searchUserGameId = userLocalDetail?.user?.purchased.flatMap(
     (purchase) => purchase.Videogames
   );
-  let resSearch = searchUserGameId.find((gamePurchasedId) => {
+  let resSearch = searchUserGameId?.find((gamePurchasedId) => {
     return gamePurchasedId.GameId === gameDetails.id;
   });
   let gameMatch;
