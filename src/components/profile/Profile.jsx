@@ -64,7 +64,7 @@ const Profile = () => {
   let userLocal =  localStorage.getItem("login");
   userLocal = userLocal ? JSON.parse(userLocal) : null;
   let nPurchased = userLocal?.user?.purchased;
-
+  console.log(userLocal);
   const getUser = async () => {
     await dispatch(UserById(userLocal?.user?.id || userLocal?.user?.uid)).then((res) => {
      setUser(res.payload)
