@@ -262,6 +262,11 @@ const initialState = {
                           VG.id=== VGisActive.id ? VGisActive : VG
                           )
                       }
+    case SET_SELECTED_GENRE:
+      return {
+      ...state,
+      selectedGenre: action.payload,
+      };
     default:
       return {...state}  
   }

@@ -17,7 +17,7 @@ export default function Purchased() {
   const handleOnclickcarrito = async () => {
      try {
       const videogameIds = shoppingCart.map((game) => game.id);
-       
+      console.log({UserId: UserId, GamesIds: videogameIds});
       const response = await axios.post(`${BD_URL}/cart/purchased`, {UserId: UserId, GamesIds: videogameIds})
       const url = response.data.session_url
             localStorage.setItem("gameIds", JSON.stringify(videogameIds));

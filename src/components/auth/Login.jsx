@@ -73,7 +73,7 @@ const Login = () => {
     reset();
   });
   return (
-    <Card sx={{ py:4, mt:4, width: "400px" }}>
+    <Card sx={{ py:4, mt:4, width: "400px", minHeight: '70vh' }}>
       <Stack
         sx={{ display: "flex", alignItems: "center", justifyContent: "center"}}
       >

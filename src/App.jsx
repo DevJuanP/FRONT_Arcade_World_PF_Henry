@@ -19,8 +19,13 @@ function App() {
   const isLoggedIn = userLocal !== null;
   console.log(userLocal?.user?.admin)
   console.log(userLocal?.user?.name)
+
+  const estilo = {
+    'minHeight': '100vh',
+  }
+
   return (
-    <div>
+    <div style={estilo}>
       <AuthProvider>
       <Navbar/>
       <Routes>

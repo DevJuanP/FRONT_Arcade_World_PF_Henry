@@ -43,7 +43,7 @@ function Navbar() {
       navigate("/cart");
     }}
   return (
-    <AppBar position="" sx={{ background: "#263238" }} style={appbar}>
+    <AppBar position="" sx={{ background: "#263238", minHeight: '6vh'}} style={appbar}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Logo */}
