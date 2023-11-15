@@ -17,11 +17,11 @@
     "@mui/material": "^5.14.17",
     "@mui/x-data-grid": "^6.17.0",
     "@mui/x-data-grid-pro": "^6.17.0",
+    "@react-spring/web": "^9.7.3",
     "@reduxjs/toolkit": "^1.9.7",
     "@stripe/react-stripe-js": "^2.3.0",
     "@stripe/stripe-js": "^2.1.6",
     "axios": "^1.6.1",
-    "@react-spring/web": "^9.7.3",
     "bad-words": "^3.0.4",
     "chart.js": "^4.4.0",
     "cloudinary": "^1.41.0",
@@ -37,7 +37,8 @@
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
     "slick-carousel": "^1.8.1",
-    "sweetalert2": "^11.7.32"
+    "sweetalert2": "^11.7.32",
+    "formik": "^2.4.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

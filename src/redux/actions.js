@@ -32,6 +32,9 @@ export const TOP_FIVE='TOP_FIVE'
 export const GET_PURCHASE='GET_PURCHASE'
 export const USER_BY_ID='USER_BY_ID'
 export const PURCHASE_BY_ID='PURCHASE_BY_ID'
+export const UPDATE_ITEM='UPDATE_ITEM'
+export const UPDATE_ISACTIVE_VG='UPDATE_ISACTIVE_VG'
+export const CREATE_GAME='CREATE_GAME'
 
 
 const { VITE_IS_LOCAL } =import.meta.env
@@ -224,6 +227,13 @@ export function postLogin(payload){
     return data
   }
 }
+export function postFirebase(payload){
+  return async function(){
+    const data = await
+    axios.post(`${BD_URL}/user/firebase`,payload)
+    return data
+  }
+}
 export function putProfile(payload){
   return async function(){
     const data = await
@@ -249,7 +259,7 @@ export function setUserData(userData) {
     // Si userData tiene reviews, los agrega al estado global
     if (userData && userData.user && userData.user.reviews) {
       userData.user.reviews.forEach(review => {
-        dispatch(addReview(review));
+        dispatch(addComments(review));
       });
     }
   };
@@ -273,9 +283,10 @@ export const addComments = (gameComment) => ({
   type: ADD_COMMENT,
   payload: gameComment,
 });
-export const logout = () => async dispatch => {
+export const logout = (payload) => async dispatch => {
   try {
-    const response = await axios.put(`${BD_URL}/user/logout`);
+    const response = await axios.put(`${BD_URL}/user/logout`, payload);
+    console.log(response);
     dispatch({
       type: LOGOUT
     });
@@ -353,7 +364,7 @@ export function purchaseSuccess(payload){
 export function GetPuchase(){
   return async function(dispatch){
     try {
-      const {data}=await axios.get('http://localhost:3001/purchase')
+      const {data}=await axios.get(`${BD_URL}/purchase`)
       return dispatch({
         type:GET_PURCHASE,
         payload:data
@@ -374,10 +385,60 @@ export function UserById(id){
 }
 export function PurchaseById(id){
   return async function(dispatch){
-    const {data}=await axios.get(`http://localhost:3001/purchase/${id}`) 
+    const {data}=await axios.get(`${BD_URL}/purchase/${id}`) 
     return dispatch({
       type:PURCHASE_BY_ID,
       payload:data
     })
   }
 }
+export const updateItem = (newData) => {
+
+  return async (dispatch) => {
+    try {
+      const {data}= await axios.put(`http://localhost:3001/user/update`,newData);
+
+           return dispatch({
+            type:UPDATE_ITEM,
+            payload:data
+           })
+    } catch (error) {
+     console.log({error:error.message})
+    }
+  };
+};
+
+export const UpdateActiveVG=(newData)=>{
+  return async function(dispatch){
+  try {
+    const {data} =await axios.put('http://localhost:3001/videogame/update',newData)
+    return dispatch({
+      type:UPDATE_ISACTIVE_VG,
+      payload:data
+    })
+  } catch (error) {
+    console.log({error:error.message})
+  }
+   
+ }
+}
+export const createVideogame = (payload) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(
+        `${BD_URL}/videogame`,
+        payload
+      );
+      const createdProduct = response.data;
+      
+      dispatch({
+        type: CREATE_GAME,
+        payload: createdProduct,
+      })
+      
+    } catch (error) {
+      console.log("Error: createVideogame", error);
+      
+    }
+  };
+};

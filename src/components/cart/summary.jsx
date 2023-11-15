@@ -1,5 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 import { useEffect, useState } from "react";
+import { useDispatch } from 'react-redux';
+import { purchaseSuccess } from '../../redux/actions.js';
 import {
   CardContent,
   Typography,
@@ -13,22 +15,44 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 
 const Summary = () => {
-  const games = JSON.parse(localStorage.getItem("allGames"));
   const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const videogameIds = JSON.parse(localStorage.getItem("gameIds"));
-    const filteredGames = games.filter((gm) => videogameIds?.includes(gm.id));
+    const fetchData = () => {
+      const videogameIds = JSON.parse(localStorage.getItem("gameIds"));
+      const amount = Number(localStorage.getItem("amount"));
+      const UserId = localStorage.getItem("UserId");
 
-    setProducts(filteredGames);
+      const games = JSON.parse(localStorage.getItem("allGames"));
+      const filteredGames = games.filter((gm) => videogameIds?.includes(gm.id));
+      
+      setProducts(filteredGames);
+
+      const payload = {
+        UserId,
+        GamesIds: videogameIds,
+        amount: amount,
+      };
+      console.log(payload);
+
+      dispatch(purchaseSuccess(payload));
+    };
+    fetchData();
 
     return () => {
-      localStorage.removeItem("videogameIds");
+      localStorage.removeItem("gameIds");
     };
   }, []);
 
+  //const UserId = useSelector( s => s.userData?.user?.id);
+  //const games = JSON.parse(localStorage.getItem("allGames"));
+  // priceTotal = Number(products.reduce((total, game) => total + game.price, 0).toFixed(2));
+  const amount = Number(localStorage.getItem("amount"));
+  const priceTotal = amount;
+
   return (
-    <Stack>
+     <Stack>
       <Stack
         style={{
           backgroundColor: "#1a2a3b",
@@ -63,16 +87,15 @@ const Summary = () => {
           >
             <CardContent
               sx={{
-                marginLeft: "45px",
+               marginLeft: "45px",
                 width: "300px",
                 display: "flex",
-                textAlign: "center",
-                alignItems: "center",
+                alignItems: "left",
                 flexDirection: "column",
                 gap: "40px",
               }}
             >
-              <Avatar
+             <Avatar
                 src="https://res.cloudinary.com/du9kziyei/image/upload/v1699602012/images/g7oo7zdtcszck5kxmohu.png"
                 sx={{
                   backgroundColor: "#1a2a3b",
@@ -120,8 +143,10 @@ const Summary = () => {
           alignItems: "flex-start",
         }}
         >
-      </Stack>
+         
+     </Stack>
     </Stack>
   );
 };
+
 export default Summary;

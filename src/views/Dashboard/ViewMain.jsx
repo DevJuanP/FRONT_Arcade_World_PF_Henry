@@ -12,24 +12,17 @@ function ViewMain() {
     const dispatch=useDispatch()
     const game = useSelector((G)=>G?.games)
     const user = useSelector((U)=>U?.user)
+    console.log(user)
+    const purchase = useSelector((P)=>P?.Purchase)
  
-    const Counterpurchased=(users)=>{
-      let arrayConteiner=[]
-      users.forEach(objeto=>{
-        if(objeto.hasOwnProperty('purchased')){
-          arrayConteiner.push(objeto.purchased.length)
-        }
-      })
-     const sumapurchased=arrayConteiner.reduce((acc, valor) => acc + valor, 0)
-     return sumapurchased
-    }
-    const FPurchased=Counterpurchased(user)
+    
     useEffect(()=>{
         dispatch(getGames())
         dispatch(GetUser())
-       },[dispatch])
+       },[])
        const UserLength = user.length
        const GamesLength = game.length
+       const PurchaseLength=purchase.length
  
     const cardStyle = {
     width: '15em',
@@ -114,7 +107,7 @@ function ViewMain() {
             <LocalMallSharpIcon sx={{ fontSize: 30}}/>
         </Box>
           <Typography variant='h6'>
-          {FPurchased}
+          {PurchaseLength}
                     </Typography>
             <Typography variant='p' component={'p'} color={'#cfd8dc'}>
                 Total Buys
