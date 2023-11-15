@@ -6,6 +6,7 @@ import {Button} from '@mui/material'
 import { gameGenres, gamePlataforms, createVideogame } from '../../../src/redux/actions.js';
 import "./PublishGameStyle.css";
 import BackupIcon from '@mui/icons-material/Backup';
+import axios from "axios";
 
 
 const PublishGame = () => {
@@ -107,7 +108,7 @@ const PublishGame = () => {
     }
   }
 
-  const handleInputChange = (event) =>{
+  const handleInputChange = async (event) =>{
     switch(event.target.name){
       case 'platformIds':
         let pValue = document.getElementById('platformIds').value
@@ -142,11 +143,20 @@ const PublishGame = () => {
           ...state,
           isActive: isActive.checked
         })
-        
         break;
 
-      /*case 'image':
-        claudinary*/
+      case 'caludinary':
+        const files = event.target.files;
+        const data = new FormData();
+        data.append("file", files[0]);
+        data.append("upload_preset", "JesusBavaresco");
+        const response = await axios.post('https://api.cloudinary.com/v1_1/du9kziyei/image/upload', data)
+        setState({
+          ...state,
+          image: response.data.secure_url
+        })
+        break;
+
       case 'price':
         setState({ 
           ...state,
@@ -195,10 +205,15 @@ const PublishGame = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log('hola');
-    dispatch(createVideogame({
+    console.log({
       ...state,
       genres: state.genres.map( g => genres.indexOf(g)+1),
       platforms: state.platforms.map( p => platforms.indexOf(p)+1)
+    });
+    dispatch(createVideogame({
+      ...state,
+      genreIds: state.genres.map( g => genres.indexOf(g)+1),
+      platformIds: state.platforms.map( p => platforms.indexOf(p)+1)
     })).then(() => {
       Swal.fire({
         position: "center",
@@ -268,6 +283,13 @@ const PublishGame = () => {
             onChange={handleInputChange}
             accept="image/*"
             value={state.image}
+          />
+          <input
+            type="file"
+            id="caludinary"
+            name="caludinary"
+            className="input"
+            onChange={handleInputChange}
           />
         </div>
         </div>
@@ -398,7 +420,7 @@ const PublishGame = () => {
         </div>
        
           <div className='group'>
-          <Button type="submit" className="ButtonSubmit" style={{background:'#212121',color:'white'}}> <p style={{margin:'0em 0.7em 0em 0em',background:'#212121'}}> Create videogame </p> <BackupIcon/></Button>
+          <Button type="submit" disabled={disableHandler()} className="ButtonSubmit" style={{background:'#212121',color:'white'}}> <p style={{margin:'0em 0.7em 0em 0em',background:'#212121'}}> Create videogame </p> <BackupIcon/></Button>
         </div>
       </form>
     </div>
