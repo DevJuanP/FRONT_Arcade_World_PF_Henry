@@ -6,7 +6,7 @@ import {
   Grid,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import BotonsCart from "./botonsCart.jsx";
+import BotonsCart from "./BotonsCart.jsx";
 import PropTypes from "prop-types";
 
 
