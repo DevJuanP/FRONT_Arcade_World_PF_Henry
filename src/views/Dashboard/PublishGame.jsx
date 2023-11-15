@@ -2,8 +2,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import {Button} from '@mui/material'
 import { gameGenres, gamePlataforms, createVideogame } from '../../../src/redux/actions.js';
 import "./PublishGameStyle.css";
+import BackupIcon from '@mui/icons-material/Backup';
 
 
 const PublishGame = () => {
@@ -227,26 +229,29 @@ const PublishGame = () => {
     flexDirection:'column',
     backgroundAttachment: 'fixed',
     backgroundSize: 'cover',
-    height: '100vh',
-    backgroundColor:'#546e7a'
+    minHeight: '100vh',
+    backgroundColor:'#546e7a',
+    flexWrap:'wrap'
  }
 
   return (
   <div  style={BoxMain}>
+      <h2 style={{color:'white'}}>Create a new videogame</h2>
     <div className="FormCard">
     
     <div className='createcontainer'>
-      <h2>Create a new videogame</h2>
     <form
         className='createform'
         onSubmit={handleSubmit}
       >
+        <div className="NameImage">
         <div className='group'>
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name" className="label">Name:</label>
           <input
             type="text"
             id="name"
             name="name"
+            className="input"
             value={state.name}
             onChange={handleInputChange}
             required
@@ -254,11 +259,25 @@ const PublishGame = () => {
           {errors.name && <p className='error'>{errors.name}</p>}
         </div>
         <div className='group'>
-          <label htmlFor="description">Description:</label>
+          <label htmlFor="image" className="label">Imagen:</label>
+          <input
+            type="text"
+            id="image"
+            name="image"
+            className="input"
+            onChange={handleInputChange}
+            accept="image/*"
+            value={state.image}
+          />
+        </div>
+        </div>
+        <div className='groupT'>
+          <label htmlFor="description" className="label">Description:</label>
           <textarea
             id="description"
             name="description"
             value={state.description}
+            className="inputtextarea"
             onChange={handleInputChange}
             required
           ></textarea>
@@ -266,22 +285,14 @@ const PublishGame = () => {
             <p className='error'>{errors.description}</p>
           )}
         </div>
+       
+        <div className="PriceDate">
         <div className='group'>
-          <label htmlFor="image">Imagen:</label>
-          <input
-            type="text"
-            id="image"
-            name="image"
-            onChange={handleInputChange}
-            accept="image/*"
-            value={state.image}
-          />
-        </div>
-        <div className='group'>
-          <label htmlFor="price">Price:</label>
+          <label htmlFor="price" className="label">Price:</label>
           <input
             type="number"
             id="price"
+            className="Price"
             name="price"
             value={state.price}
             onChange={handleInputChange}
@@ -289,39 +300,45 @@ const PublishGame = () => {
           {errors.price && <p className='error'>{errors.price}</p>}
         </div>
         <div className='group'>
-          <label htmlFor="released">Released:</label>
+          <label htmlFor="released" className="label">Released:</label>
           <input
             type="date"
             id="released"
+            className="Date"
             name="released"
             value={state.released}
             onChange={handleInputChange}
-          />
+            />
           {errors.released && (
             <p className='error'>{errors.released}</p>
-          )}
+            )}
           
         </div>
+            </div>
+
         <div className='group'>
-          <label htmlFor="isActive">Active:</label>
+          <label htmlFor="isActive" className="label">Active:</label>
           <input
             type="checkbox"
             id="isActive"
             name="isActive"
+            className="check"
             checked={state.isActive}
             onChange={handleInputChange}
-          />
+            />
         </div>
+            <div className="selects">
 
         <div className='group'>
-          <label htmlFor="genreIds">Select genres:</label>
+          <label htmlFor="genreIds" className="label">Select genres:</label>
           <div>
               <select
                 id="genreIds"
                 name="genreIds"
+                className="select"
                 onChange={handleInputChange}
                 defaultValue='default'
-              >
+                >
                 <option disabled value="default">Genres</option>
                 {genres?.map((genre) => (
                   <option key={genre} value={genre}>
@@ -334,7 +351,7 @@ const PublishGame = () => {
                       
                       return (
                           <div key={selectedId} className='selectedTemp'>
-                              <button type="button" name="genres" id={selectedId} onClick={handleRemove}>
+                              <button type="button" className="botonSelect" name="genres" id={selectedId} onClick={handleRemove}>
                               {selectedId}
                               </button>
                           </div>)
@@ -342,19 +359,20 @@ const PublishGame = () => {
                </div>
           </div>
               {errors.genres && (
-            <p className='error'>{errors.genres}</p>
-          )} 
+                <p className='error'>{errors.genres}</p>
+                )} 
         </div>
         <div className='group'>
-          <label htmlFor="platformIds">Select platforms:</label>
+          <label htmlFor="platformIds" className="label">Select platforms:</label>
           <div >
               <select
                 id="platformIds"
                 name="platformIds"
+                className="select"
                 onChange={handleInputChange}
                 defaultValue='default'
               >
-                <option disabled value="default">Platforms</option>
+                <option disabled value="default">Plataforms</option>
                 {platforms?.map((platf) => (
                   <option key={platf} value={platf}>
                     {platf}
@@ -366,7 +384,7 @@ const PublishGame = () => {
                    
                    return (
                        <div key={selectedId} className='selectedTemp'>
-                         <button type="button" name="platforms" id={selectedId} onClick={handleRemove}>
+                         <button type="button" name="platforms" className="botonSelect" id={selectedId} onClick={handleRemove}>
                            {selectedId}
                           </button>
                        </div>)
@@ -376,16 +394,66 @@ const PublishGame = () => {
           )} 
               </div> 
           </div>
+                </div>
         </div>
        
           <div className='group'>
-          <button type="submit" >Create videogame</button>
+          <Button type="submit" className="ButtonSubmit" style={{background:'#212121',color:'white'}}> <p style={{margin:'0em 0.7em 0em 0em',background:'#212121'}}> Create videogame </p> <BackupIcon/></Button>
         </div>
       </form>
     </div>
-    <div>
-      caja de auto creacion de la carta  
+
+
     </div>
+   {/* //carta y detail automatico */}
+    <div className="CartaDetail">
+    <div className="Carta">
+     { state.image === ''? <img src="https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg" alt=""  className="imageCard"/> : <img src={state.image} alt="" className="imageCard"/>}
+      <div>
+        <div style={{padding:'1em'}}>
+      {!state.name ? <h3 style={{fontWeight:'bold',margin:'0px'}}>Name Videogame</h3> : <h3 style={{fontWeight:'bold',margin:'0px'}}>{state.name}</h3>}
+      <p style={{color:'#666',fontWeight:'bold'}}>$/{state.price}</p>
+        </div>
+      </div>
+    </div>
+     <div className="Detail">
+     { state.image === ''? <img src="https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg" alt=""  className="imageCardD"/> : <img src={state.image} alt="" className="imageCardD"/>}
+     <div className="CDetail">
+      <h4>
+      {!state.name ? <h3 style={{fontWeight:'bold',margin:'0px',color:'#bdbdbd'}}>Name Videogame</h3> : <h3 style={{fontWeight:'bold',margin:'0px',color:'#bdbdbd'}}>{state.name}</h3>}
+      </h4>
+      <h4>
+        Genres:
+      </h4>
+      <p >
+        {state.genres.join(',')}
+        </p>
+        <h4>
+       Plataforms:
+        </h4>
+        <p>
+      {state.platforms.join(',')}
+        </p>
+        <h4>
+        Description:
+        </h4>
+        <p>
+      {state.description}
+        </p>
+        <h4>
+        Released:
+        </h4>
+        <p>
+      {state.released}
+        </p>
+        <h4>
+          Price:
+        </h4>
+        <p>
+      $/{state.price}
+        </p>
+     </div>
+     </div>
     </div>
   </div>
   );
