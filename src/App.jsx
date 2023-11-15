@@ -15,9 +15,10 @@ import UnauthorizedPage from './UnauthorizedPage.jsx';
 function App() {
   let userLocal = localStorage.getItem("login");
   userLocal = userLocal ? JSON.parse(userLocal) : null;
-  console.log(userLocal?.user?.admin)
-  const isAdmin = userLocal?.user?.admin === 'true';
+  const isAdmin = userLocal?.user?.admin === true;
   const isLoggedIn = userLocal !== null;
+  console.log(userLocal?.user?.admin)
+  console.log(userLocal?.user?.name)
   return (
     <div>
       <AuthProvider>
@@ -33,7 +34,7 @@ function App() {
         <Route path="/auth" element={<Auth/>} />
         <Route path='/user/profile' element={<Profile/>}/>
         {isLoggedIn ? (
-            !isAdmin ? (
+            isAdmin ? (
               <Route path='/Dashboard' element={<AppdDash />} />
             ) : (
               // Redirige a otra ruta si el usuario no tiene permisos de administrador
