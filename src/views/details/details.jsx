@@ -31,7 +31,7 @@ const Details = () => {
     register,
     handleSubmit
   } = useForm();
-  const [comments, setComments] = useState("");
+  const [comments, setComments] = useState([]);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const shoppingCart = useSelector((state) => state.shoppingCart);
@@ -39,6 +39,16 @@ const Details = () => {
   userLocalDetail = userLocalDetail ? JSON.parse(userLocalDetail) : null;
   console.log(userLocalDetail);
   const handleButton = handleSubmit((data) => {
+    const dataToSave = {
+      UserId: userLocalDetail.user.id,
+      reviews: [
+        {
+          GameId: gameDetails.id,
+          review: data.review
+        }
+      ]
+    }
+    console.log(dataToSave);
     if (userLocalDetail === null || userLocalDetail === "") {
       Swal.fire({
         position: "top-center",
@@ -56,13 +66,14 @@ const Details = () => {
         }
       });
     } else {
-      dispatch(logout(data))
+      dispatch(logout(dataToSave))
       dispatch(addComments({ id, message }));
       setComments(message);
     }
   });
 
   const gameDetails = useSelector((state) => state.gameId);
+  console.log(gameDetails);
   const { id } = useParams();
 
   let searchUserGameId = userLocalDetail?.user?.purchased.flatMap(
@@ -191,9 +202,9 @@ const Details = () => {
             <>
               <TextField
                 variant="outlined"
-                name="message"
+                name="review"
                 // onChange={handleChange}
-                {...register('message')}
+                {...register('review')}
               ></TextField>
               <br />
               <Button onClick={handleButton} variant="outlined" color="info">
@@ -214,7 +225,7 @@ const Details = () => {
                   sx={{ textAlign: "center", height: "200px", width: "400px" }}
                 >
                   <Stack alignItems="center">
-                    {/* <Avatar src={userLocalDetail?.user?.image}/> */}
+                    <Avatar src={review.photo}/>
                     <Typography
                       textAlign="center"
                       sx={{ color: "black", fontWeight: "bold" }}

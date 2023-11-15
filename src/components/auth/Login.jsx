@@ -33,6 +33,7 @@ const Login = () => {
     }
   };
   const onSubmit = handleSubmit((data) => {
+    console.log(data);
     dispatch(postLogin(data)).then((response) => {
       if (response.data.login === false) {
         Swal.fire({
@@ -66,8 +67,6 @@ const Login = () => {
         //Toma de datos para pasarlos al profile
         dispatch(setUserData(response.data));
         //Migración al profile
-
-
         navigate("/user/profile");
       }
     });
