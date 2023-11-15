@@ -86,6 +86,12 @@ function Navbar() {
             <NavLink style={{ fontSize: "1.5em", color: "white" }} to="/about">
               About
             </NavLink>
+            {location.pathname !== '/Dashboard' && userLocal?.user?.admin && (
+              <NavLink style={{ fontSize: "1.5em", color: "white" }} to="/Dashboard">
+              Dashboard
+            </NavLink>
+            )
+            }
           </Box>
           {/* Cart, Login and avatar */}
           <Box
