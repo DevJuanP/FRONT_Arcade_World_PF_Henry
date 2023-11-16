@@ -38,15 +38,15 @@ const Details = () => {
   let userLocalDetail = localStorage.getItem("login");
   userLocalDetail = userLocalDetail ? JSON.parse(userLocalDetail) : null;
   console.log(userLocalDetail);
+  const reviews = useSelector((state) => state.reviews);
   const handleButton = handleSubmit((data) => {
     const dataToSave = {
       UserId: userLocalDetail.user.id,
-      reviews: [
-        {
+      name: gameDetails.name,
+      reviews: [{
           GameId: gameDetails.id,
           review: data.review
-        }
-      ]
+        }]
     }
     console.log(dataToSave);
     if (userLocalDetail === null || userLocalDetail === "") {
@@ -66,10 +66,12 @@ const Details = () => {
         }
       });
     } else {
-      dispatch(logout(dataToSave))
-      dispatch(addComments({ id, message }));
+      dispatch(addComments(dataToSave));
+      // const reviews = useSelector((state)=> state.reviews);
+      dispatch(logout(reviews));
       setComments(message);
     }
+    console.log("reviw",reviews)
   });
 
   const gameDetails = useSelector((state) => state.gameId);
@@ -77,10 +79,10 @@ const Details = () => {
   const { id } = useParams();
 
   let searchUserGameId = userLocalDetail?.user?.purchased.flatMap(
-    (purchase) => purchase.Videogames
+    (purchase) => purchase?.Videogames
   );
   let resSearch = searchUserGameId?.find((gamePurchasedId) => {
-    return gamePurchasedId.GameId === gameDetails.id;
+    return gamePurchasedId?.GameId === gameDetails?.id;
   });
   let gameMatch;
   if (resSearch) {

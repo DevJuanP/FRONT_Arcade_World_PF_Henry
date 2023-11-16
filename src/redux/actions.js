@@ -285,7 +285,8 @@ export const addComments = (gameComment) => ({
 });
 export const logout = (payload) => async dispatch => {
   try {
-    const response = await axios.put(`${BD_URL}/user/logout`, payload);
+    console.log(payload);
+    const response = await axios.put(`${BD_URL}/user/logout`, payload[0]);
     console.log(response);
     dispatch({
       type: LOGOUT
