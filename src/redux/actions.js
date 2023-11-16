@@ -36,6 +36,7 @@ export const UPDATE_ITEM='UPDATE_ITEM'
 export const UPDATE_ISACTIVE_VG='UPDATE_ISACTIVE_VG'
 export const CREATE_GAME='CREATE_GAME'
 export const VG_ACTIVE_NOACTIVE='VG_ACTIVE_NOACTIVE'
+export const DELETE_DETAIL = 'DELETE_DETAIL'
 
 
 const { VITE_IS_LOCAL } =import.meta.env
@@ -59,6 +60,15 @@ export const getGames = ()=>{
   }
 }
 };
+
+export const deleteGameDetail = () => {
+  return function(dispatch) {
+    return dispatch({
+      type: DELETE_DETAIL,
+      payload: null
+    })
+  }
+}
 
 export const gameByName = (name)=> {
 return async function(dispatch) {

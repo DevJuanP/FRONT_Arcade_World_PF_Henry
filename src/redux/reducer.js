@@ -5,7 +5,7 @@ import { GET_GAMES, GET_GAME_NAME, GET_GAME_ID,
          SORT_GAMES_ASC, SORT_GAMES_DESC, FILTER_GAMES_BY_PRICE, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES,
          ADD_COMMENT, DELETE_ITEM_CART, ADD_NEWS_PURCHASED, ADD_TO_CART, DELETE_ITEM,
          LOGOUT, GET_USER, SET_SELECTED_PRICE, PURCHASE_SUCCESS, GET_COUNTRIES, SET_SELECTED_COUNTRY,
-         TOP_FIVE,GET_PURCHASE,USER_BY_ID,PURCHASE_BY_ID, CREATE_GAME,UPDATE_ITEM,UPDATE_ISACTIVE_VG,VG_ACTIVE_NOACTIVE }from './actions.js';
+         TOP_FIVE,GET_PURCHASE,USER_BY_ID,PURCHASE_BY_ID, CREATE_GAME,UPDATE_ITEM,UPDATE_ISACTIVE_VG,VG_ACTIVE_NOACTIVE, DELETE_DETAIL }from './actions.js';
                         
 const initialState = {
   games:[],
@@ -267,6 +267,12 @@ const initialState = {
       ...state,
       selectedGenre: action.payload,
       };
+
+    case DELETE_DETAIL:
+      return {
+        ...state,
+        gameId: []
+      }
     default:
       return {...state}  
   }
