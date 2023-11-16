@@ -27,7 +27,7 @@ const Login = () => {
       await loginWithGoogle();
       setTimeout(() => {
         navigate("/user/profile");
-      }, 200)
+      }, 500)
     } catch (error) {
       setError(error.message);
     }
