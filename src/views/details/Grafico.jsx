@@ -12,16 +12,16 @@ function Grafico() {
   useEffect(() => {
     dispatch(gameById(id));
   }, [dispatch, id]);
-  const Stargraphics= gameDetails?.graphics?.stars
+  const Stargraphics= gameDetails?.graphics?.stars//[]
   const scoregraphics= gameDetails?.graphics?.score
   const Stargameplay= gameDetails?.gameplay?.stars
   const scoregameplay= gameDetails?.gameplay?.score
   const Starquality_price= gameDetails?.quality_price?.stars
   const scorequality_price= gameDetails?.quality_price?.score
-    useEffect(() => {
+   useEffect(() => {
       const ctx = document.getElementById('GRAPHICS').getContext('2d');
 
-      new Chart(ctx, {
+      const uno = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: ['5','4','3','2','1'],
@@ -59,12 +59,15 @@ function Grafico() {
           }
         }
       });
-    }, []);
+      return () => {
+        uno.destroy()
+      }
+    }, [Stargraphics]);
 
     useEffect(() => {
       const ctx = document.getElementById('GAMEPLAY').getContext('2d');
 
-      new Chart(ctx, {
+      const dos = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: ['5','4','3','2','1'],
@@ -102,12 +105,15 @@ function Grafico() {
           }
         }
       });
-    }, []);
+      return () => {
+        dos.destroy()
+      }
+    }, [Stargameplay]);
 
     useEffect(() => {
       const ctx = document.getElementById('QUALITYPRICE').getContext('2d');
 
-      new Chart(ctx, {
+     const tres = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: ['5','4','3','2','1'],
@@ -145,7 +151,12 @@ function Grafico() {
           }
         }
       });
-    }, []);
+      return () => {
+        tres.destroy()
+      }
+    }, [Starquality_price]);
+
+    
 
     const estilos={
       display:'flex',
