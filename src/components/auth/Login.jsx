@@ -27,7 +27,7 @@ const Login = () => {
       await loginWithGoogle();
       setTimeout(() => {
         navigate("/user/profile");
-      }, 200)
+      },2000)
     } catch (error) {
       setError(error.message);
     }
@@ -111,12 +111,12 @@ const Login = () => {
               variant="outlined"
               type="text"
               name="nick_email"
-              label="Email or Username"
+              label="Username"
               onSubmit={onSubmit}
               {...register("nick_email", {
                 required: {
                   value: true,
-                  message: "User o Email required",
+                  message: "User required",
                 },
                 maxLength: 20,
                 minLength: 3,
