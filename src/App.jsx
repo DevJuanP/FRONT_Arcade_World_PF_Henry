@@ -11,12 +11,15 @@ import Footer from './components/footer/Footer.jsx'
 import { AuthProvider } from "./context/AuthContext.jsx";
 import './App.css'
 import UnauthorizedPage from './UnauthorizedPage.jsx';
+import { useSelector } from 'react-redux';
 
 function App() {
+  const logeado = useSelector( s => s.isAuthenticated)
+
   let userLocal = localStorage.getItem("login");
   userLocal = userLocal ? JSON.parse(userLocal) : null;
   const isAdmin = userLocal?.user?.admin === true;
-  const isLoggedIn = userLocal !== null;
+  const isLoggedIn = logeado || userLocal !== null;
   console.log(userLocal?.user?.admin)
   console.log(userLocal?.user?.name)
 
