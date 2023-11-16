@@ -80,7 +80,11 @@ const initialState = {
       ...state,
       selectedCountry: action.payload,
       };
-
+    case SET_SELECTED_GENRE:
+        return {
+        ...state,
+        selectedGenre: action.payload,
+        };
     case SET_SELECTED_PLATFORM:
       return {
       ...state,
@@ -160,6 +164,7 @@ const initialState = {
             };
     case ADD_COMMENT:
          allComments = [...state.reviews, action.payload];
+         console.log("", allComments)
               return {
                 ...state,
                 reviews: allComments
