@@ -20,6 +20,7 @@ import {
   UserById,
   deleteItem,
   deleteItemCart,
+  addToFavorites,
 } from "../../redux/actions";
 import GamesProfile from "./GamesProfile";
 import FavoriteProfile from "./FavoriteProfile";
@@ -56,15 +57,15 @@ const Profile = () => {
   };
   //llamada a favoritos
   const favorites = useSelector((state) => state.favorites);
-  const shoppingCart = useSelector((state) => state.shoppingCart);
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   //parte del login
   let userLocal =  localStorage.getItem("login");
   userLocal = userLocal ? JSON.parse(userLocal) : null;
-  let nPurchased = userLocal?.user?.purchased;
-  console.log(userLocal);
+
+  let nFavorite = userLocal?.user?.favorites;
+
   const getUser = async () => {
     await dispatch(UserById(userLocal?.user?.id || userLocal?.user?.uid)).then((res) => {
      setUser(res.payload)
@@ -74,16 +75,15 @@ const Profile = () => {
     getUser()
   }, [changes])
 
+
   const handleLogout = () => {
     if (userLocal) {
       userLocal.login = false;
       userLocal.user = null;
-      dispatch(deleteItemCart(shoppingCart));
       navigate("/");
       localStorage.removeItem("login");
     }
   };
-  console.log(userLocal)
   return (
     <LayoutAuth>
     <Box sx={{ minHeight: "100vh", backgroundColor:'#1a2a3b', marginTop:'20px' }}>
@@ -148,9 +148,9 @@ const Profile = () => {
                 />
             )}
             {renderBuy === true ? (
-              <FavoriteProfile favorites={favorites}/>
+              <FavoriteProfile nFavorite={nFavorite}/>
             ) : (
-              <GamesProfile nPurchased={nPurchased} />
+              <GamesProfile userLocal={userLocal} />
             )}
           </Grid>
         </Grid>

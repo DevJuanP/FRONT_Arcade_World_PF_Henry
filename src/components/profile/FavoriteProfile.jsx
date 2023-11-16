@@ -6,15 +6,16 @@ import {
 import { useDispatch } from "react-redux";
 import ClearIcon from '@mui/icons-material/Clear';
 
-const FavoriteProfile = ({favorites}) => {
-  const id = favorites[0]?.id;
+const FavoriteProfile = ({nFavorite}) => {
+  console.log(nFavorite);
+  const id = nFavorite[0]?.id;
   const dispatch = useDispatch();
   const removeFav = (id) => {
     dispatch(removeFromFavorites(id));
   };
   return (
             <Grid container columnSpacing={3} rowSpacing={3} mb={2}>
-              {favorites?.map((favorite) => (
+              {nFavorite?.map((favorite) => (
                 <Grid item xs>
                   <Card
                     sx={{

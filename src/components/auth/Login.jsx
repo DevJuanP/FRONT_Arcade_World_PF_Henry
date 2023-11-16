@@ -27,7 +27,7 @@ const Login = () => {
       await loginWithGoogle();
       setTimeout(() => {
         navigate("/user/profile");
-      }, 500)
+      }, 1000)
     } catch (error) {
       setError(error.message);
     }
@@ -73,7 +73,7 @@ const Login = () => {
     reset();
   });
   return (
-    <Card sx={{ py:4, mt:4, width: "400px" }}>
+    <Card sx={{ py:4, mt:4, width: "400px", minHeight: '70vh' }}>
       <Stack
         sx={{ display: "flex", alignItems: "center", justifyContent: "center"}}
       >
@@ -111,12 +111,12 @@ const Login = () => {
               variant="outlined"
               type="text"
               name="nick_email"
-              label="Email or Username"
+              label="Username"
               onSubmit={onSubmit}
               {...register("nick_email", {
                 required: {
                   value: true,
-                  message: "User o Email required",
+                  message: "User required",
                 },
                 maxLength: 20,
                 minLength: 3,

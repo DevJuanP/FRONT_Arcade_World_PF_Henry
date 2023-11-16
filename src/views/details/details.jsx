@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { gameById, GetUser, logout } from "../../redux/actions";
+import { gameById, GetUser, logout, deleteGameDetail } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Grafico from "./Grafico";
 import { useNavigate, useParams } from "react-router-dom";
@@ -31,23 +31,32 @@ const Details = () => {
     register,
     handleSubmit
   } = useForm();
-  const [comments, setComments] = useState([]);
   const [message, setMessage] = useState("");
+  const [comments, setComments] = useState({});
   const navigate = useNavigate();
   const shoppingCart = useSelector((state) => state.shoppingCart);
   let userLocalDetail = localStorage.getItem("login");
   userLocalDetail = userLocalDetail ? JSON.parse(userLocalDetail) : null;
   console.log(userLocalDetail);
+  const reviews = useSelector((state) => state.reviews);
   const handleButton = handleSubmit((data) => {
     const dataToSave = {
       UserId: userLocalDetail.user.id,
-      reviews: [
-        {
-          GameId: gameDetails.id,
-          review: data.review
+      nickName: userLocalDetail.user.nickname,
+      photo: userLocalDetail.user.photo,
+      reviews: [{
+              GameId: gameDetails.id,
+              review: data.review
+            }]
         }
-      ]
-    }
+    // const dataToSave = {
+    //   UserId: userLocalDetail.user.id,
+    //   name: gameDetails.name,
+    //   reviews: [{
+    //       GameId: gameDetails.id,
+    //       review: data.review
+    //     }]
+    // }
     console.log(dataToSave);
     if (userLocalDetail === null || userLocalDetail === "") {
       Swal.fire({
@@ -66,21 +75,29 @@ const Details = () => {
         }
       });
     } else {
-      dispatch(logout(dataToSave))
-      dispatch(addComments({ id, message }));
-      setComments(message);
+      // const reviews = useSelector((state)=> state.reviews);
+      setComments(dataToSave)
+      let pushComments = gameDetails.reviews.push(comments)
+      dispatch(addComments(dataToSave));
+      dispatch(logout(dataToSave));
     }
   });
 
   const gameDetails = useSelector((state) => state.gameId);
   console.log(gameDetails);
   const { id } = useParams();
+  const userId = useSelector((state) => state.userID)
+  console.log(userId);
+  const gameIds = userId?.purchased?.map((pur)=>{
+    return pur?.Videogame?.map((vg)=> vg.GameId)
+  }).flat()
+  console.log(gameIds)
 
   let searchUserGameId = userLocalDetail?.user?.purchased.flatMap(
-    (purchase) => purchase.Videogames
+    (purchase) => purchase?.Videogames
   );
-  let resSearch = searchUserGameId.find((gamePurchasedId) => {
-    return gamePurchasedId.GameId === gameDetails.id;
+  let resSearch = searchUserGameId?.find((gamePurchasedId) => {
+    return gamePurchasedId.GameId === gameDetails?.id;
   });
   let gameMatch;
   if (resSearch) {
@@ -90,8 +107,13 @@ const Details = () => {
   }
 
   useEffect(() => {
+    console.log(id);
     dispatch(gameById(id));
-  }, [dispatch, id]);
+    return () => {
+      console.log('me desmonté');
+      dispatch(deleteGameDetail())
+    }
+  }, [dispatch. id]);
 
   const handleChange = (event) => {
     let cleanMessage = filter.clean(event.target.value);

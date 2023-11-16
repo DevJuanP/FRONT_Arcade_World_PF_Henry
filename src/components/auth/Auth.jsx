@@ -20,8 +20,7 @@ export default function AuthLogin() {
         signIn === true ? 
         ( 
           <Stack>
-            <Button color='primary' variant='text'>Forget Password</Button>
-              <Typography variant='body1'>No account? <Button color='primary' variant='text' onClick={handleSign}>Create one</Button></Typography>
+            <Typography variant='body1'>No account? <Button color='primary' variant='text' onClick={handleSign}>Create one</Button></Typography>
           </Stack>
         )
         :

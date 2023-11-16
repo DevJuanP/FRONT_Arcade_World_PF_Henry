@@ -9,7 +9,7 @@ import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 function About() {
   
   return (
-    <Stack container sx={{display:'flex', flexDirection: 'colum', textAlign:'center', backgroundImage:`url('https://th.bing.com/th/id/R.5eca9af824ce557d667fe29298d474bd?rik=28WwQq7GYHkyLw&riu=http%3a%2f%2f2.bp.blogspot.com%2f-sj-ah7PMCvk%2fUeDD4EQkAqI%2fAAAAAAAAABo%2fQfKKgI5rw7w%2fs1600%2fClasicos.png&ehk=q%2f2JDoqvpFzVKsmYUdE%2fxl%2bFKx6x2vRv3EISg1YaI1A%3d&risl=&pid=ImgRaw&r=0')`}}>
+    <Stack container sx={{minHeight: '85vh', display:'flex', flexDirection: 'colum', textAlign:'center', backgroundImage:`url('https://th.bing.com/th/id/R.5eca9af824ce557d667fe29298d474bd?rik=28WwQq7GYHkyLw&riu=http%3a%2f%2f2.bp.blogspot.com%2f-sj-ah7PMCvk%2fUeDD4EQkAqI%2fAAAAAAAAABo%2fQfKKgI5rw7w%2fs1600%2fClasicos.png&ehk=q%2f2JDoqvpFzVKsmYUdE%2fxl%2bFKx6x2vRv3EISg1YaI1A%3d&risl=&pid=ImgRaw&r=0')`}}>
       <Stack sx={{display:'flex', marginLeft:'20px', marginRight:'20px', marginTop:'10px'}}>
         <Card sx={{ backgroundColor:' rgba(255, 255, 255, 0.8)', transition: 'transform 0.3s','&:hover': {transform: 'scale(1.02)',}}}>
           <CardContent>

@@ -43,7 +43,7 @@ function Navbar() {
       navigate("/cart");
     }}
   return (
-    <AppBar position="" sx={{ background: "#263238" }} style={appbar}>
+    <AppBar position="" sx={{ background: "#263238", minHeight: '6vh'}} style={appbar}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Logo */}
@@ -86,6 +86,12 @@ function Navbar() {
             <NavLink style={{ fontSize: "1.5em", color: "white" }} to="/about">
               About
             </NavLink>
+            {location.pathname !== '/Dashboard' && userLocal?.user?.admin && (
+              <NavLink style={{ fontSize: "1.5em", color: "white" }} to="/Dashboard">
+              Dashboard
+            </NavLink>
+            )
+            }
           </Box>
           {/* Cart, Login and avatar */}
           <Box

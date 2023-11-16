@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useEffect, useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { purchaseSuccess } from '../../redux/actions.js';
 import {
   CardContent,
@@ -8,29 +8,27 @@ import {
   Button,
   Box,
   Stack,
-  CardMedia,
   Avatar,
-  Grid,
+  
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 const Summary = () => {
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
-
+    
   useEffect(() => {
     const fetchData = () => {
+      const storeAmount = localStorage.getItem("amount");
+      const amount = storeAmount? parseFloat(storeAmount) : 0;
+      const UserId = localStorage.getItem("userLogin");
       const videogameIds = JSON.parse(localStorage.getItem("gameIds"));
-      const amount = Number(localStorage.getItem("amount"));
-      const UserId = localStorage.getItem("UserId");
-
       const games = JSON.parse(localStorage.getItem("allGames"));
-      const filteredGames = games.filter((gm) => videogameIds?.includes(gm.id));
-      
+      const filteredGames = games?.filter((gm) => videogameIds?.includes(gm.id));
       setProducts(filteredGames);
-
+      
       const payload = {
-        UserId,
+        UserId: UserId,
         GamesIds: videogameIds,
         amount: amount,
       };
@@ -42,15 +40,12 @@ const Summary = () => {
 
     return () => {
       localStorage.removeItem("gameIds");
+      localStorage.removeItem("amount");
+      localStorage.removeItem("userLogin");
     };
   }, []);
 
-  //const UserId = useSelector( s => s.userData?.user?.id);
-  //const games = JSON.parse(localStorage.getItem("allGames"));
-  // priceTotal = Number(products.reduce((total, game) => total + game.price, 0).toFixed(2));
-  const amount = Number(localStorage.getItem("amount"));
-  const priceTotal = amount;
-
+  
   return (
      <Stack>
       <Stack

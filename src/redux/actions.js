@@ -35,12 +35,15 @@ export const PURCHASE_BY_ID='PURCHASE_BY_ID'
 export const UPDATE_ITEM='UPDATE_ITEM'
 export const UPDATE_ISACTIVE_VG='UPDATE_ISACTIVE_VG'
 export const CREATE_GAME='CREATE_GAME'
+export const VG_ACTIVE_NOACTIVE='VG_ACTIVE_NOACTIVE'
+export const DELETE_DETAIL = 'DELETE_DETAIL'
 
 
 const { VITE_IS_LOCAL } =import.meta.env
 const URL_DEPLOY = 'https://back-arcade-world-pf-henry.onrender.com';
 const urlLocal = 'http://localhost:3001';
 const BD_URL =  VITE_IS_LOCAL === 'true' ? urlLocal : URL_DEPLOY
+console.log(BD_URL);
 
 export const getGames = ()=>{ 
   return async function(dispatch) {
@@ -57,6 +60,15 @@ export const getGames = ()=>{
   }
 }
 };
+
+export const deleteGameDetail = () => {
+  return function(dispatch) {
+    return dispatch({
+      type: DELETE_DETAIL,
+      payload: null
+    })
+  }
+}
 
 export const gameByName = (name)=> {
 return async function(dispatch) {
@@ -241,7 +253,7 @@ export function putProfile(payload){
   }
 }
 export function setUserData(userData) {
-  return (dispatch) => {
+  return async (dispatch) => {
     // Actualiza userData
     dispatch({
       type: SET_USER_DATA,
@@ -249,10 +261,11 @@ export function setUserData(userData) {
     });
 
     // Si userData tiene favoritos, los agrega al estado global
+    console.log(userData.user.favorites);
     if (userData && userData.user && userData.user.favorites) {
-      userData.user.favorites.forEach(game => {
-        dispatch(addToFavorites(game));
-      });
+      for(const game of userData.user.favorites){
+        await dispatch(addToFavorites(game));
+      }
     }
 
     // Si userData tiene reviews, los agrega al estado global
@@ -284,12 +297,13 @@ export const addComments = (gameComment) => ({
 });
 export const logout = (payload) => async dispatch => {
   try {
-    const response = await axios.put(`${BD_URL}/user/logout`, payload);
-    console.log(response);
-    dispatch({
-      type: LOGOUT
-    });
-    console.log('Llenado de deslogueo completo')
+    console.log(payload);
+      const response = await axios.put(`${BD_URL}/user/logout`, payload);
+      console.log(response);
+      return dispatch({
+        type: LOGOUT,
+        payload: response.data
+      });
   } catch (error) {
     console.error('Error al cerrar la sesión:', error);
   }
@@ -335,7 +349,7 @@ export const deleteItem = (id) => {
 export function GetUser(){
   return async function(dispatch){
    try {
-    const {data}= await axios.get(`${BD_URL}/user`)
+    const {data}= await axios.get('http://localhost:3001/user')
     console.log(data);
     return dispatch({
       type:GET_USER,
@@ -411,6 +425,7 @@ export const UpdateActiveVG=(newData)=>{
   return async function(dispatch){
   try {
     const {data} =await axios.put('http://localhost:3001/videogame/update',newData)
+    console.log(data)
     return dispatch({
       type:UPDATE_ISACTIVE_VG,
       payload:data
@@ -441,3 +456,17 @@ export const createVideogame = (payload) => {
     }
   };
 };
+
+export const VGactive=()=>{
+  return async function (dispatch){
+    try{
+      const {data}= await axios.get(`${BD_URL}/videogame/admin`)
+      return dispatch({
+        type:VG_ACTIVE_NOACTIVE,
+        payload:data
+      })
+    }catch(error){
+      console.log({error:error.message})
+    }
+  }
+}
