@@ -12,7 +12,7 @@ import { addToCart } from '../../redux/actions.js';
   const gameDetails = useSelector((state) => state.gameId);
   let userLocalBuy = localStorage.getItem("login");
   userLocalBuy = userLocalBuy ? JSON.parse(userLocalBuy) : null;
-   
+    
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams()

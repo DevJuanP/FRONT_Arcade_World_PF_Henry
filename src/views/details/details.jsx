@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { gameById, GetUser, logout } from "../../redux/actions";
+import { gameById, GetUser, logout, deleteGameDetail } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Grafico from "./Grafico";
 import { useNavigate, useParams } from "react-router-dom";
@@ -82,7 +82,7 @@ const Details = () => {
     (purchase) => purchase?.Videogames
   );
   let resSearch = searchUserGameId?.find((gamePurchasedId) => {
-    return gamePurchasedId?.GameId === gameDetails?.id;
+    return gamePurchasedId.GameId === gameDetails?.id;
   });
   let gameMatch;
   if (resSearch) {
@@ -92,8 +92,13 @@ const Details = () => {
   }
 
   useEffect(() => {
+    console.log(id);
     dispatch(gameById(id));
-  }, [dispatch, id]);
+    return () => {
+      console.log('me desmonté');
+      dispatch(deleteGameDetail())
+    }
+  }, [dispatch. id]);
 
   const handleChange = (event) => {
     let cleanMessage = filter.clean(event.target.value);

@@ -5,7 +5,7 @@ import { GET_GAMES, GET_GAME_NAME, GET_GAME_ID,
          SORT_GAMES_ASC, SORT_GAMES_DESC, FILTER_GAMES_BY_PRICE, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES,
          ADD_COMMENT, DELETE_ITEM_CART, ADD_NEWS_PURCHASED, ADD_TO_CART, DELETE_ITEM,
          LOGOUT, GET_USER, SET_SELECTED_PRICE, PURCHASE_SUCCESS, GET_COUNTRIES, SET_SELECTED_COUNTRY,
-         TOP_FIVE,GET_PURCHASE,USER_BY_ID,PURCHASE_BY_ID, CREATE_GAME,UPDATE_ITEM,UPDATE_ISACTIVE_VG }from './actions.js';
+         TOP_FIVE,GET_PURCHASE,USER_BY_ID,PURCHASE_BY_ID, CREATE_GAME,UPDATE_ITEM,UPDATE_ISACTIVE_VG,VG_ACTIVE_NOACTIVE, DELETE_DETAIL }from './actions.js';
                         
 const initialState = {
   games:[],
@@ -34,6 +34,7 @@ const initialState = {
   purchasedVideogames: [],
   Purchase:[],
   PurchaseID:[],
+  gameActiveNoactive:[]
   
   }  
  
@@ -237,6 +238,18 @@ const initialState = {
                   ...state,
                   PurchaseID:action.payload
                 }
+                
+                case CREATE_GAME:
+                return {
+                  ...state,
+                  games: [...state.games, action.payload],
+                  allGames: [...state.games, action.payload]
+                };
+                 case VG_ACTIVE_NOACTIVE:
+                  return{
+                    ...state,
+                   gameActiveNoactive:action.payload
+                  } 
                 case UPDATE_ITEM:
                   const usuarioActualizado = action.payload;
 
@@ -245,21 +258,26 @@ const initialState = {
                     user: state.user.map(u =>
                       u.id === usuarioActualizado.id ? usuarioActualizado : u
                     ),}
+
                     case UPDATE_ISACTIVE_VG:
-                      const VGisActive=action.payload
+                      const VGisActive=action.payload;
                       return{
                         ...state,
-                        games:state.games.map(VG=>
+                        gameActiveNoactive:state.gameActiveNoactive.map(VG=>
                           VG.id=== VGisActive.id ? VGisActive : VG
                           )
                       }
+    case SET_SELECTED_GENRE:
+      return {
+      ...state,
+      selectedGenre: action.payload,
+      };
 
-              case CREATE_GAME:
-                return {
-                  ...state,
-                  games: [...state.games, action.payload],
-                  allGames: [...state.games, action.payload]
-                  };
+    case DELETE_DETAIL:
+      return {
+        ...state,
+        gameId: []
+      }
     default:
       return {...state}  
   }

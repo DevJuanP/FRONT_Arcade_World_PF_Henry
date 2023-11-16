@@ -12,7 +12,7 @@ function Cart() {
   const dispatch = useDispatch();
   const shoppingCart = useSelector((state) => state.shoppingCart);
   const gamesIds = !shoppingCart.length ? [] : shoppingCart.map((vg) => vg.id);
-  const priceTotal = shoppingCart.reduce((a, b) => a + b.price, 0).toFixed(2);
+  const priceTotal = shoppingCart.reduce((a, b) => a + b.price, 0);
   
   const showAlert = () => {
     Swal.fire({
